@@ -4,6 +4,9 @@ import { ClientProviders } from "@/components/providers/client-providers";
 import { getAuthUser } from "@/lib/auth/get-user";
 import { isValidLocale, type Locale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
+import { readSupabasePublicConfigFromEnv } from "@/lib/supabase/env";
+
+export const dynamic = "force-dynamic";
 
 export function generateStaticParams() {
   return [{ locale: "fr" }, { locale: "en" }];
@@ -25,10 +28,13 @@ export default async function LocaleLayout({
   const locale = localeParam as Locale;
   const dictionary = getDictionary(locale);
   const user = await getAuthUser();
+  const supabasePublic = readSupabasePublicConfigFromEnv();
 
   return (
     <LocaleProvider locale={locale} dictionary={dictionary}>
-      <ClientProviders initialUser={user}>{children}</ClientProviders>
+      <ClientProviders initialUser={user} supabasePublic={supabasePublic}>
+        {children}
+      </ClientProviders>
     </LocaleProvider>
   );
 }

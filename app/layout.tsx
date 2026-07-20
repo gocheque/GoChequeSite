@@ -3,6 +3,7 @@ import { headers } from "next/headers";
 import { htmlLang, type Locale } from "@/lib/i18n/config";
 import { buildRootMetadata } from "@/lib/seo/metadata";
 import { siteViewport } from "@/lib/seo/site";
+import { readSupabasePublicConfigFromEnv } from "@/lib/supabase/env";
 import "./globals.css";
 
 const comfortaa = Comfortaa({
@@ -28,12 +29,20 @@ export default async function RootLayout({
 }>) {
   const headerStore = await headers();
   const lang = resolveDocumentLang(headerStore.get("x-locale"));
+  const supabasePublic = readSupabasePublicConfigFromEnv();
 
   return (
     <html lang={lang} suppressHydrationWarning>
       <body
         className={`${comfortaa.variable} min-h-screen bg-white font-sans text-slate-900 antialiased`}
       >
+        {supabasePublic ? (
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `self.__GOCHEQUE_SB__=${JSON.stringify(supabasePublic)};`,
+            }}
+          />
+        ) : null}
         {children}
       </body>
     </html>
