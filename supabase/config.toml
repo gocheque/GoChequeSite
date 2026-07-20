@@ -1,0 +1,11 @@
+# GoCheque — Supabase local (optionnel)
+# Les modèles d'e-mail sont dans supabase/templates/
+# Pour un projet hébergé : npm run email:supabase
+
+[auth.email.template.confirmation]
+subject = "Confirmez votre compte GoCheque"
+content_path = "./supabase/templates/confirmation.html"
+
+[auth.email.template.recovery]
+subject = "Réinitialisez votre mot de passe GoCheque"
+content_path = "./supabase/templates/recovery.html"

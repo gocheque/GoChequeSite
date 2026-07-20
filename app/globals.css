@@ -1,0 +1,342 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #0f172a;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-comfortaa);
+  --font-mono: var(--font-comfortaa);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Champ date — même hauteur que les autres inputs */
+.cheque-date-input {
+  position: relative;
+  min-width: 0;
+  line-height: 1rem;
+  appearance: none;
+}
+
+.cheque-date-input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  position: absolute;
+  right: 0.625rem;
+  top: 50%;
+  transform: translateY(-50%);
+  margin: 0;
+  opacity: 0.6;
+  padding: 0;
+  width: 1rem;
+  height: 1rem;
+}
+
+@keyframes showcase-float-a {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(-8deg);
+  }
+  50% {
+    transform: translate3d(0, -12px, 0) rotate(-4deg);
+  }
+}
+
+@keyframes showcase-float-b {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(6deg);
+  }
+  50% {
+    transform: translate3d(0, -10px, 0) rotate(10deg);
+  }
+}
+
+@keyframes showcase-float-c {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(4deg);
+  }
+  50% {
+    transform: translate3d(0, -14px, 0) rotate(0deg);
+  }
+}
+
+@keyframes showcase-float-d {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(-5deg);
+  }
+  50% {
+    transform: translate3d(0, -11px, 0) rotate(-9deg);
+  }
+}
+
+.showcase-float-a {
+  animation: showcase-float-a 5.5s ease-in-out infinite;
+}
+
+.showcase-float-b {
+  animation: showcase-float-b 6.2s ease-in-out infinite;
+  animation-delay: 0.8s;
+}
+
+.showcase-float-c {
+  animation: showcase-float-c 5.8s ease-in-out infinite;
+  animation-delay: 1.4s;
+}
+
+.showcase-float-d {
+  animation: showcase-float-d 6.5s ease-in-out infinite;
+  animation-delay: 0.3s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .showcase-float-a,
+  .showcase-float-b,
+  .showcase-float-c,
+  .showcase-float-d,
+  .showcase-ambient-a,
+  .showcase-ambient-b,
+  .showcase-ambient-c,
+  .showcase-ambient-d {
+    animation: none;
+  }
+
+  .showcase-scroll-hint-chevron {
+    animation: none;
+  }
+}
+
+@keyframes showcase-ambient-drift-a {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(8px, -10px, 0) rotate(2deg);
+  }
+}
+
+@keyframes showcase-ambient-drift-b {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(-10px, 8px, 0) rotate(-2deg);
+  }
+}
+
+@keyframes showcase-ambient-drift-c {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(6px, 12px, 0) rotate(1deg);
+  }
+}
+
+@keyframes showcase-ambient-drift-d {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(-6px, -8px, 0) rotate(-1.5deg);
+  }
+}
+
+.showcase-ambient-a {
+  animation: showcase-ambient-drift-a 14s ease-in-out infinite;
+}
+
+.showcase-ambient-b {
+  animation: showcase-ambient-drift-b 16s ease-in-out infinite;
+  animation-delay: 1.2s;
+}
+
+.showcase-ambient-c {
+  animation: showcase-ambient-drift-c 13s ease-in-out infinite;
+  animation-delay: 2.4s;
+}
+
+.showcase-ambient-d {
+  animation: showcase-ambient-drift-d 15s ease-in-out infinite;
+  animation-delay: 0.6s;
+}
+
+@keyframes showcase-scroll-hint {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.45;
+  }
+  50% {
+    transform: translateY(10px);
+    opacity: 1;
+  }
+}
+
+.showcase-scroll-hint-chevron {
+  animation: showcase-scroll-hint 1.75s ease-in-out infinite;
+}
+
+.cheque-date-input::-webkit-date-and-time-value {
+  text-align: left;
+}
+
+.cheque-date-input::-webkit-datetime-edit-fields-wrapper {
+  padding: 0;
+}
+
+.cheque-date-input::-webkit-datetime-edit {
+  padding: 0;
+  overflow: visible;
+}
+
+@keyframes hero-micr-scroll {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.hero-micr-marquee {
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    #000 12%,
+    #000 88%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    #000 12%,
+    #000 88%,
+    transparent 100%
+  );
+}
+
+.hero-micr-row + .hero-micr-row {
+  margin-top: 0.35rem;
+}
+
+.hero-micr-track {
+  animation-name: hero-micr-scroll;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+
+.hero-micr-track--reverse {
+  animation-direction: reverse;
+}
+
+.hero-micr-glyph {
+  font-family: "GnuMICR", monospace;
+  font-size: clamp(0.95rem, 2.4vw, 1.35rem);
+  line-height: 1.2;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  color: #0f172a;
+  padding-right: 2rem;
+  user-select: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-micr-track {
+    animation: none;
+    transform: none;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .hero-micr-track > span:last-child {
+    display: none;
+  }
+
+  .hero-micr-glyph {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+    padding-right: 0;
+  }
+}
+
+@font-face {
+  font-family: "GnuMICR";
+  src: url("/fonts/GnuMICR.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+.cheque-micr-field {
+  position: absolute;
+  margin: 0;
+  font-family: "GnuMICR", monospace;
+  font-size: 12pt;
+  line-height: 1;
+  height: auto;
+  white-space: nowrap;
+  color: #000;
+  letter-spacing: 0;
+}
+
+.cheque-micr-field--transit-branch,
+.cheque-micr-field--transit-inst {
+  display: inline-block;
+  box-sizing: content-box;
+}
+
+.showcase-micr-glyph {
+  font-family: "GnuMICR", monospace;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  color: #334155;
+  user-select: none;
+}
+
+.showcase-micr-glyph--ambient {
+  color: #64748b;
+  opacity: 0.92;
+}
+
+.showcase-micr-glyph--accent {
+  color: #ff6633;
+  opacity: 0.88;
+}
+
+.account-micr-glyph {
+  font-family: "GnuMICR", monospace;
+  line-height: 1;
+  letter-spacing: 0;
+  color: #0f172a;
+  user-select: none;
+}
+
+.account-micr-slot-drop {
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.account-micr-slot-drop:has(*:focus-visible) {
+  outline: 2px solid #ff6633;
+  outline-offset: 2px;
+}
+

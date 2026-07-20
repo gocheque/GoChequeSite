@@ -1,0 +1,37 @@
+{
+  "name": "cheque",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "dev:turbopack": "next dev --turbopack",
+    "dev:clean": "node scripts/clean-dev.mjs && next dev",
+    "dev:reset": "node scripts/clean-dev.mjs",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "env:check": "node scripts/verify-supabase-env.mjs",
+    "email:supabase": "node scripts/apply-supabase-email-templates.mjs"
+  },
+  "dependencies": {
+    "@supabase/ssr": "^0.12.0",
+    "@supabase/supabase-js": "^2.108.2",
+    "lucide-react": "^1.21.0",
+    "next": "^15.3.4",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "stripe": "^22.3.0",
+    "zod": "^3.25.67"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.3.1",
+    "@tailwindcss/postcss": "^4.1.10",
+    "@types/node": "^22.15.32",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "eslint": "^9.29.0",
+    "eslint-config-next": "^15.3.4",
+    "tailwindcss": "^4.1.10",
+    "typescript": "^5.8.3"
+  }
+}
