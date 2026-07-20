@@ -6,6 +6,10 @@ import { isValidLocale, localizedPath, type Locale } from "@/lib/i18n/config";
 import { getStripeRedirectOrigin, isStripeConfigured } from "@/lib/stripe/env";
 import { getOrCreateStripeCustomer } from "@/lib/stripe/customer";
 import { getStripe } from "@/lib/stripe/server";
+import {
+  arePurchasesEnabled,
+  purchasesDisabledResponse,
+} from "@/lib/site/access-lock";
 import { getTokenPackage } from "@/lib/tokens/packages";
 
 const checkoutSchema = z.object({
@@ -14,6 +18,10 @@ const checkoutSchema = z.object({
 });
 
 export async function POST(request: Request) {
+  if (!arePurchasesEnabled()) {
+    return NextResponse.json(purchasesDisabledResponse(), { status: 503 });
+  }
+
   if (!isStripeConfigured()) {
     return NextResponse.json(
       { error: "Stripe non configuré", code: "STRIPE_NOT_CONFIGURED" },

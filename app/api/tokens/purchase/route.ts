@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getAuthUser } from "@/lib/auth/get-user";
+import {
+  arePurchasesEnabled,
+  purchasesDisabledResponse,
+} from "@/lib/site/access-lock";
 import { isStripeConfigured } from "@/lib/stripe/env";
 import { purchaseCredits } from "@/lib/tokens/token-service";
 
@@ -9,6 +13,10 @@ const purchaseSchema = z.object({
 });
 
 export async function POST(request: Request) {
+  if (!arePurchasesEnabled()) {
+    return NextResponse.json(purchasesDisabledResponse(), { status: 503 });
+  }
+
   try {
     const body = await request.json();
     const parsed = purchaseSchema.safeParse(body);

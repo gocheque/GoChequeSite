@@ -6,11 +6,11 @@ import {
   localizedPath,
   type Locale,
 } from "@/lib/i18n/config";
+import {
+  getSiteAccessPassword,
+  isSiteAccessLocked,
+} from "@/lib/site/access-lock";
 import { updateSession } from "@/lib/supabase/middleware";
-
-function pathnameHasLocale(pathname: string): boolean {
-  return Boolean(getLocaleFromPathname(pathname));
-}
 
 function withLocaleCookie(response: NextResponse, locale: Locale): NextResponse {
   response.cookies.set(LOCALE_COOKIE, locale, {
@@ -21,8 +21,47 @@ function withLocaleCookie(response: NextResponse, locale: Locale): NextResponse 
   return response;
 }
 
+function unauthorizedPreview(): NextResponse {
+  return new NextResponse("GoCheque — accès anticipé requis", {
+    status: 401,
+    headers: {
+      "WWW-Authenticate": 'Basic realm="GoCheque Preview", charset="UTF-8"',
+      "Cache-Control": "no-store",
+    },
+  });
+}
+
+function isAuthorizedPreview(request: NextRequest, password: string): boolean {
+  const header = request.headers.get("authorization");
+  if (!header?.startsWith("Basic ")) return false;
+
+  try {
+    const decoded = atob(header.slice(6));
+    const separator = decoded.indexOf(":");
+    if (separator < 0) return false;
+
+    const user = decoded.slice(0, separator);
+    const pass = decoded.slice(separator + 1);
+    const expectedUser = process.env.SITE_ACCESS_USER?.trim() || "gocheque";
+
+    return user === expectedUser && pass === password;
+  } catch {
+    return false;
+  }
+}
+
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  // Webhook Stripe doit rester accessible sans Basic Auth
+  const skipAccessLock = pathname === "/api/stripe/webhook";
+
+  if (isSiteAccessLocked() && !skipAccessLock) {
+    const password = getSiteAccessPassword()!;
+    if (!isAuthorizedPreview(request, password)) {
+      return unauthorizedPreview();
+    }
+  }
 
   if (
     pathname.startsWith("/api") ||
