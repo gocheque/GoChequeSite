@@ -536,14 +536,16 @@ export const dictionary = {
     mobilePrint: {
       title: "Print your cheque",
       intro:
-        "Your credit has been debited. On a phone, printing goes through your browser menu — not a dialog like on desktop.",
+        "Your credit has been debited. A dedicated tab will open with only the cheque and print instructions.",
       step1:
-        'Tap the button below, then choose "Save as PDF" or a printer (AirPrint, etc.).',
+        "Tap the button below (allow pop-ups if your browser asks).",
       step2:
-        "Print both pages (front then back) on US Letter paper at 100% scale.",
+        'In the new tab, choose "Print / PDF", then US Letter at 100% (2 pages, duplex).',
       step3:
         "Cut out the cheque, then photograph it in your bank's mobile deposit app.",
-      printButton: "Print or save as PDF",
+      printButton: "Open print document",
+      popupBlocked:
+        "Your browser blocked the window. Allow pop-ups for gocheque.ca, then try again.",
       close: "Close",
     },
   },

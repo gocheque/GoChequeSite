@@ -535,14 +535,16 @@ export const dictionary = {
     mobilePrint: {
       title: "Imprimer votre chèque",
       intro:
-        "Votre crédit a été débité. Sur téléphone, l'impression passe par le menu de votre navigateur — pas par une fenêtre comme sur ordinateur.",
+        "Votre crédit a été débité. Un onglet dédié s’ouvrira avec uniquement le chèque et les instructions d’impression.",
       step1:
-        "Appuyez sur le bouton ci-dessous, puis choisissez « Enregistrer en PDF » ou une imprimante (AirPrint, etc.).",
+        "Appuyez sur le bouton ci-dessous (autorisez les fenêtres pop-up si demandé).",
       step2:
-        "Imprimez les 2 pages (recto puis verso) sur papier Lettre US, échelle 100 %.",
+        "Dans le nouvel onglet, choisissez « Imprimer / PDF », puis papier Lettre US à 100 % (2 pages, recto-verso).",
       step3:
         "Coupez le chèque, puis photographiez-le dans l'application de dépôt mobile de votre banque.",
-      printButton: "Imprimer ou enregistrer en PDF",
+      printButton: "Ouvrir le document d'impression",
+      popupBlocked:
+        "Le navigateur a bloqué la fenêtre. Autorisez les pop-ups pour gocheque.ca, puis réessayez.",
       close: "Fermer",
     },
   },

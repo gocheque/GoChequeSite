@@ -5,20 +5,20 @@ import { Loader2, Printer, Smartphone } from "lucide-react";
 import { ModalCloseButton } from "@/components/ui/modal-close-button";
 import { useLocale } from "@/components/providers/locale-provider";
 import type { Locale } from "@/lib/i18n/config";
-import { printChequeInPage } from "@/lib/cheque/print-cheque";
-import {
-  setPrintMobileListener,
-} from "@/lib/cheque/print-mobile-bridge";
+import { printChequeInPopup } from "@/lib/cheque/print-cheque";
+import { setPrintMobileListener } from "@/lib/cheque/print-mobile-bridge";
 
 export function ChequePrintMobileModal() {
   const { t } = useLocale();
   const [open, setOpen] = useState(false);
   const [locale, setLocale] = useState<Locale>("fr");
   const [printing, setPrinting] = useState(false);
+  const [popupBlocked, setPopupBlocked] = useState(false);
 
   useEffect(() => {
     setPrintMobileListener((nextLocale) => {
       setLocale(nextLocale);
+      setPopupBlocked(false);
       setOpen(true);
     });
 
@@ -27,24 +27,34 @@ export function ChequePrintMobileModal() {
 
   function closeModal() {
     setOpen(false);
+    setPopupBlocked(false);
   }
 
   async function handlePrint() {
     if (printing) return;
+    setPopupBlocked(false);
+
+    // Critique iOS : ouvrir l'onglet pendant le geste utilisateur (sync).
+    const popup = window.open("about:blank", "gocheque-print");
+    if (!popup) {
+      setPopupBlocked(true);
+      return;
+    }
+
     setPrinting(true);
-    // Fermer le modal avant print — sinon iOS l'inclut dans l'aperçu.
     setOpen(false);
 
-    await new Promise<void>((resolve) => {
-      requestAnimationFrame(() => resolve());
-    });
-
     try {
-      const ok = await printChequeInPage(locale);
+      const ok = await printChequeInPopup(locale, popup);
       if (!ok) {
         setOpen(true);
       }
     } catch {
+      try {
+        popup.close();
+      } catch {
+        // ignore
+      }
       setOpen(true);
     } finally {
       setPrinting(false);
@@ -106,12 +116,18 @@ export function ChequePrintMobileModal() {
               <span>{t("process.mobilePrint.step3")}</span>
             </li>
           </ol>
+
+          {popupBlocked ? (
+            <p className="mt-4 rounded-lg bg-amber-50 px-3 py-2 text-center text-sm text-amber-800">
+              {t("process.mobilePrint.popupBlocked")}
+            </p>
+          ) : null}
         </div>
 
         <div className="flex shrink-0 flex-col gap-3 border-t border-slate-100 bg-slate-50/80 p-4">
           <button
             type="button"
-            onClick={handlePrint}
+            onClick={() => void handlePrint()}
             disabled={printing}
             className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#ff6633] py-3.5 text-base font-semibold text-white transition hover:bg-[#e05526] disabled:cursor-not-allowed disabled:opacity-60"
           >

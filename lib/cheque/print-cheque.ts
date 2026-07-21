@@ -104,7 +104,7 @@ function buildPrintStyles(theme: ChequeColorTheme) {
   return `
   @font-face {
     font-family: "GnuMICR";
-    src: url("/fonts/GnuMICR.ttf") format("truetype");
+    src: url("${typeof window !== 'undefined' ? window.location.origin : ''}/fonts/GnuMICR.ttf") format("truetype");
     font-weight: normal;
     font-style: normal;
   }
@@ -700,6 +700,101 @@ export async function printChequeInPage(locale?: Locale): Promise<boolean> {
     // iOS n'émet pas toujours afterprint
     window.setTimeout(() => finish(true), 60_000);
   });
+}
+
+/**
+ * Impression mobile fiable : onglet dédié ne contenant que le chèque.
+ * iOS imprime souvent la page parente avec window.print() / iframe.print().
+ * Le popup doit être ouvert de façon synchrone au clic (gesture utilisateur).
+ */
+export async function printChequeInPopup(
+  locale: Locale | undefined,
+  popup: Window,
+): Promise<boolean> {
+  const printLocale = resolvePrintLocale(locale);
+  const sources = getChequePrintSources();
+  if (!sources) {
+    console.error("[printChequeInPopup] sources de chèque introuvables");
+    try {
+      popup.close();
+    } catch {
+      // ignore
+    }
+    return false;
+  }
+
+  const doc = popup.document;
+  const origin = window.location.origin;
+
+  doc.open();
+  doc.write(
+    `<!DOCTYPE html><html lang="${htmlLang(printLocale)}"><head>` +
+      `<meta charset="utf-8"/>` +
+      `<meta name="viewport" content="width=device-width, initial-scale=1"/>` +
+      `<base href="${origin}/"/>` +
+      `<title>GoCheque</title>` +
+      `<style>` +
+      `#gocheque-popup-bar{position:sticky;top:0;z-index:10;display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:center;padding:12px 16px;background:#0f172a;color:#fff;font:600 14px/1.4 system-ui,sans-serif}` +
+      `#gocheque-popup-bar button{appearance:none;border:0;border-radius:10px;padding:10px 14px;font:600 14px/1.2 system-ui,sans-serif;cursor:pointer}` +
+      `#gocheque-popup-bar .primary{background:#ff6633;color:#fff}` +
+      `#gocheque-popup-bar .ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.35)}` +
+      `@media print{#gocheque-popup-bar{display:none!important}}` +
+      `</style>` +
+      `</head><body class="cheque-print-frame"></body></html>`,
+  );
+  doc.close();
+
+  copyStyles(doc, sources.theme);
+  doc.documentElement.lang = htmlLang(printLocale);
+
+  const toolbar = doc.createElement("div");
+  toolbar.id = "gocheque-popup-bar";
+  toolbar.innerHTML =
+    `<span>${printLocale === "fr" ? "Document d'impression GoCheque" : "GoCheque print document"}</span>` +
+    `<button type="button" class="primary" data-print>${printLocale === "fr" ? "Imprimer / PDF" : "Print / PDF"}</button>` +
+    `<button type="button" class="ghost" data-close>${printLocale === "fr" ? "Fermer" : "Close"}</button>`;
+
+  const printRoot = doc.importNode(
+    buildPrintDocument(
+      sources.frontSource,
+      sources.backSource,
+      printLocale,
+    ),
+    true,
+  );
+
+  doc.body.replaceChildren(toolbar, printRoot);
+
+  toolbar
+    .querySelector("[data-print]")
+    ?.addEventListener("click", () => {
+      popup.focus();
+      popup.print();
+    });
+  toolbar
+    .querySelector("[data-close]")
+    ?.addEventListener("click", () => {
+      popup.close();
+    });
+
+  await waitForAssets(doc, popup).catch(() => undefined);
+  await waitForPrintAssets(doc.body, popup);
+
+  await new Promise<void>((resolve) => {
+    popup.requestAnimationFrame(() => {
+      popup.requestAnimationFrame(() => resolve());
+    });
+  });
+
+  try {
+    popup.focus();
+    popup.print();
+  } catch (err) {
+    console.error("[printChequeInPopup] print() a échoué", err);
+    // L'onglet reste ouvert : l'utilisateur peut retaper Imprimer.
+  }
+
+  return true;
 }
 
 export function printCheque(locale?: Locale) {
