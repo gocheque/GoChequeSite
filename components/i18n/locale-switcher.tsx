@@ -19,11 +19,11 @@ export function LocaleSwitcher() {
     <div
       role="group"
       aria-label={t("locale.label")}
-      className="flex shrink-0 overflow-hidden rounded-lg border border-slate-200 bg-white text-xs font-semibold"
+      className="flex h-8 shrink-0 overflow-hidden rounded-lg border border-slate-200 bg-white text-xs font-semibold leading-none"
     >
       <Link
         href={hrefFor("fr")}
-        className={`px-2.5 py-1.5 transition ${
+        className={`flex h-full items-center px-2.5 transition ${
           locale === "fr"
             ? "bg-[#ff6633] text-white"
             : "text-slate-600 hover:bg-slate-50"
@@ -34,7 +34,7 @@ export function LocaleSwitcher() {
       </Link>
       <Link
         href={hrefFor("en")}
-        className={`border-l border-slate-200 px-2.5 py-1.5 transition ${
+        className={`flex h-full items-center border-l border-slate-200 px-2.5 transition ${
           locale === "en"
             ? "bg-[#ff6633] text-white"
             : "text-slate-600 hover:bg-slate-50"

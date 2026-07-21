@@ -322,6 +322,10 @@ export function AuthModal() {
   async function handleGoogleAuth() {
     if (mode === "signup" && !acceptedLegal) {
       setError(t("auth.signupLegalRequired"));
+      document.getElementById("auth-signup-legal")?.focus();
+      document
+        .getElementById("auth-signup-legal-box")
+        ?.scrollIntoView({ behavior: "smooth", block: "nearest" });
       return;
     }
 
@@ -561,8 +565,16 @@ export function AuthModal() {
             {mode === "signup" && <PasswordStrengthChecker password={password} />}
 
             {mode === "signup" && (
-              <label className="flex cursor-pointer items-start gap-3 rounded-lg border border-slate-200 bg-slate-50/80 px-3 py-3">
+              <label
+                id="auth-signup-legal-box"
+                className={`flex cursor-pointer items-start gap-3 rounded-lg border bg-slate-50/80 px-3 py-3 ${
+                  error === t("auth.signupLegalRequired")
+                    ? "border-red-400"
+                    : "border-slate-200"
+                }`}
+              >
                 <input
+                  id="auth-signup-legal"
                   type="checkbox"
                   checked={acceptedLegal}
                   onChange={(e) => {
@@ -625,11 +637,11 @@ export function AuthModal() {
 
           <button
             type="button"
-            disabled={loading || (mode === "signup" && !acceptedLegal)}
+            disabled={loading}
             onClick={() => {
               void handleGoogleAuth();
             }}
-            className="flex w-full items-center justify-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50 disabled:opacity-50"
+            className="flex w-full items-center justify-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
           >
             <GoogleIcon />
             {t("auth.google")}

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { UserRound } from "lucide-react";
 import { useAuth } from "@/components/providers/auth-provider";
 import { useLocale } from "@/components/providers/locale-provider";
 import { ModalCloseButton } from "@/components/ui/modal-close-button";
@@ -75,6 +76,10 @@ function menuLinkClass(isActive: boolean) {
   }`;
 }
 
+/** Même footprint que le sélecteur FR/EN (h-8 / rounded-lg). */
+const headerIconBtnClass =
+  "flex size-8 shrink-0 items-center justify-center rounded-lg border border-slate-200 bg-white p-0 leading-none transition hover:border-slate-300 hover:bg-slate-50";
+
 export function AuthMenu() {
   const router = useRouter();
   const pathname = usePathname();
@@ -111,9 +116,10 @@ export function AuthMenu() {
       <button
         type="button"
         disabled
-        className="flex h-10 items-center rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-400"
+        aria-label={t("nav.signIn")}
+        className={`${headerIconBtnClass} text-slate-300`}
       >
-        {t("nav.signIn")}
+        <UserRound className="size-4" strokeWidth={2} aria-hidden />
       </button>
     );
   }
@@ -123,9 +129,10 @@ export function AuthMenu() {
       <button
         type="button"
         onClick={openAuthModal}
-        className="flex h-10 items-center rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:shadow-sm"
+        aria-label={t("nav.signIn")}
+        className={`${headerIconBtnClass} text-slate-700 hover:shadow-sm`}
       >
-        {t("nav.signIn")}
+        <UserRound className="size-4" strokeWidth={2} aria-hidden />
       </button>
     );
   }
@@ -140,11 +147,11 @@ export function AuthMenu() {
     <>
       <details
         ref={menuRef}
-        className="group relative [&_summary::-webkit-details-marker]:hidden"
+        className="group relative shrink-0 [&_summary::-webkit-details-marker]:hidden"
       >
         <summary
           aria-label={t("nav.accountMenu")}
-          className="flex h-10 w-10 cursor-pointer list-none items-center justify-center rounded-full border border-slate-200 bg-white text-sm font-bold text-[#ff6633] shadow-sm transition hover:border-[#ff6633]/40 hover:shadow-md"
+          className={`${headerIconBtnClass} cursor-pointer list-none text-xs font-bold text-[#ff6633] hover:border-[#ff6633]/40`}
         >
           {initial}
         </summary>
