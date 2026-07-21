@@ -556,49 +556,76 @@ export function mountPrintJob(locale?: Locale): (() => void) | null {
 
   const style = document.createElement("style");
   style.id = PRINT_STYLE_ID;
+  /*
+   * Mobile / iOS : ne pas monter hors écran. Safari imprime souvent ce qui est
+   * visible à l'écran et ignore @media print → on montre le chèque tout de suite
+   * sous .gocheque-printing, puis window.print().
+   */
   style.textContent = `${buildPrintStyles(sources.theme)}
-@media screen {
-  #${PRINT_MOUNT_ID} {
-    position: fixed !important;
-    left: -10000px !important;
-    top: 0 !important;
-    width: ${SHEET_WIDTH} !important;
-    pointer-events: none !important;
-    opacity: 0 !important;
-  }
+html.gocheque-printing,
+html.gocheque-printing body {
+  background: #fff !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
-@media print {
-  /* iOS Safari ignore souvent display:none sur les enfants de body — visibility. */
-  html, body {
-    background: #fff !important;
-    height: auto !important;
-    overflow: visible !important;
+
+html.gocheque-printing body > *:not(#${PRINT_MOUNT_ID}) {
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+html.gocheque-printing #${PRINT_MOUNT_ID},
+html.gocheque-printing #${PRINT_MOUNT_ID} * {
+  visibility: visible !important;
+}
+
+@media screen {
+  html.gocheque-printing,
+  html.gocheque-printing body {
+    overflow: hidden !important;
+    height: 100% !important;
+  }
+
+  html.gocheque-printing #${PRINT_MOUNT_ID} {
+    display: block !important;
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
     margin: 0 !important;
     padding: 0 !important;
+    overflow: auto !important;
+    -webkit-overflow-scrolling: touch;
+    background: #fff !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    z-index: 2147483647 !important;
+  }
+}
+
+@media print {
+  html.gocheque-printing,
+  html.gocheque-printing body {
+    height: auto !important;
+    overflow: visible !important;
   }
 
-  body * {
-    visibility: hidden !important;
-  }
-
-  #${PRINT_MOUNT_ID},
-  #${PRINT_MOUNT_ID} * {
-    visibility: visible !important;
-  }
-
-  body > *:not(#${PRINT_MOUNT_ID}) {
+  html.gocheque-printing body > *:not(#${PRINT_MOUNT_ID}) {
     display: none !important;
   }
 
-  #${PRINT_MOUNT_ID} {
+  html.gocheque-printing #${PRINT_MOUNT_ID} {
     display: block !important;
     position: absolute !important;
     left: 0 !important;
     top: 0 !important;
-    right: 0 !important;
-    width: 100% !important;
+    right: auto !important;
+    bottom: auto !important;
+    width: ${SHEET_WIDTH} !important;
+    height: auto !important;
     margin: 0 !important;
     padding: 0 !important;
+    overflow: visible !important;
     opacity: 1 !important;
     pointer-events: auto !important;
     z-index: 2147483647 !important;
@@ -627,10 +654,12 @@ export async function printChequeInPage(locale?: Locale): Promise<boolean> {
 
   const mount = document.getElementById(PRINT_MOUNT_ID);
   if (mount) {
+    mount.scrollTop = 0;
     await waitForPrintAssets(mount, window);
+    // Forcer un layout visible avant print (sinon iOS garde l'ancienne page).
+    void mount.offsetHeight;
   }
 
-  // Laisser le navigateur peindre le mount hors écran avant print (critique iOS).
   await new Promise<void>((resolve) => {
     requestAnimationFrame(() => {
       requestAnimationFrame(() => resolve());
@@ -644,14 +673,24 @@ export async function printChequeInPage(locale?: Locale): Promise<boolean> {
       settled = true;
       cleanup();
       window.removeEventListener("afterprint", onAfterPrint);
+      printMedia?.removeEventListener("change", onPrintMediaChange);
       resolve(ok);
     };
 
     const onAfterPrint = () => finish(true);
+    const printMedia =
+      typeof window.matchMedia === "function"
+        ? window.matchMedia("print")
+        : null;
+    const onPrintMediaChange = () => {
+      if (printMedia && !printMedia.matches) finish(true);
+    };
 
     window.addEventListener("afterprint", onAfterPrint);
+    printMedia?.addEventListener("change", onPrintMediaChange);
 
     try {
+      window.focus();
       window.print();
     } catch {
       finish(false);
@@ -675,7 +714,7 @@ export function printCheque(locale?: Locale) {
 
   const sources = getChequePrintSources();
   if (!sources) {
-    window.print();
+    console.error("[printCheque] sources de chèque introuvables");
     return;
   }
 

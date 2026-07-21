@@ -341,12 +341,34 @@ body {
 }
 
 /* Impression mobile / in-page — filet de sécurité si le style injecté échoue */
-@media print {
-  html.gocheque-printing,
-  html.gocheque-printing body {
-    background: #fff !important;
-  }
+html.gocheque-printing,
+html.gocheque-printing body {
+  background: #fff !important;
+}
 
+html.gocheque-printing body > *:not(#gocheque-print-mount) {
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+html.gocheque-printing #gocheque-print-mount,
+html.gocheque-printing #gocheque-print-mount * {
+  visibility: visible !important;
+}
+
+@media screen {
+  html.gocheque-printing #gocheque-print-mount {
+    display: block !important;
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 2147483647 !important;
+    overflow: auto !important;
+    background: #fff !important;
+    opacity: 1 !important;
+  }
+}
+
+@media print {
   html.gocheque-printing body > *:not(#gocheque-print-mount) {
     display: none !important;
   }
@@ -357,7 +379,10 @@ body {
     position: absolute !important;
     left: 0 !important;
     top: 0 !important;
-    width: 100% !important;
+    width: 8.5in !important;
+    height: auto !important;
+    overflow: visible !important;
+    opacity: 1 !important;
   }
 }
 
