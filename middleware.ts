@@ -50,22 +50,48 @@ function isAuthorizedPreview(request: NextRequest, password: string): boolean {
   }
 }
 
-export async function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
+function stripLocalePrefix(pathname: string): string {
+  return pathname.replace(/^\/(fr|en)(?=\/)/, "") || pathname;
+}
 
-  // Webhook Stripe, health, et assets navigateur sans header Basic Auth
-  const skipAccessLock =
+function isRootPublicFile(pathname: string): boolean {
+  const bare = stripLocalePrefix(pathname);
+  return (
+    bare === "/manifest.webmanifest" ||
+    bare === "/site.webmanifest" ||
+    bare === "/robots.txt" ||
+    bare === "/sitemap.xml"
+  );
+}
+
+function isAuthBypassPath(pathname: string): boolean {
+  return (
     pathname === "/api/stripe/webhook" ||
     pathname === "/api/health/env" ||
-    pathname === "/manifest.webmanifest" ||
-    pathname === "/robots.txt" ||
-    pathname === "/sitemap.xml";
+    isRootPublicFile(pathname)
+  );
+}
 
-  if (isSiteAccessLocked() && !skipAccessLock) {
+export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+  const bypassAuth = isAuthBypassPath(pathname);
+
+  if (isSiteAccessLocked() && !bypassAuth) {
     const password = getSiteAccessPassword()!;
     if (!isAuthorizedPreview(request, password)) {
       return unauthorizedPreview();
     }
+  }
+
+  // /fr/manifest.webmanifest → servir le fichier racine (évite 401 + 404)
+  if (isRootPublicFile(pathname)) {
+    const bare = stripLocalePrefix(pathname);
+    if (bare !== pathname) {
+      const url = request.nextUrl.clone();
+      url.pathname = bare;
+      return NextResponse.rewrite(url);
+    }
+    return NextResponse.next();
   }
 
   if (
