@@ -1,6 +1,7 @@
 import {
   DEFAULT_CHEQUE_COLOR,
   getChequeColorTheme,
+  getChequePrintBackgroundImage,
   type ChequeColorId,
   type ChequeColorTheme,
 } from "@/lib/cheque/cheque-colors";
@@ -23,11 +24,7 @@ const MICR_BAND = `${CPA_CHEQUE_IN.micrBand}in`;
 const MICR_BASELINE = `${CPA_CHEQUE_IN.micrBaseline}in`;
 const MICR_FONT_PT = `${CPA_CHEQUE_IN.micrFontPt}pt`;
 const CHECK_AREA = DEFAULT_CHEQUE_CHECK_AREA;
-const SHEET_WIDTH = `${LETTER_PRINT_SHEET.widthIn}in`;
 const SHEET_HEIGHT = `${LETTER_PRINT_SHEET.heightIn}in`;
-const CHECK_AREA_LEFT = `${CHECK_AREA.pageXIn}in`;
-const CHECK_AREA_TOP = `${CHECK_AREA.pageYIn}in`;
-const CHECK_AREA_WIDTH = `${CHECK_AREA.widthIn}in`;
 const CHECK_AREA_HEIGHT = `${CHECK_AREA.heightIn}in`;
 const PRINT_GUIDES_INSET = "0.3in";
 /** Écart sous le bas du chèque — évite la superposition avec le bord imprimé. */
@@ -118,16 +115,28 @@ function buildPrintStyles(theme: ChequeColorTheme) {
   body {
     margin: 0 !important;
     padding: 0 !important;
-    width: ${SHEET_WIDTH} !important;
+    width: 100% !important;
+    max-width: 100% !important;
     overflow: visible !important;
     background: white !important;
+  }
+
+  .cheque-print-document {
+    box-sizing: border-box;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
   .cheque-print-page {
     box-sizing: border-box;
     position: relative;
-    width: ${SHEET_WIDTH};
+    width: 100% !important;
+    max-width: 100% !important;
     min-height: ${SHEET_HEIGHT};
+    margin: 0 !important;
+    padding: 0 !important;
     page-break-after: always;
     break-after: page;
   }
@@ -140,9 +149,11 @@ function buildPrintStyles(theme: ChequeColorTheme) {
   .cheque-print-sheet {
     box-sizing: border-box;
     position: relative;
-    width: ${SHEET_WIDTH};
+    width: 100% !important;
+    max-width: 100% !important;
     min-height: ${SHEET_HEIGHT};
-    padding: 0;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
   .cheque-print-page:first-child .cheque-print-sheet {
@@ -152,20 +163,24 @@ function buildPrintStyles(theme: ChequeColorTheme) {
   .cheque-print-check-area {
     box-sizing: border-box;
     position: absolute;
-    left: ${CHECK_AREA_LEFT};
-    top: ${CHECK_AREA_TOP};
-    width: ${CHECK_AREA_WIDTH};
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
     height: ${CHECK_AREA_HEIGHT};
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
   .cheque-print-sheet--back .cheque-print-check-area {
-    top: calc(${CHECK_AREA_TOP} + ${PRINT_BACK_SHIFT});
+    top: ${PRINT_BACK_SHIFT} !important;
   }
 
   .cheque-print-cheque {
     box-sizing: border-box;
-    width: 100%;
-    height: 100%;
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
     overflow: hidden;
   }
 
@@ -194,7 +209,7 @@ function buildPrintStyles(theme: ChequeColorTheme) {
 
   [data-cheque-print] {
     background-color: ${theme.backgroundColor} !important;
-    background-image: ${theme.backgroundImage} !important;
+    background-image: ${getChequePrintBackgroundImage(theme)} !important;
     background-clip: border-box !important;
   }
 
@@ -212,7 +227,7 @@ function buildPrintStyles(theme: ChequeColorTheme) {
     width: 100% !important;
     height: auto !important;
     overflow: hidden !important;
-    background: transparent !important;
+    background: none !important;
   }
 
   [data-cheque-print] > div:last-child {
@@ -257,9 +272,9 @@ function buildPrintStyles(theme: ChequeColorTheme) {
   .cheque-cut-guide {
     box-sizing: border-box;
     position: absolute;
-    left: ${CHECK_AREA_LEFT};
-    top: calc(${CHECK_AREA_TOP} + ${CHECK_AREA_HEIGHT} + ${CUT_GUIDE_OFFSET});
-    width: ${CHECK_AREA_WIDTH};
+    left: 0 !important;
+    top: calc(${CHECK_AREA_HEIGHT} + ${CUT_GUIDE_OFFSET});
+    width: 100% !important;
     padding: 0;
     color: ${borderColor};
     print-color-adjust: exact;
@@ -267,7 +282,7 @@ function buildPrintStyles(theme: ChequeColorTheme) {
   }
 
   .cheque-print-sheet--back .cheque-cut-guide {
-    top: calc(${CHECK_AREA_TOP} + ${CHECK_AREA_HEIGHT} + ${PRINT_BACK_SHIFT} + ${CUT_GUIDE_OFFSET}) !important;
+    top: calc(${CHECK_AREA_HEIGHT} + ${PRINT_BACK_SHIFT} + ${CUT_GUIDE_OFFSET}) !important;
   }
 
   .cheque-cut-hint {
@@ -315,10 +330,10 @@ function buildPrintStyles(theme: ChequeColorTheme) {
 
   .cheque-print-guides {
     position: absolute;
-    left: ${CHECK_AREA_LEFT};
-    top: calc(${CHECK_AREA_TOP} + ${CHECK_AREA_HEIGHT} + ${CUT_GUIDE_OFFSET} + 0.58in);
+    left: 0 !important;
+    top: calc(${CHECK_AREA_HEIGHT} + ${CUT_GUIDE_OFFSET} + 0.58in);
     box-sizing: border-box;
-    width: ${CHECK_AREA_WIDTH};
+    width: 100% !important;
     margin-top: 0;
     padding: 0 ${PRINT_GUIDES_INSET};
     border-top: none;
@@ -379,6 +394,17 @@ function cloneChequeForPrint(source: HTMLElement): HTMLElement {
   clone.style.minHeight = "";
   clone.style.maxHeight = "";
   clone.querySelectorAll("[data-cheque-void]").forEach((node) => node.remove());
+
+  // Évite le fond noir WebKit (transparent → noir à l'impression).
+  if (clone.hasAttribute("data-cheque-print")) {
+    const colorId =
+      (clone.getAttribute("data-cheque-color") as ChequeColorId | null) ??
+      DEFAULT_CHEQUE_COLOR;
+    const theme = getChequeColorTheme(colorId);
+    clone.style.backgroundColor = theme.backgroundColor;
+    clone.style.backgroundImage = getChequePrintBackgroundImage(theme);
+  }
+
   return clone;
 }
 
@@ -416,7 +442,9 @@ function buildCutGuide(locale: Locale, opts?: { back?: boolean }): HTMLElement {
   cutGuide.setAttribute("aria-hidden", "true");
   // Inline : garantit le décalage verso même si une autre feuille de style écrase la classe.
   const shift = opts?.back ? ` + ${PRINT_BACK_SHIFT}` : "";
-  cutGuide.style.top = `calc(${CHECK_AREA_TOP} + ${CHECK_AREA_HEIGHT} + ${CUT_GUIDE_OFFSET}${shift})`;
+  cutGuide.style.top = `calc(${CHECK_AREA_HEIGHT} + ${CUT_GUIDE_OFFSET}${shift})`;
+  cutGuide.style.left = "0";
+  cutGuide.style.width = "100%";
   cutGuide.innerHTML = `
     <div class="cheque-cut-hint">
       <span class="cheque-cut-arrow">${ARROW_UP_SVG}</span>
@@ -621,7 +649,7 @@ html.gocheque-printing #${PRINT_MOUNT_ID} * {
     top: 0 !important;
     right: auto !important;
     bottom: auto !important;
-    width: ${SHEET_WIDTH} !important;
+    width: 100% !important;
     height: auto !important;
     margin: 0 !important;
     padding: 0 !important;
@@ -731,14 +759,25 @@ export async function printChequeInPopup(
     `<!DOCTYPE html><html lang="${htmlLang(printLocale)}"><head>` +
       `<meta charset="utf-8"/>` +
       `<meta name="viewport" content="width=device-width, initial-scale=1"/>` +
+      `<meta name="color-scheme" content="light only"/>` +
       `<base href="${origin}/"/>` +
       `<title>GoCheque</title>` +
       `<style>` +
+      `html,body{color-scheme:light only;background:#fff!important;color:#0f172a;margin:0!important;padding:0!important;width:100%!important}` +
       `#gocheque-popup-bar{position:sticky;top:0;z-index:10;display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:center;padding:12px 16px;background:#0f172a;color:#fff;font:600 14px/1.4 system-ui,sans-serif}` +
       `#gocheque-popup-bar button{appearance:none;border:0;border-radius:10px;padding:10px 14px;font:600 14px/1.2 system-ui,sans-serif;cursor:pointer}` +
       `#gocheque-popup-bar .primary{background:#ff6633;color:#fff}` +
       `#gocheque-popup-bar .ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.35)}` +
-      `@media print{#gocheque-popup-bar{display:none!important}}` +
+      /* iOS force des marges : on étire le document pour coller aux bords papier. */ +
+      `@media print{` +
+      `#gocheque-popup-bar{display:none!important}` +
+      `@page{size:letter portrait;margin:0!important}` +
+      `html,body{width:100%!important;margin:0!important;padding:0!important}` +
+      `.cheque-print-document{width:calc(100% + 0.5in)!important;margin:-0.25in 0 0 -0.25in!important}` +
+      `.cheque-print-page,.cheque-print-sheet,.cheque-print-check-area,.cheque-cut-guide,.cheque-print-guides{width:100%!important;left:0!important;margin:0!important;padding-left:0!important;padding-right:0!important}` +
+      `.cheque-print-check-area{top:0!important}` +
+      `.cheque-print-guides{padding-left:0.3in!important;padding-right:0.3in!important}` +
+      `}` +
       `</style>` +
       `</head><body class="cheque-print-frame"></body></html>`,
   );

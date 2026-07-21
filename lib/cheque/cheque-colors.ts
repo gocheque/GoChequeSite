@@ -84,3 +84,11 @@ export function getChequeColorTheme(id: ChequeColorId): ChequeColorTheme {
 export function getChequePrintBorderColor(id: ChequeColorId): string {
   return getChequeColorTheme(id).printBorderColor;
 }
+
+/**
+ * Safari / WebKit print rasterise souvent `transparent` en noir dans les gradients.
+ * On remplace par la couleur de fond réelle pour l'impression.
+ */
+export function getChequePrintBackgroundImage(theme: ChequeColorTheme): string {
+  return theme.backgroundImage.replace(/transparent/gi, theme.backgroundColor);
+}
