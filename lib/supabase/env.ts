@@ -45,11 +45,22 @@ function fromInjectedGlobal(): SupabasePublicConfig | null {
   };
 }
 
+function stripEnvQuotes(value: string): string {
+  const trimmed = value.trim();
+  if (
+    (trimmed.startsWith('"') && trimmed.endsWith('"')) ||
+    (trimmed.startsWith("'") && trimmed.endsWith("'"))
+  ) {
+    return trimmed.slice(1, -1).trim();
+  }
+  return trimmed;
+}
+
 /** Accès dynamique = non inliné par Next.js → lit vraiment Vercel au runtime. */
 function fromProcessEnv(): SupabasePublicConfig | null {
   const env = process.env;
-  const url = env["NEXT_PUBLIC_SUPABASE_URL"]?.trim();
-  const key = env["NEXT_PUBLIC_SUPABASE_ANON_KEY"]?.trim();
+  const url = stripEnvQuotes(env["NEXT_PUBLIC_SUPABASE_URL"] ?? "");
+  const key = stripEnvQuotes(env["NEXT_PUBLIC_SUPABASE_ANON_KEY"] ?? "");
   if (!url || !key) return null;
   return { url: url.replace(/\/$/, ""), key };
 }
