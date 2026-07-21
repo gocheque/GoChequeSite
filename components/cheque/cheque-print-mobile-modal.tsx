@@ -29,12 +29,26 @@ export function ChequePrintMobileModal() {
     setOpen(false);
   }
 
-  function handlePrint() {
+  async function handlePrint() {
     if (printing) return;
     setPrinting(true);
-    void printChequeInPage(locale)
-      .catch(() => undefined)
-      .finally(() => setPrinting(false));
+    // Fermer le modal avant print — sinon iOS l'inclut dans l'aperçu.
+    setOpen(false);
+
+    await new Promise<void>((resolve) => {
+      requestAnimationFrame(() => resolve());
+    });
+
+    try {
+      const ok = await printChequeInPage(locale);
+      if (!ok) {
+        setOpen(true);
+      }
+    } catch {
+      setOpen(true);
+    } finally {
+      setPrinting(false);
+    }
   }
 
   if (!open) return null;

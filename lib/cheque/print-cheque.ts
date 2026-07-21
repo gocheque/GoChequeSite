@@ -534,33 +534,60 @@ export function mountPrintJob(locale?: Locale): (() => void) | null {
   style.textContent = `${buildPrintStyles(sources.theme)}
 @media screen {
   #${PRINT_MOUNT_ID} {
-    position: fixed;
-    left: -10000px;
-    top: 0;
-    width: ${SHEET_WIDTH};
-    pointer-events: none;
-    opacity: 0;
+    position: fixed !important;
+    left: -10000px !important;
+    top: 0 !important;
+    width: ${SHEET_WIDTH} !important;
+    pointer-events: none !important;
+    opacity: 0 !important;
   }
 }
 @media print {
+  /* iOS Safari ignore souvent display:none sur les enfants de body — visibility. */
+  html, body {
+    background: #fff !important;
+    height: auto !important;
+    overflow: visible !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  body * {
+    visibility: hidden !important;
+  }
+
+  #${PRINT_MOUNT_ID},
+  #${PRINT_MOUNT_ID} * {
+    visibility: visible !important;
+  }
+
   body > *:not(#${PRINT_MOUNT_ID}) {
     display: none !important;
   }
+
   #${PRINT_MOUNT_ID} {
     display: block !important;
-    position: static !important;
-    left: auto !important;
-    top: auto !important;
-    width: auto !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
     opacity: 1 !important;
     pointer-events: auto !important;
+    z-index: 2147483647 !important;
   }
 }`;
 
+  document.documentElement.classList.add("gocheque-printing");
+  document.body.classList.add("gocheque-printing");
   document.head.appendChild(style);
   document.body.appendChild(mount);
 
   return () => {
+    document.documentElement.classList.remove("gocheque-printing");
+    document.body.classList.remove("gocheque-printing");
     mount.remove();
     style.remove();
   };
@@ -569,7 +596,7 @@ export function mountPrintJob(locale?: Locale): (() => void) | null {
 export async function printChequeInPage(locale?: Locale): Promise<boolean> {
   const cleanup = mountPrintJob(locale);
   if (!cleanup) {
-    window.print();
+    console.error("[printChequeInPage] sources de chèque introuvables");
     return false;
   }
 
@@ -578,17 +605,36 @@ export async function printChequeInPage(locale?: Locale): Promise<boolean> {
     await waitForPrintAssets(mount, window);
   }
 
+  // Laisser le navigateur peindre le mount hors écran avant print (critique iOS).
+  await new Promise<void>((resolve) => {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => resolve());
+    });
+  });
+
   return new Promise((resolve) => {
-    const onAfterPrint = () => {
+    let settled = false;
+    const finish = (ok: boolean) => {
+      if (settled) return;
+      settled = true;
       cleanup();
       window.removeEventListener("afterprint", onAfterPrint);
-      resolve(true);
+      resolve(ok);
     };
 
+    const onAfterPrint = () => finish(true);
+
     window.addEventListener("afterprint", onAfterPrint);
-    requestAnimationFrame(() => {
+
+    try {
       window.print();
-    });
+    } catch {
+      finish(false);
+      return;
+    }
+
+    // iOS n'émet pas toujours afterprint
+    window.setTimeout(() => finish(true), 60_000);
   });
 }
 
