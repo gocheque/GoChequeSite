@@ -53,8 +53,9 @@ function isAuthorizedPreview(request: NextRequest, password: string): boolean {
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Webhook Stripe doit rester accessible sans Basic Auth
-  const skipAccessLock = pathname === "/api/stripe/webhook";
+  // Webhook Stripe + health check doivent rester accessibles sans Basic Auth
+  const skipAccessLock =
+    pathname === "/api/stripe/webhook" || pathname === "/api/health/env";
 
   if (isSiteAccessLocked() && !skipAccessLock) {
     const password = getSiteAccessPassword()!;

@@ -1,7 +1,8 @@
 /**
  * Config Supabase publique (URL + anon).
- * Priorité : injection runtime (serveur → page) puis process.env (build).
- * L'anon key est conçue pour le navigateur — ce n'est pas un secret.
+ *
+ * Important : ne pas lire process.env.NEXT_PUBLIC_* en accès direct
+ * (Next.js l'inline au build). Utiliser process.env["…"] pour le runtime Vercel.
  */
 
 export type SupabasePublicConfig = {
@@ -44,9 +45,11 @@ function fromInjectedGlobal(): SupabasePublicConfig | null {
   };
 }
 
+/** Accès dynamique = non inliné par Next.js → lit vraiment Vercel au runtime. */
 function fromProcessEnv(): SupabasePublicConfig | null {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim();
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.trim();
+  const env = process.env;
+  const url = env["NEXT_PUBLIC_SUPABASE_URL"]?.trim();
+  const key = env["NEXT_PUBLIC_SUPABASE_ANON_KEY"]?.trim();
   if (!url || !key) return null;
   return { url: url.replace(/\/$/, ""), key };
 }
@@ -74,7 +77,7 @@ export function isSupabaseConfigured(): boolean {
 
 /** Serveur uniquement : service_role présent. */
 export function isSupabaseAdminConfigured(): boolean {
-  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim();
+  const serviceKey = process.env["SUPABASE_SERVICE_ROLE_KEY"]?.trim();
 
   return Boolean(
     isSupabaseConfigured() &&
