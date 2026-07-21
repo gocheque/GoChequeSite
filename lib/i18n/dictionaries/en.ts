@@ -91,6 +91,7 @@ export const dictionary = {
       hint: "Tap to enlarge",
       scrollHint: "Swipe in any direction to see the full cheque",
     },
+    voidWatermark: "VOID",
     process: "PROCESS",
     processFootnoteCost: "1 credit will be debited to print this cheque.",
     processFootnoteBalance: "Current balance: {count} credit",

@@ -82,7 +82,7 @@ export function CpaChequePreview({
   data,
   color = DEFAULT_CHEQUE_COLOR,
 }: CpaChequePreviewProps) {
-  const { locale } = useLocale();
+  const { locale, t } = useLocale();
   const theme = getChequeColorTheme(color);
   const borderColor = getChequePrintBorderColor(color);
   const dateParts = formatCpaDateParts(data.date);
@@ -104,7 +104,7 @@ export function CpaChequePreview({
       }}
     >
       <div
-        className="box-border flex h-full w-full min-h-0 flex-1 flex-col overflow-hidden text-black"
+        className="relative box-border flex h-full w-full min-h-0 flex-1 flex-col overflow-hidden text-black"
         data-cheque-print
         data-cheque-color={color}
         style={{
@@ -115,8 +115,22 @@ export function CpaChequePreview({
           backgroundImage: theme.backgroundImage,
         }}
       >
+        {/* Filigrane anti-fraude — retiré à l'impression (clone + CSS print) */}
         <div
-          className="cheque-body-frame relative min-h-0 flex-1 overflow-hidden"
+          data-cheque-void
+          aria-hidden
+          className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center overflow-hidden"
+        >
+          <span
+            className="select-none text-[4.25rem] font-black uppercase tracking-[0.2em] text-slate-900/[0.14]"
+            style={{ transform: "rotate(-22deg)" }}
+          >
+            {t("editor.voidWatermark")}
+          </span>
+        </div>
+
+        <div
+          className="cheque-body-frame relative z-10 min-h-0 flex-1 overflow-hidden"
           style={{
             paddingLeft: CPA_LAYOUT.sideInsetPx,
             paddingRight: CPA_LAYOUT.sideInsetPx,

@@ -89,6 +89,7 @@ export const dictionary = {
       hint: "Toucher pour agrandir",
       scrollHint: "Faites glisser dans toutes les directions pour voir le chèque en entier",
     },
+    voidWatermark: "NUL",
     process: "TRAITER",
     processFootnoteCost: "1 crédit sera débité pour imprimer ce chèque.",
     processFootnoteBalance: "Solde actuel : {count} crédit",

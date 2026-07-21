@@ -45,6 +45,7 @@ const ARROW_UP_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24
 const PRINT_COPY = {
   fr: {
     cutLabel: "Couper ici",
+    brandMark: "Chèque généré avec GoCheque.ca",
     settingsTitle: "Paramètres d'impression",
     settings: [
       "Format du papier : <strong>Lettre US</strong> (8,5 × 11 po)",
@@ -65,6 +66,7 @@ const PRINT_COPY = {
   },
   en: {
     cutLabel: "Cut here",
+    brandMark: "Cheque generated with GoCheque.ca",
     settingsTitle: "Print settings",
     settings: [
       "Paper size: <strong>US Letter</strong> (8.5 × 11 in)",
@@ -198,6 +200,8 @@ function buildPrintStyles(theme: ChequeColorTheme) {
 
   [data-cheque-print-back] {
     background: white !important;
+    /* Garde le contour gauche/droite/bas ; retire seulement la ligne du haut. */
+    border-top: none !important;
   }
 
   [data-cheque-print] > div:first-child,
@@ -244,6 +248,10 @@ function buildPrintStyles(theme: ChequeColorTheme) {
     max-width: none !important;
     print-color-adjust: exact;
     -webkit-print-color-adjust: exact;
+  }
+
+  [data-cheque-void] {
+    display: none !important;
   }
 
   .cheque-cut-guide {
@@ -294,10 +302,21 @@ function buildPrintStyles(theme: ChequeColorTheme) {
     color: ${borderColor};
   }
 
+  .cheque-print-brand {
+    margin: 0.14in 0 0;
+    text-align: center;
+    font-size: 6.5pt;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    color: #64748b;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
   .cheque-print-guides {
     position: absolute;
     left: ${CHECK_AREA_LEFT};
-    top: calc(${CHECK_AREA_TOP} + ${CHECK_AREA_HEIGHT} + ${CUT_GUIDE_OFFSET} + 0.42in);
+    top: calc(${CHECK_AREA_TOP} + ${CHECK_AREA_HEIGHT} + ${CUT_GUIDE_OFFSET} + 0.58in);
     box-sizing: border-box;
     width: ${CHECK_AREA_WIDTH};
     margin-top: 0;
@@ -359,6 +378,7 @@ function cloneChequeForPrint(source: HTMLElement): HTMLElement {
   clone.style.height = "";
   clone.style.minHeight = "";
   clone.style.maxHeight = "";
+  clone.querySelectorAll("[data-cheque-void]").forEach((node) => node.remove());
   return clone;
 }
 
@@ -403,6 +423,11 @@ function buildCutGuide(locale: Locale, opts?: { back?: boolean }): HTMLElement {
       <span class="cheque-cut-icon">${SCISSORS_SVG}</span>
       <span class="cheque-cut-label">${copy.cutLabel}</span>
     </div>
+    ${
+      opts?.back
+        ? ""
+        : `<p class="cheque-print-brand">${copy.brandMark}</p>`
+    }
   `;
   return cutGuide;
 }
