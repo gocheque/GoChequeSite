@@ -164,6 +164,7 @@ export function buildRootMetadata(siteUrl = siteConfig.url): Metadata {
       languages: {
         "fr-CA": "/fr",
         "en-CA": "/en",
+        "x-default": "/fr",
       },
     },
     icons: {
@@ -178,6 +179,11 @@ export function buildRootMetadata(siteUrl = siteConfig.url): Metadata {
       shortcut: "/favicon.ico",
     },
     manifest: "/site.webmanifest",
+    verification: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+      ? {
+          google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION.trim(),
+        }
+      : undefined,
   };
 }
 
@@ -215,6 +221,7 @@ export function buildPageMetadata({
       languages: {
         "fr-CA": alternateFr,
         "en-CA": alternateEn,
+        "x-default": alternateFr,
       },
     },
     openGraph: buildOpenGraph(

@@ -60,7 +60,8 @@ function isRootPublicFile(pathname: string): boolean {
     bare === "/manifest.webmanifest" ||
     bare === "/site.webmanifest" ||
     bare === "/robots.txt" ||
-    bare === "/sitemap.xml"
+    bare === "/sitemap.xml" ||
+    /^\/google[a-f0-9]+\.html$/i.test(bare)
   );
 }
 

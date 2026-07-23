@@ -5,8 +5,25 @@ import {
   siteConfig,
 } from "@/lib/seo/site";
 
-/** Origine réelle de la requête (ngrok, prod, localhost). Serveur uniquement. */
+/**
+ * URL canonique pour metadata / OG.
+ * En prod (NEXT_PUBLIC_SITE_URL hors localhost) : toujours l'URL configurée,
+ * pour éviter que Host / preview Vercel pollue les canonicals.
+ * En local / ngrok : origine de la requête.
+ */
 export async function resolveRequestSiteUrl(): Promise<string> {
+  const configured = process.env.NEXT_PUBLIC_SITE_URL?.trim().replace(
+    /\/$/,
+    "",
+  );
+  if (
+    configured &&
+    !configured.includes("localhost") &&
+    !configured.includes("127.0.0.1")
+  ) {
+    return configured;
+  }
+
   try {
     const headerStore = await headers();
     const host =

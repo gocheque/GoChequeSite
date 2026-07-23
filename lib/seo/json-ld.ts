@@ -2,6 +2,8 @@ import type { Dictionary } from "@/lib/i18n/dictionary-type";
 import type { Locale } from "@/lib/i18n/config";
 import { htmlLang } from "@/lib/i18n/config";
 import { getSiteUrl, siteConfig } from "@/lib/seo/site";
+import { CONTACT_EMAIL } from "@/lib/site/contact";
+import { TOKEN_PACKAGES } from "@/lib/tokens/packages";
 
 type JsonLdObject = Record<string, unknown>;
 
@@ -29,11 +31,18 @@ export function buildOrganizationJsonLd(
     name: siteConfig.name,
     legalName: siteConfig.legalName,
     url: siteConfig.url,
-    logo: getSiteUrl(siteConfig.ogImage),
+    logo: getSiteUrl("/logo.png"),
     description,
+    email: CONTACT_EMAIL,
     areaServed: {
       "@type": "Country",
       name: "Canada",
+    },
+    contactPoint: {
+      "@type": "ContactPoint",
+      contactType: "customer support",
+      email: CONTACT_EMAIL,
+      availableLanguage: ["French", "English"],
     },
   };
 }
@@ -61,6 +70,10 @@ export function buildSoftwareApplicationJsonLd(
   description: string = siteConfig.description.fr,
   locale: Locale = "fr",
 ): JsonLdObject {
+  const prices = TOKEN_PACKAGES.map((pkg) => pkg.priceCents / 100);
+  const lowPrice = Math.min(...prices);
+  const highPrice = Math.max(...prices);
+
   return {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
@@ -71,9 +84,19 @@ export function buildSoftwareApplicationJsonLd(
     description,
     inLanguage: htmlLang(locale),
     offers: {
-      "@type": "Offer",
-      price: "0",
+      "@type": "AggregateOffer",
       priceCurrency: "CAD",
+      lowPrice: lowPrice.toFixed(2),
+      highPrice: highPrice.toFixed(2),
+      offerCount: TOKEN_PACKAGES.length,
+      offers: TOKEN_PACKAGES.map((pkg) => ({
+        "@type": "Offer",
+        name: pkg.name,
+        price: (pkg.priceCents / 100).toFixed(2),
+        priceCurrency: "CAD",
+        availability: "https://schema.org/InStock",
+        url: siteConfig.url,
+      })),
     },
     featureList: SOFTWARE_FEATURES[locale],
   };
