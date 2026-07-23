@@ -307,7 +307,7 @@ export const dictionary = {
       {
         title: "6. Cookies et stockage local",
         body:
-          "Cookies essentiels : préférence de langue, session d'authentification Supabase et cookies nécessaires au paiement via Stripe lors d'un achat.\n\nStockage local : brouillon de chèque et identifiants techniques locaux peuvent être enregistrés dans votre navigateur pour le fonctionnement de l'éditeur.\n\nNous n'utilisons pas de cookies publicitaires ni d'outils d'analyse tiers au moment de la publication de cette politique.",
+          "Cookies essentiels : préférence de langue, session d'authentification Supabase et cookies nécessaires au paiement via Stripe lors d'un achat.\n\nStockage local : brouillon de chèque et identifiants techniques locaux peuvent être enregistrés dans votre navigateur pour le fonctionnement de l'éditeur.\n\nMesure d'audience : nous utilisons Vercel Web Analytics et Speed Insights (hébergeur du Site) pour des statistiques de fréquentation et de performance. Ces outils sont conçus pour limiter le suivi individuel et ne servent pas à de la publicité ciblée.\n\nNous n'utilisons pas de cookies publicitaires.",
       },
       {
         title: "7. Services tiers",
@@ -535,7 +535,7 @@ export const dictionary = {
     mobilePrint: {
       title: "PDF prêt à imprimer",
       intro:
-        "Préparez-vous à télécharger votre chèque en PDF pour une impression rapide (Lettre US, 2 pages — comme sur ordinateur).",
+        "Préparez-vous à télécharger votre chèque en PDF pour une impression rapide.",
       step1: "Appuyez sur « Télécharger le PDF ».",
       step2:
         "Ouvrez le fichier dans Fichiers / Drive, puis imprimez à 100 % sans marges (AirPrint ou autre).",

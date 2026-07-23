@@ -308,7 +308,7 @@ export const dictionary = {
       {
         title: "6. Cookies and local storage",
         body:
-          "Essential cookies: language preference, Supabase authentication session, and cookies required for Stripe payment when you make a purchase.\n\nLocal storage: cheque drafts and local technical identifiers may be stored in your browser for the editor to function.\n\nWe do not use advertising cookies or third-party analytics tools at the time this policy is published.",
+          "Essential cookies: language preference, Supabase authentication session, and cookies required for Stripe payment when you make a purchase.\n\nLocal storage: cheque drafts and local technical identifiers may be stored in your browser for the editor to function.\n\nAudience measurement: we use Vercel Web Analytics and Speed Insights (our Site host) for traffic and performance statistics. These tools are designed to limit individual tracking and are not used for targeted advertising.\n\nWe do not use advertising cookies.",
       },
       {
         title: "7. Third-party services",
@@ -536,7 +536,7 @@ export const dictionary = {
     mobilePrint: {
       title: "Print-ready PDF",
       intro:
-        "Get ready to download your cheque as a PDF for quick printing (US Letter, 2 pages — same as on desktop).",
+        "Get ready to download your cheque as a PDF for quick printing.",
       step1: 'Tap "Download PDF".',
       step2:
         "Open the file in Files / Drive, then print at 100% with no margins (AirPrint or other).",
