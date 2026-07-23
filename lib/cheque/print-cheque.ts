@@ -215,7 +215,7 @@ function buildPrintStyles(theme: ChequeColorTheme) {
 
   [data-cheque-print-back] {
     background: white !important;
-    /* Garde le contour gauche/droite/bas ; retire seulement la ligne du haut. */
+    /* Impression : retire le haut ; l'aperçu écran garde le contour complet. */
     border-top: none !important;
   }
 

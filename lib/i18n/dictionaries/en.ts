@@ -531,12 +531,12 @@ export const dictionary = {
     buyCredits: "Buy credits",
     consumeGeneric: "Could not debit a credit",
     subtitleCreditsTouch:
-      "1 credit will be debited. On mobile, you'll download a print-ready PDF (no external service).",
+      "1 credit will be debited. On mobile, you'll download a print-ready PDF.",
     printTouch: "Continue",
     mobilePrint: {
       title: "Print-ready PDF",
       intro:
-        "Browser printing is unreliable on phones. We generate the same desktop document (US Letter, 2 pages) as a PDF — right on your device.",
+        "Get ready to download your cheque as a PDF for quick printing (US Letter, 2 pages — same as on desktop).",
       step1: 'Tap "Download PDF".',
       step2:
         "Open the file in Files / Drive, then print at 100% with no margins (AirPrint or other).",

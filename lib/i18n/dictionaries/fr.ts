@@ -530,12 +530,12 @@ export const dictionary = {
     buyCredits: "Acheter des crédits",
     consumeGeneric: "Impossible de débiter un crédit",
     subtitleCreditsTouch:
-      "1 crédit sera débité. Sur mobile, vous téléchargerez un PDF prêt à imprimer (sans service externe).",
+      "1 crédit sera débité. Sur mobile, vous téléchargerez un PDF prêt à imprimer.",
     printTouch: "Continuer",
     mobilePrint: {
       title: "PDF prêt à imprimer",
       intro:
-        "Sur téléphone, l’impression navigateur est peu fiable. Nous générons le même document que sur ordinateur (Lettre US, 2 pages) en PDF — directement sur votre appareil.",
+        "Préparez-vous à télécharger votre chèque en PDF pour une impression rapide (Lettre US, 2 pages — comme sur ordinateur).",
       step1: "Appuyez sur « Télécharger le PDF ».",
       step2:
         "Ouvrez le fichier dans Fichiers / Drive, puis imprimez à 100 % sans marges (AirPrint ou autre).",

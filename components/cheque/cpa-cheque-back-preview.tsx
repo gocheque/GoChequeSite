@@ -1,20 +1,34 @@
 "use client";
 
 import { CPA_CHEQUE, CPA_LAYOUT } from "@/lib/cheque/cpa-format";
+import {
+  DEFAULT_CHEQUE_COLOR,
+  getChequePrintBorderColor,
+  type ChequeColorId,
+} from "@/lib/cheque/cheque-colors";
 
 /**
  * Verso CPA 006 — §5.4.5 (Figure H)
  * Bord d'attaque = droite, bord d'alignement = bas.
  */
-export function CpaChequeBackPreview() {
+export function CpaChequeBackPreview({
+  color = DEFAULT_CHEQUE_COLOR,
+}: {
+  color?: ChequeColorId;
+}) {
+  const borderColor = getChequePrintBorderColor(color);
+
   return (
     <div
       data-cheque-print-back
-      className="relative bg-white text-black"
+      className="relative box-border bg-white text-black"
       style={{
         width: "8.5in",
         maxWidth: "8.5in",
         height: CPA_CHEQUE.heightPx,
+        // Aperçu : contour complet (haut inclus). Impression : border-top retiré en CSS print.
+        border: `1px solid ${borderColor}`,
+        boxSizing: "border-box",
       }}
     >
       {/* 1) Timbre de caisse — §5.4.5 (1) */}

@@ -62,7 +62,7 @@ export function ScaledChequePreview({
         </div>
       </div>
       <div hidden aria-hidden>
-        <CpaChequeBackPreview />
+        <CpaChequeBackPreview color={color} />
       </div>
     </div>
   );
