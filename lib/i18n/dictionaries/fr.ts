@@ -530,21 +530,28 @@ export const dictionary = {
     buyCredits: "Acheter des crédits",
     consumeGeneric: "Impossible de débiter un crédit",
     subtitleCreditsTouch:
-      "1 crédit sera débité. Ensuite, suivez les étapes pour imprimer ou enregistrer le chèque en PDF sur votre téléphone.",
-    printTouch: "Continuer vers l'impression",
+      "1 crédit sera débité. Sur mobile, vous téléchargerez un PDF prêt à imprimer (sans service externe).",
+    printTouch: "Continuer",
     mobilePrint: {
-      title: "Imprimer votre chèque",
+      title: "PDF prêt à imprimer",
       intro:
-        "Votre crédit a été débité. Un onglet dédié s’ouvrira avec uniquement le chèque et les instructions d’impression.",
-      step1:
-        "Appuyez sur le bouton ci-dessous (autorisez les fenêtres pop-up si demandé).",
+        "Sur téléphone, l’impression navigateur est peu fiable. Nous générons le même document que sur ordinateur (Lettre US, 2 pages) en PDF — directement sur votre appareil.",
+      step1: "Appuyez sur « Télécharger le PDF ».",
       step2:
-        "Dans le nouvel onglet, choisissez « Imprimer / PDF », puis papier Lettre US à 100 % (2 pages, recto-verso).",
+        "Ouvrez le fichier dans Fichiers / Drive, puis imprimez à 100 % sans marges (AirPrint ou autre).",
       step3:
-        "Coupez le chèque, puis photographiez-le dans l'application de dépôt mobile de votre banque.",
-      printButton: "Ouvrir le document d'impression",
-      popupBlocked:
-        "Le navigateur a bloqué la fenêtre. Autorisez les pop-ups pour gocheque.ca, puis réessayez.",
+        "Coupez sous la ligne pointillée, puis photographiez le chèque dans l’app de dépôt de votre banque.",
+      generateButton: "Télécharger le PDF",
+      generating: "Génération du PDF…",
+      successTitle: "PDF prêt",
+      successIntro:
+        "Le fichier a été téléchargé. Vous pouvez le retélécharger ou le partager (AirDrop, Messages, Imprimer…).",
+      downloadButton: "Télécharger à nouveau",
+      shareButton: "Partager…",
+      shareText: "Chèque GoCheque — PDF prêt à imprimer",
+      shareError: "Partage impossible. Utilisez le téléchargement.",
+      generateError:
+        "Impossible de générer le PDF. Revenez à l’éditeur et réessayez.",
       close: "Fermer",
     },
   },

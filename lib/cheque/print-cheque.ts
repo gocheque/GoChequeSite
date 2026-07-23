@@ -562,6 +562,105 @@ function getChequePrintSources() {
   };
 }
 
+export type OffscreenPrintFrame = {
+  iframe: HTMLIFrameElement;
+  doc: Document;
+  ready: Promise<void>;
+  cleanup: () => void;
+};
+
+/**
+ * Document d'impression hors écran (iframe) — pour PDF mobile / capture.
+ * Largeur fixe lettre US (pas 100 %) pour un rendu PDF fidèle.
+ */
+export function buildOffscreenPrintFrame(
+  locale?: Locale,
+): OffscreenPrintFrame | null {
+  const printLocale = resolvePrintLocale(locale);
+  const sources = getChequePrintSources();
+  if (!sources) return null;
+
+  document.querySelector(`.${IFRAME_CLASS}[data-pdf-frame]`)?.remove();
+
+  const iframe = document.createElement("iframe");
+  iframe.className = IFRAME_CLASS;
+  iframe.setAttribute("data-pdf-frame", "true");
+  iframe.setAttribute("aria-hidden", "true");
+  iframe.style.cssText =
+    "position:fixed;left:-12000px;top:0;width:8.5in;height:11in;border:0;opacity:0;pointer-events:none;";
+  document.body.appendChild(iframe);
+
+  const win = iframe.contentWindow;
+  if (!win) {
+    iframe.remove();
+    return null;
+  }
+
+  const doc = win.document;
+  doc.open();
+  doc.write(
+    `<!DOCTYPE html><html lang="${htmlLang(printLocale)}"><head>` +
+      `<meta charset="utf-8"/>` +
+      `<base href="${window.location.origin}/"/>` +
+      `<meta name="color-scheme" content="light only"/>` +
+      `</head><body class="cheque-print-frame"></body></html>`,
+  );
+  doc.close();
+
+  copyStyles(doc, sources.theme);
+
+  // Forcer le format lettre pour la capture PDF (indépendant du 100 % mobile print).
+  const pdfLayout = doc.createElement("style");
+  pdfLayout.textContent = `
+    html, body {
+      width: 8.5in !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      background: #fff !important;
+    }
+    .cheque-print-document,
+    .cheque-print-page,
+    .cheque-print-sheet,
+    .cheque-print-check-area,
+    .cheque-cut-guide,
+    .cheque-print-guides {
+      width: 8.5in !important;
+      left: 0 !important;
+      max-width: 8.5in !important;
+    }
+    .cheque-print-page,
+    .cheque-print-sheet {
+      min-height: 11in !important;
+      height: 11in !important;
+    }
+    .cheque-print-check-area {
+      top: 0 !important;
+      height: ${CHECK_AREA_HEIGHT} !important;
+    }
+  `;
+  doc.head.appendChild(pdfLayout);
+
+  doc.documentElement.lang = htmlLang(printLocale);
+  doc.body.replaceChildren(
+    buildPrintDocument(
+      sources.frontSource,
+      sources.backSource,
+      printLocale,
+    ),
+  );
+
+  const ready = waitForAssets(doc, win).catch(() => undefined);
+
+  return {
+    iframe,
+    doc,
+    ready,
+    cleanup: () => {
+      iframe.remove();
+    },
+  };
+}
+
 /** Monte le document d'impression dans la page (pour mobile / window.print). */
 export function mountPrintJob(locale?: Locale): (() => void) | null {
   const printLocale = resolvePrintLocale(locale);

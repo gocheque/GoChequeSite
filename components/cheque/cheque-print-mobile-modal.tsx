@@ -1,63 +1,117 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Loader2, Printer, Smartphone } from "lucide-react";
+import { CheckCircle2, Download, Loader2, Share2, Smartphone } from "lucide-react";
 import { ModalCloseButton } from "@/components/ui/modal-close-button";
 import { useLocale } from "@/components/providers/locale-provider";
 import type { Locale } from "@/lib/i18n/config";
-import { printChequeInPopup } from "@/lib/cheque/print-cheque";
+import { generateChequePrintPdf } from "@/lib/cheque/generate-print-pdf";
 import { setPrintMobileListener } from "@/lib/cheque/print-mobile-bridge";
+
+const PDF_FILENAME = "gocheque-cheque.pdf";
+
+function canNativeShareFiles() {
+  if (typeof navigator === "undefined" || typeof navigator.share !== "function") {
+    return false;
+  }
+  if (typeof navigator.canShare !== "function") return true;
+  try {
+    const probe = new File([new Blob(["x"], { type: "application/pdf" })], PDF_FILENAME, {
+      type: "application/pdf",
+    });
+    return navigator.canShare({ files: [probe] });
+  } catch {
+    return false;
+  }
+}
+
+function triggerDownload(url: string) {
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = PDF_FILENAME;
+  anchor.rel = "noopener";
+  document.body.appendChild(anchor);
+  anchor.click();
+  anchor.remove();
+}
 
 export function ChequePrintMobileModal() {
   const { t } = useLocale();
   const [open, setOpen] = useState(false);
   const [locale, setLocale] = useState<Locale>("fr");
-  const [printing, setPrinting] = useState(false);
-  const [popupBlocked, setPopupBlocked] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [done, setDone] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
+  const [pdfBlob, setPdfBlob] = useState<Blob | null>(null);
+  const [shareAvailable, setShareAvailable] = useState(false);
 
   useEffect(() => {
     setPrintMobileListener((nextLocale) => {
       setLocale(nextLocale);
-      setPopupBlocked(false);
+      setError(null);
+      setDone(false);
+      setPdfBlob(null);
+      setShareAvailable(canNativeShareFiles());
+      setDownloadUrl((prev) => {
+        if (prev) URL.revokeObjectURL(prev);
+        return null;
+      });
       setOpen(true);
     });
 
     return () => setPrintMobileListener(null);
   }, []);
 
+  useEffect(() => {
+    return () => {
+      if (downloadUrl) URL.revokeObjectURL(downloadUrl);
+    };
+  }, [downloadUrl]);
+
   function closeModal() {
     setOpen(false);
-    setPopupBlocked(false);
+    setBusy(false);
+    setError(null);
   }
 
-  async function handlePrint() {
-    if (printing) return;
-    setPopupBlocked(false);
-
-    // Critique iOS : ouvrir l'onglet pendant le geste utilisateur (sync).
-    const popup = window.open("about:blank", "gocheque-print");
-    if (!popup) {
-      setPopupBlocked(true);
-      return;
-    }
-
-    setPrinting(true);
-    setOpen(false);
+  async function handleGenerate() {
+    if (busy) return;
+    setBusy(true);
+    setError(null);
 
     try {
-      const ok = await printChequeInPopup(locale, popup);
-      if (!ok) {
-        setOpen(true);
-      }
+      const blob = await generateChequePrintPdf(locale);
+      const objectUrl = URL.createObjectURL(blob);
+      setPdfBlob(blob);
+      setDownloadUrl((prev) => {
+        if (prev) URL.revokeObjectURL(prev);
+        return objectUrl;
+      });
+      triggerDownload(objectUrl);
+      setDone(true);
     } catch {
-      try {
-        popup.close();
-      } catch {
-        // ignore
-      }
-      setOpen(true);
+      setError(t("process.mobilePrint.generateError"));
     } finally {
-      setPrinting(false);
+      setBusy(false);
+    }
+  }
+
+  async function handleShare() {
+    if (!pdfBlob || !shareAvailable) return;
+    try {
+      const file = new File([pdfBlob], PDF_FILENAME, {
+        type: "application/pdf",
+      });
+      await navigator.share({
+        files: [file],
+        title: "GoCheque",
+        text: t("process.mobilePrint.shareText"),
+      });
+    } catch (err) {
+      // Annulation utilisateur = normal
+      if (err instanceof DOMException && err.name === "AbortError") return;
+      setError(t("process.mobilePrint.shareError"));
     }
   }
 
@@ -82,62 +136,100 @@ export function ChequePrintMobileModal() {
 
         <div className="overflow-y-auto px-6 pb-6 pt-8">
           <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-50 text-[#ff6633]">
-            <Smartphone className="h-6 w-6" aria-hidden />
+            {done ? (
+              <CheckCircle2 className="h-6 w-6" aria-hidden />
+            ) : (
+              <Smartphone className="h-6 w-6" aria-hidden />
+            )}
           </div>
 
           <h2
             id="cheque-print-mobile-title"
             className="mt-4 text-center text-xl font-bold text-slate-900"
           >
-            {t("process.mobilePrint.title")}
+            {done
+              ? t("process.mobilePrint.successTitle")
+              : t("process.mobilePrint.title")}
           </h2>
 
           <p className="mt-2 text-center text-sm leading-relaxed text-slate-600">
-            {t("process.mobilePrint.intro")}
+            {done
+              ? t("process.mobilePrint.successIntro")
+              : t("process.mobilePrint.intro")}
           </p>
 
-          <ol className="mt-5 space-y-3 text-sm leading-relaxed text-slate-600">
-            <li className="flex gap-3">
-              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-orange-50 text-xs font-bold text-[#ff6633]">
-                1
-              </span>
-              <span>{t("process.mobilePrint.step1")}</span>
-            </li>
-            <li className="flex gap-3">
-              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-orange-50 text-xs font-bold text-[#ff6633]">
-                2
-              </span>
-              <span>{t("process.mobilePrint.step2")}</span>
-            </li>
-            <li className="flex gap-3">
-              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-orange-50 text-xs font-bold text-[#ff6633]">
-                3
-              </span>
-              <span>{t("process.mobilePrint.step3")}</span>
-            </li>
-          </ol>
+          {!done ? (
+            <ol className="mt-5 space-y-3 text-sm leading-relaxed text-slate-600">
+              <li className="flex gap-3">
+                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-orange-50 text-xs font-bold text-[#ff6633]">
+                  1
+                </span>
+                <span>{t("process.mobilePrint.step1")}</span>
+              </li>
+              <li className="flex gap-3">
+                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-orange-50 text-xs font-bold text-[#ff6633]">
+                  2
+                </span>
+                <span>{t("process.mobilePrint.step2")}</span>
+              </li>
+              <li className="flex gap-3">
+                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-orange-50 text-xs font-bold text-[#ff6633]">
+                  3
+                </span>
+                <span>{t("process.mobilePrint.step3")}</span>
+              </li>
+            </ol>
+          ) : null}
 
-          {popupBlocked ? (
+          {error ? (
             <p className="mt-4 rounded-lg bg-amber-50 px-3 py-2 text-center text-sm text-amber-800">
-              {t("process.mobilePrint.popupBlocked")}
+              {error}
             </p>
           ) : null}
         </div>
 
         <div className="flex shrink-0 flex-col gap-3 border-t border-slate-100 bg-slate-50/80 p-4">
-          <button
-            type="button"
-            onClick={() => void handlePrint()}
-            disabled={printing}
-            className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#ff6633] py-3.5 text-base font-semibold text-white transition hover:bg-[#e05526] disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            {printing ? (
-              <Loader2 className="h-5 w-5 animate-spin" aria-hidden />
-            ) : (
-              <Printer className="h-5 w-5" aria-hidden />
-            )}
-            {t("process.mobilePrint.printButton")}
-          </button>
+          {!done ? (
+            <button
+              type="button"
+              onClick={() => void handleGenerate()}
+              disabled={busy}
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#ff6633] py-3.5 text-base font-semibold text-white transition hover:bg-[#e05526] disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {busy ? (
+                <Loader2 className="h-5 w-5 animate-spin" aria-hidden />
+              ) : (
+                <Download className="h-5 w-5" aria-hidden />
+              )}
+              {busy
+                ? t("process.mobilePrint.generating")
+                : t("process.mobilePrint.generateButton")}
+            </button>
+          ) : (
+            <>
+              {downloadUrl ? (
+                <a
+                  href={downloadUrl}
+                  download={PDF_FILENAME}
+                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#ff6633] py-3.5 text-base font-semibold text-white transition hover:bg-[#e05526]"
+                >
+                  <Download className="h-5 w-5" aria-hidden />
+                  {t("process.mobilePrint.downloadButton")}
+                </a>
+              ) : null}
+              {shareAvailable ? (
+                <button
+                  type="button"
+                  onClick={() => void handleShare()}
+                  className="flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+                >
+                  <Share2 className="h-4 w-4" aria-hidden />
+                  {t("process.mobilePrint.shareButton")}
+                </button>
+              ) : null}
+            </>
+          )}
+
           <button
             type="button"
             onClick={closeModal}

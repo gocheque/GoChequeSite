@@ -531,21 +531,28 @@ export const dictionary = {
     buyCredits: "Buy credits",
     consumeGeneric: "Could not debit a credit",
     subtitleCreditsTouch:
-      "1 credit will be debited. Then follow the steps to print or save the cheque as a PDF on your phone.",
-    printTouch: "Continue to print",
+      "1 credit will be debited. On mobile, you'll download a print-ready PDF (no external service).",
+    printTouch: "Continue",
     mobilePrint: {
-      title: "Print your cheque",
+      title: "Print-ready PDF",
       intro:
-        "Your credit has been debited. A dedicated tab will open with only the cheque and print instructions.",
-      step1:
-        "Tap the button below (allow pop-ups if your browser asks).",
+        "Browser printing is unreliable on phones. We generate the same desktop document (US Letter, 2 pages) as a PDF — right on your device.",
+      step1: 'Tap "Download PDF".',
       step2:
-        'In the new tab, choose "Print / PDF", then US Letter at 100% (2 pages, duplex).',
+        "Open the file in Files / Drive, then print at 100% with no margins (AirPrint or other).",
       step3:
-        "Cut out the cheque, then photograph it in your bank's mobile deposit app.",
-      printButton: "Open print document",
-      popupBlocked:
-        "Your browser blocked the window. Allow pop-ups for gocheque.ca, then try again.",
+        "Cut below the dashed line, then photograph the cheque in your bank's deposit app.",
+      generateButton: "Download PDF",
+      generating: "Generating PDF…",
+      successTitle: "PDF ready",
+      successIntro:
+        "The file was downloaded. You can download again or share it (AirDrop, Messages, Print…).",
+      downloadButton: "Download again",
+      shareButton: "Share…",
+      shareText: "GoCheque cheque — print-ready PDF",
+      shareError: "Sharing failed. Use download instead.",
+      generateError:
+        "Could not generate the PDF. Return to the editor and try again.",
       close: "Close",
     },
   },
