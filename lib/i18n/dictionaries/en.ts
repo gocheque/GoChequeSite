@@ -59,6 +59,23 @@ export const dictionary = {
   showcase: {
     sectionLabel: "GoCheque workflow",
     eyebrow: "Here are the steps to complete a cheque",
+    progressLabel: "Workflow progress",
+    stepComplete: "Done",
+    stepCurrent: "Current step",
+    mock: {
+      payTo: "Pay to",
+      amount: "Amount",
+      date: "Date",
+      signature: "Signature",
+      memo: "Memo",
+      drawer: "Lakeview Consulting",
+      payee: "Harbor Light Media Ltd.",
+      dollars: "$2,891.55",
+      dateValue: "Aug 28, 2026",
+      memoValue: "Retainer — March",
+      printCaption: "Print on standard paper",
+      sendCaption: "Photo in your bank’s app",
+    },
     steps: [
       {
         word: "Fill",
@@ -307,6 +324,21 @@ export const dictionary = {
     createAccount: "Create account",
     signInLink: "Sign in",
     confirmEmail: "Confirm your email before signing in",
+    forgotPassword: "Forgot password?",
+    forgotTitle: "Reset your password",
+    forgotSubtitle:
+      "Enter your email and we’ll send a link to choose a new password.",
+    forgotSubmit: "Send reset link",
+    forgotSuccess:
+      "If an account exists for that email, a reset link is on its way.",
+    forgotBack: "Back to sign in",
+    resetTitle: "New password",
+    resetSubtitle: "Choose a strong password for your GoCheque account.",
+    resetSubmit: "Save password",
+    resetSuccess: "Password updated. You can continue.",
+    resetExpired:
+      "This link has expired or was already used. Request a new one.",
+    resetRequestNew: "Request a new link",
     invalidCredentials: "Incorrect email or password",
     loginFailed: "Sign-in failed. Try again.",
     signupSuccess:
@@ -460,6 +492,14 @@ export const dictionary = {
     passwordUpdateFailed: "Could not update password.",
     profileUpdated: "Profile updated successfully.",
     profileUpdateFailed: "Could not update profile.",
+    emailReadOnlyHint: "The current email on your account.",
+    newEmail: "New email address",
+    saveEmail: "Change email",
+    emailChangeSent:
+      "A confirmation email is on its way. Open the link to finish changing your address.",
+    emailChangeFailed: "Could not change the email address.",
+    emailUnchanged: "Enter an address different from your current email.",
+    emailPending: "Pending change to {email}. Confirm it from your inbox.",
     securityTitle: "Two-factor authentication",
     securityDescription:
       "Protect your account with an authenticator app (Google Authenticator, Authy, etc.).",

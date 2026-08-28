@@ -53,7 +53,7 @@ function GoogleIcon() {
 
 export function AuthModal() {
   const router = useRouter();
-  const { t, path } = useLocale();
+  const { t, path, locale } = useLocale();
   const {
     authModalOpen,
     setAuthModalOpen,
@@ -65,7 +65,7 @@ export function AuthModal() {
   const [email, setEmail] = useState("");
   const [pseudo, setPseudo] = useState("");
   const [password, setPassword] = useState("");
-  const [mode, setMode] = useState<"login" | "signup">("login");
+  const [mode, setMode] = useState<"login" | "signup" | "forgot">("login");
   const [authStep, setAuthStep] = useState<AuthStep>("form");
   const [pendingUser, setPendingUser] = useState<User | null>(null);
   const [mfaFactorId, setMfaFactorId] = useState<string | null>(null);
@@ -132,6 +132,7 @@ export function AuthModal() {
     setPseudo("");
     setPassword("");
     setAcceptedLegal(false);
+    setMode("login");
     resetAuthFlow();
     setSuccess(null);
   }
@@ -150,7 +151,7 @@ export function AuthModal() {
     }
   }
 
-  function switchMode(next: "login" | "signup") {
+  function switchMode(next: "login" | "signup" | "forgot") {
     if (authStep !== "form") return;
     setMode(next);
     setPseudo("");
@@ -293,6 +294,7 @@ export function AuthModal() {
         data: {
           pseudo: pseudo.trim(),
           display_name: pseudo.trim(),
+          locale,
         },
       },
     });
@@ -310,6 +312,11 @@ export function AuthModal() {
       setPseudo("");
       setPassword("");
       setAuthStep("signup-mfa-offer");
+      void fetch("/api/email/welcome", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ locale }),
+      });
       return;
     }
 
@@ -317,6 +324,30 @@ export function AuthModal() {
     setMode("login");
     setPseudo("");
     setPassword("");
+  }
+
+  async function handleForgotPassword(e: React.FormEvent) {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+    setSuccess(null);
+
+    try {
+      const supabase = createClient();
+      const { error: resetError } = await supabase.auth.resetPasswordForEmail(
+        email,
+        {
+          redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(path("/auth/reset-password"))}`,
+        },
+      );
+
+      if (resetError) throw resetError;
+      setSuccess(t("auth.forgotSuccess"));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : t("common.error"));
+    } finally {
+      setLoading(false);
+    }
   }
 
   async function handleGoogleAuth() {
@@ -361,18 +392,22 @@ export function AuthModal() {
           ? t("auth.checkoutSubtitle")
           : traiterFlowActive
             ? t("auth.traiterSubtitle")
-            : mode === "login"
-              ? t("auth.loginSubtitle")
-              : t("auth.signupSubtitle");
+            : mode === "forgot"
+              ? t("auth.forgotSubtitle")
+              : mode === "login"
+                ? t("auth.loginSubtitle")
+                : t("auth.signupSubtitle");
 
   const title =
     authStep === "login-mfa" || authStep === "signup-mfa-enroll"
       ? t("auth.mfaLoginTitle")
       : authStep === "signup-mfa-offer"
         ? t("auth.mfaSignupOfferTitle")
-        : mode === "login"
-          ? t("auth.loginTitle")
-          : t("auth.signupTitle");
+        : mode === "forgot"
+          ? t("auth.forgotTitle")
+          : mode === "login"
+            ? t("auth.loginTitle")
+            : t("auth.signupTitle");
 
   return (
     <div className="marketing-shell fixed inset-0 z-[100] flex items-center justify-center p-4">
@@ -413,7 +448,7 @@ export function AuthModal() {
           </h2>
           <p className="mt-2 text-center text-sm text-slate-500">{subtitle}</p>
 
-          {authStep === "form" && (
+          {authStep === "form" && mode !== "forgot" && (
             <div className="mt-5 flex rounded-xl bg-slate-100 p-1">
               <button
                 type="button"
@@ -532,7 +567,10 @@ export function AuthModal() {
             </form>
           ) : (
             <>
-          <form onSubmit={handleEmailAuth} className="space-y-3">
+          <form
+            onSubmit={mode === "forgot" ? handleForgotPassword : handleEmailAuth}
+            className="space-y-3"
+          >
             {mode === "signup" && (
               <div>
                 <input
@@ -562,6 +600,7 @@ export function AuthModal() {
               autoComplete={mode === "signup" ? "email" : "username"}
               className="w-full rounded-lg border border-slate-200 px-4 py-3 text-sm focus:border-[#ff6633] focus:outline-none focus:ring-2 focus:ring-[#ff6633]/20"
             />
+            {mode !== "forgot" && (
             <input
               type="password"
               required
@@ -574,6 +613,19 @@ export function AuthModal() {
               }
               className="w-full rounded-lg border border-slate-200 px-4 py-3 text-sm focus:border-[#ff6633] focus:outline-none focus:ring-2 focus:ring-[#ff6633]/20"
             />
+            )}
+
+            {mode === "login" && (
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  onClick={() => switchMode("forgot")}
+                  className="text-xs font-medium text-[#5c6b7a] transition hover:text-[#0b1f33]"
+                >
+                  {t("auth.forgotPassword")}
+                </button>
+              </div>
+            )}
 
             {mode === "signup" && <PasswordStrengthChecker password={password} />}
 
@@ -631,17 +683,34 @@ export function AuthModal() {
 
             <button
               type="submit"
-              disabled={loading || (mode === "signup" && !canSignUp)}
+              disabled={
+                loading ||
+                (mode === "signup" && !canSignUp) ||
+                (mode === "forgot" && email.trim().length === 0)
+              }
               className="w-full rounded-lg bg-[#ff6633] py-3 text-sm font-semibold text-white transition hover:bg-[#e05526] disabled:cursor-not-allowed disabled:opacity-50"
             >
               {loading
                 ? t("auth.loading")
-                : mode === "login"
-                  ? t("auth.login")
-                  : t("auth.signup")}
+                : mode === "forgot"
+                  ? t("auth.forgotSubmit")
+                  : mode === "login"
+                    ? t("auth.login")
+                    : t("auth.signup")}
             </button>
+            {mode === "forgot" && (
+              <button
+                type="button"
+                onClick={() => switchMode("login")}
+                className="w-full py-2 text-sm font-medium text-[#5c6b7a] transition hover:text-[#0b1f33]"
+              >
+                {t("auth.forgotBack")}
+              </button>
+            )}
           </form>
 
+          {mode !== "forgot" && (
+            <>
           <div className="flex items-center gap-3">
             <div className="h-px flex-1 bg-slate-200" />
             <span className="text-xs font-medium text-slate-400">{t("common.or")}</span>
@@ -659,6 +728,8 @@ export function AuthModal() {
             <GoogleIcon />
             {t("auth.google")}
           </button>
+            </>
+          )}
             </>
           )}
         </div>

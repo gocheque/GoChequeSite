@@ -73,7 +73,7 @@ function Alert({
 }
 
 export function AccountSettingsForm() {
-  const { t } = useLocale();
+  const { t, locale, path } = useLocale();
   const { user, refreshSession } = useAuth();
 
   const [openSections, setOpenSections] = useState<Set<SectionId>>(
@@ -81,6 +81,10 @@ export function AccountSettingsForm() {
   );
 
   const [pseudo, setPseudo] = useState("");
+  const [newEmail, setNewEmail] = useState("");
+  const [emailLoading, setEmailLoading] = useState(false);
+  const [emailError, setEmailError] = useState<string | null>(null);
+  const [emailSuccess, setEmailSuccess] = useState<string | null>(null);
   const [profileLoading, setProfileLoading] = useState(false);
   const [profileError, setProfileError] = useState<string | null>(null);
   const [profileSuccess, setProfileSuccess] = useState<string | null>(null);
@@ -184,6 +188,41 @@ export function AccountSettingsForm() {
     }
   }
 
+  async function handleEmailChange(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const nextEmail = newEmail.trim();
+    if (!nextEmail) return;
+
+    if (nextEmail.toLowerCase() === (user?.email ?? "").toLowerCase()) {
+      setEmailError(t("account.emailUnchanged"));
+      return;
+    }
+
+    setEmailLoading(true);
+    setEmailError(null);
+    setEmailSuccess(null);
+
+    try {
+      const supabase = createClient();
+      const { error } = await supabase.auth.updateUser(
+        { email: nextEmail },
+        {
+          emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(path("/dashboard/account"))}`,
+        },
+      );
+
+      if (error) throw error;
+      setEmailSuccess(t("account.emailChangeSent"));
+      setNewEmail("");
+    } catch (err) {
+      setEmailError(
+        err instanceof Error ? err.message : t("account.emailChangeFailed"),
+      );
+    } finally {
+      setEmailLoading(false);
+    }
+  }
+
   async function handlePasswordSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!canSavePassword || !user?.email) return;
@@ -207,6 +246,12 @@ export function AccountSettingsForm() {
       const { error } = await supabase.auth.updateUser({ password });
 
       if (error) throw error;
+
+      await fetch("/api/email/password-changed", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ locale }),
+      }).catch(() => undefined);
 
       setCurrentPassword("");
       setPassword("");
@@ -321,6 +366,7 @@ export function AccountSettingsForm() {
   function renderSectionContent(id: SectionId) {
     if (id === "profile") {
       return (
+        <div className="space-y-8">
         <form onSubmit={handleProfileSubmit} className="space-y-5">
           <div className="flex items-center gap-4 rounded-md border border-[#e7e4de] bg-[#f6f4f0] p-4">
             <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#0b1f33]/10 text-lg font-semibold text-[#0b1f33]">
@@ -368,6 +414,14 @@ export function AccountSettingsForm() {
               readOnly
               className={`${inputClassName()} cursor-not-allowed bg-slate-50 text-slate-500`}
             />
+            <p className="mt-1.5 text-xs text-[#8a8073]">
+              {t("account.emailReadOnlyHint")}
+            </p>
+            {user?.new_email ? (
+              <p className="mt-2 text-sm text-[#5c6b7a]">
+                {t("account.emailPending", { email: user.new_email })}
+              </p>
+            ) : null}
           </div>
 
           {profileError && <Alert tone="error">{profileError}</Alert>}
@@ -385,6 +439,39 @@ export function AccountSettingsForm() {
             )}
           </button>
         </form>
+
+          <form onSubmit={handleEmailChange} className="space-y-3 border-t border-[#eeeae3] pt-6">
+            <div>
+              <label
+                htmlFor="account-new-email"
+                className="mb-1.5 block text-sm font-medium text-[#0b1f33]"
+              >
+                {t("account.newEmail")}
+              </label>
+              <input
+                id="account-new-email"
+                type="email"
+                autoComplete="email"
+                value={newEmail}
+                onChange={(e) => setNewEmail(e.target.value)}
+                className={inputClassName()}
+              />
+            </div>
+            {emailError && <Alert tone="error">{emailError}</Alert>}
+            {emailSuccess && <Alert tone="success">{emailSuccess}</Alert>}
+            <button
+              type="submit"
+              disabled={emailLoading || newEmail.trim().length === 0}
+              className="inline-flex items-center justify-center rounded-md border border-[#e7e4de] bg-white px-5 py-3 text-sm font-semibold text-[#0b1f33] transition hover:border-[#0b1f33]/30 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {emailLoading ? (
+                <Loader2 className="h-5 w-5 animate-spin" />
+              ) : (
+                t("account.saveEmail")
+              )}
+            </button>
+          </form>
+        </div>
       );
     }
 

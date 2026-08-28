@@ -1,11 +1,27 @@
-# GoCheque — Supabase local (optionnel)
+# GoCheque — Chèques bancaires canadiens, prêts à imprimer
 # Les modèles d'e-mail sont dans supabase/templates/
-# Pour un projet hébergé : npm run email:supabase
+# Projet hébergé : npm run email:supabase  (voir supabase/EMAILS.md)
 
 [auth.email.template.confirmation]
-subject = "Confirmez votre compte GoCheque"
-content_path = "./supabase/templates/confirmation.html"
+subject = "GoCheque — Confirmez votre compte / Confirm your account"
+content_path = "./templates/confirmation.html"
 
 [auth.email.template.recovery]
-subject = "Réinitialisez votre mot de passe GoCheque"
-content_path = "./supabase/templates/recovery.html"
+subject = "GoCheque — Réinitialisez votre mot de passe / Reset your password"
+content_path = "./templates/recovery.html"
+
+[auth.email.template.magic_link]
+subject = "GoCheque — Votre lien de connexion / Your sign-in link"
+content_path = "./templates/magic_link.html"
+
+[auth.email.template.invite]
+subject = "GoCheque — Invitation / You’re invited"
+content_path = "./templates/invite.html"
+
+[auth.email.template.email_change]
+subject = "GoCheque — Confirmez votre nouvelle adresse / Confirm your new email"
+content_path = "./templates/email_change.html"
+
+[auth.email.template.reauthentication]
+subject = "GoCheque — Code de confirmation / Confirmation code"
+content_path = "./templates/reauthentication.html"

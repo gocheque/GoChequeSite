@@ -1,8 +1,15 @@
 import type Stripe from "stripe";
+import { sendPurchaseReceiptEmail } from "@/lib/email/lifecycle";
+import { localeFromUnknown, localeFromUserMetadata } from "@/lib/email/locale";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getTokenPackage } from "@/lib/tokens/packages";
 import { purchaseCredits } from "@/lib/tokens/token-service";
 import type { PurchaseResult } from "@/lib/tokens/types";
+
+type GrantedKeys = {
+  creditsAdded?: number;
+  receiptEmailSent?: boolean;
+};
 
 type StripeOrderRow = {
   id: string;
@@ -10,10 +17,14 @@ type StripeOrderRow = {
   user_id: string;
   package_id: string;
   status: string;
-  granted_keys: { creditsAdded?: number } | null;
+  granted_keys: GrantedKeys | null;
   balance_after: number | null;
   tokens_count: number;
+  amount_cents: number | null;
 };
+
+const ORDER_COLUMNS =
+  "id, stripe_checkout_session_id, user_id, package_id, status, granted_keys, balance_after, tokens_count, amount_cents";
 
 function parseGrantedCredits(value: unknown, fallback: number): number {
   if (value && typeof value === "object" && "creditsAdded" in value) {
@@ -30,9 +41,7 @@ async function getOrderBySessionId(
 
   const { data, error } = await supabase
     .from("stripe_checkout_orders")
-    .select(
-      "id, stripe_checkout_session_id, user_id, package_id, status, granted_keys, balance_after, tokens_count",
-    )
+    .select(ORDER_COLUMNS)
     .eq("stripe_checkout_session_id", sessionId)
     .maybeSingle();
 
@@ -81,9 +90,7 @@ async function ensurePendingOrder(
       tokens_count: pkg.tokens,
       status: "pending",
     })
-    .select(
-      "id, stripe_checkout_session_id, user_id, package_id, status, granted_keys, balance_after, tokens_count",
-    )
+    .select(ORDER_COLUMNS)
     .single();
 
   if (error) {
@@ -104,6 +111,46 @@ function completedResult(order: StripeOrderRow): PurchaseResult {
   };
 }
 
+async function sendReceiptIfNeeded(
+  session: Stripe.Checkout.Session,
+  order: StripeOrderRow,
+  result: PurchaseResult,
+): Promise<void> {
+  if (order.granted_keys?.receiptEmailSent) return;
+
+  try {
+    const supabase = createAdminClient();
+    const { data } = await supabase.auth.admin.getUserById(order.user_id);
+    const to = data.user?.email?.trim();
+    if (!to) return;
+
+    const locale = session.metadata?.locale
+      ? localeFromUnknown(session.metadata.locale)
+      : localeFromUserMetadata(data.user?.user_metadata);
+
+    await sendPurchaseReceiptEmail({
+      to,
+      locale,
+      packageId: order.package_id,
+      creditsAdded: result.creditsAdded,
+      balance: result.balance,
+      amountCents: session.amount_total ?? order.amount_cents ?? 0,
+    });
+
+    await supabase
+      .from("stripe_checkout_orders")
+      .update({
+        granted_keys: {
+          creditsAdded: result.creditsAdded,
+          receiptEmailSent: true,
+        },
+      })
+      .eq("stripe_checkout_session_id", session.id);
+  } catch (error) {
+    console.error("[email] purchase receipt", error);
+  }
+}
+
 export async function fulfillStripeCheckoutSession(
   session: Stripe.Checkout.Session,
 ): Promise<PurchaseResult> {
@@ -114,7 +161,9 @@ export async function fulfillStripeCheckoutSession(
   const order = await ensurePendingOrder(session);
 
   if (order.status === "completed") {
-    return completedResult(order);
+    const result = completedResult(order);
+    await sendReceiptIfNeeded(session, order, result);
+    return result;
   }
 
   const supabase = createAdminClient();
@@ -124,9 +173,7 @@ export async function fulfillStripeCheckoutSession(
     .update({ status: "processing" })
     .eq("stripe_checkout_session_id", session.id)
     .in("status", ["pending", "processing"])
-    .select(
-      "id, stripe_checkout_session_id, user_id, package_id, status, granted_keys, balance_after, tokens_count",
-    )
+    .select(ORDER_COLUMNS)
     .maybeSingle();
 
   if (claimError) throw claimError;
@@ -134,7 +181,9 @@ export async function fulfillStripeCheckoutSession(
   if (!claimed) {
     const latest = await getOrderBySessionId(session.id);
     if (latest?.status === "completed") {
-      return completedResult(latest);
+      const result = completedResult(latest);
+      await sendReceiptIfNeeded(session, latest, result);
+      return result;
     }
     throw new Error("FULFILLMENT_IN_PROGRESS");
   }
@@ -154,6 +203,8 @@ export async function fulfillStripeCheckoutSession(
       .eq("stripe_checkout_session_id", session.id);
 
     if (completeError) throw completeError;
+
+    await sendReceiptIfNeeded(session, { ...order, status: "completed" }, result);
 
     return result;
   } catch (error) {
