@@ -169,53 +169,53 @@ export function DashboardKeysList({ embedded = false }: { embedded?: boolean }) 
   ];
 
   const content = (
-    <section className="overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-sm">
-      <div className="border-b border-slate-100 bg-gradient-to-r from-orange-50/80 via-white to-white px-5 py-5 sm:px-6">
+    <section className="overflow-hidden rounded-md border border-[#e7e4de] bg-white">
+      <div className="border-b border-[#e7e4de] px-5 py-5 sm:px-6">
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-          <div className="rounded-xl border border-orange-100 bg-orange-50/50 px-4 py-3 text-center sm:text-left">
-            <p className="text-xs font-medium uppercase tracking-wide text-[#ff6633]/80">
+          <div className="rounded-md border border-[#e7e4de] bg-[#f6f4f0] px-4 py-3 text-center sm:text-left">
+            <p className="text-xs font-medium uppercase tracking-[0.14em] text-[#8a8074]">
               {t("credits.statsBalance")}
             </p>
-            <p className="mt-1 text-2xl font-bold text-[#ff6633]">
+            <p className="mt-1 text-2xl font-semibold text-[#0b1f33]">
               {loading ? "—" : stats.balance}
             </p>
           </div>
-          <div className="rounded-xl border border-emerald-100 bg-emerald-50/60 px-4 py-3 text-center sm:text-left">
-            <p className="text-xs font-medium uppercase tracking-wide text-emerald-700/80">
+          <div className="rounded-md border border-[#e7e4de] bg-white px-4 py-3 text-center sm:text-left">
+            <p className="text-xs font-medium uppercase tracking-[0.14em] text-[#8a8074]">
               {t("credits.statsPurchased")}
             </p>
-            <p className="mt-1 text-2xl font-bold text-emerald-800">
+            <p className="mt-1 text-2xl font-semibold text-[#0b1f33]">
               {loading ? "—" : stats.purchased}
             </p>
           </div>
-          <div className="rounded-xl border border-slate-200 bg-slate-50/80 px-4 py-3 text-center sm:text-left">
-            <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
+          <div className="rounded-md border border-[#e7e4de] bg-white px-4 py-3 text-center sm:text-left">
+            <p className="text-xs font-medium uppercase tracking-[0.14em] text-[#8a8074]">
               {t("credits.statsUsed")}
             </p>
-            <p className="mt-1 text-2xl font-bold text-slate-800">
+            <p className="mt-1 text-2xl font-semibold text-[#0b1f33]">
               {loading ? "—" : stats.used}
             </p>
           </div>
         </div>
       </div>
 
-      <div className="border-b border-slate-100 px-5 py-3 sm:px-6">
+      <div className="border-b border-[#e7e4de] px-5 py-3 sm:px-6">
         <div className="flex flex-wrap items-center gap-2">
           {filters.map((item) => (
             <button
               key={item.id}
               type="button"
               onClick={() => setFilter(item.id)}
-              className={`rounded-lg px-3 py-1.5 text-sm font-medium transition ${
+              className={`rounded-md px-3 py-1.5 text-sm font-medium transition ${
                 filter === item.id
-                  ? "bg-[#ff6633] text-white shadow-sm"
-                  : "bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-800"
+                  ? "bg-[#0b1f33] text-white"
+                  : "bg-[#f6f4f0] text-[#5c6b7a] hover:text-[#0b1f33]"
               }`}
             >
               {item.label}
               <span
                 className={`ml-1.5 text-xs ${
-                  filter === item.id ? "text-white/80" : "text-slate-400"
+                  filter === item.id ? "text-white/80" : "text-[#8a8074]"
                 }`}
               >
                 {loading ? "…" : item.count}
@@ -228,7 +228,7 @@ export function DashboardKeysList({ embedded = false }: { embedded?: boolean }) 
               type="button"
               onClick={() => void openStripeInvoices()}
               disabled={portalLoading}
-              className="ml-auto inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-600 transition hover:border-[#ff6633]/40 hover:bg-orange-50 hover:text-[#ff6633] disabled:cursor-not-allowed disabled:opacity-60"
+              className="ml-auto inline-flex items-center gap-1.5 rounded-md border border-[#e7e4de] bg-white px-3 py-1.5 text-sm font-medium text-[#5c6b7a] transition hover:border-[#0b1f33]/30 hover:text-[#0b1f33] disabled:cursor-not-allowed disabled:opacity-60"
             >
               {portalLoading ? (
                 <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden />
@@ -240,28 +240,28 @@ export function DashboardKeysList({ embedded = false }: { embedded?: boolean }) 
           ) : null}
         </div>
         {portalError ? (
-          <p className="mt-2 text-xs text-red-600">{portalError}</p>
+          <p className="mt-2 text-xs text-red-700">{portalError}</p>
         ) : null}
         {!loading && hasPurchases && filter === "purchase" ? (
-          <p className="mt-2 text-xs text-slate-500">{t("credits.invoicesHint")}</p>
+          <p className="mt-2 text-xs text-[#8a8074]">{t("credits.invoicesHint")}</p>
         ) : null}
       </div>
 
       <div className="p-5 sm:p-6">
         {loading && (
-          <div className="flex flex-col items-center justify-center gap-3 py-16 text-slate-500">
-            <Loader2 className="h-8 w-8 animate-spin text-[#ff6633]" />
+          <div className="flex flex-col items-center justify-center gap-3 py-16 text-[#5c6b7a]">
+            <Loader2 className="h-8 w-8 animate-spin text-[#0b1f33]" />
             <p className="text-sm">{t("credits.loading")}</p>
           </div>
         )}
 
         {!loading && error && (
-          <div className="rounded-xl border border-red-100 bg-red-50 px-4 py-6 text-center">
+          <div className="rounded-md border border-red-100 bg-red-50 px-4 py-6 text-center">
             <p className="text-sm font-medium text-red-700">{error}</p>
             <button
               type="button"
               onClick={loadCredits}
-              className="mt-3 text-sm font-semibold text-[#ff6633] hover:underline"
+              className="mt-3 text-sm font-semibold text-[#0b1f33] hover:underline"
             >
               {t("credits.retry")}
             </button>
@@ -269,15 +269,15 @@ export function DashboardKeysList({ embedded = false }: { embedded?: boolean }) 
         )}
 
         {!loading && !error && balance === 0 && transactions.length === 0 && (
-          <div className="rounded-xl border border-dashed border-slate-200 bg-slate-50/50 px-6 py-14 text-center">
-            <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100 text-slate-400">
+          <div className="rounded-md border border-dashed border-[#e7e4de] bg-[#f6f4f0]/50 px-6 py-14 text-center">
+            <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-md bg-white text-[#8a8074]">
               <Coins className="h-6 w-6" />
             </span>
-            <p className="mt-4 font-medium text-slate-700">{t("credits.empty")}</p>
-            <p className="mt-1 text-sm text-slate-500">{t("credits.emptyBuyHint")}</p>
+            <p className="mt-4 font-medium text-[#0b1f33]">{t("credits.empty")}</p>
+            <p className="mt-1 text-sm text-[#5c6b7a]">{t("credits.emptyBuyHint")}</p>
             <Link
               href={path(`/#${dictionary.anchors.pricing}`)}
-              className="mt-5 inline-flex items-center gap-2 rounded-xl bg-[#ff6633] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#e05526]"
+              className="mt-5 inline-flex items-center gap-2 rounded-md bg-[#0b1f33] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#16324c]"
             >
               <Plus className="h-4 w-4" />
               {t("dashboard.createCheque")}
@@ -286,8 +286,8 @@ export function DashboardKeysList({ embedded = false }: { embedded?: boolean }) 
         )}
 
         {!loading && !error && transactions.length > 0 && filteredTransactions.length === 0 && (
-          <div className="rounded-xl border border-dashed border-slate-200 bg-slate-50/40 px-6 py-12 text-center">
-            <p className="text-sm text-slate-500">{t("credits.emptyFilter")}</p>
+          <div className="rounded-md border border-dashed border-[#e7e4de] bg-[#f6f4f0]/40 px-6 py-12 text-center">
+            <p className="text-sm text-[#5c6b7a]">{t("credits.emptyFilter")}</p>
           </div>
         )}
 
@@ -300,15 +300,15 @@ export function DashboardKeysList({ embedded = false }: { embedded?: boolean }) 
                 return (
                   <li
                     key={txn.id}
-                    className="rounded-xl border border-slate-200 bg-white p-4"
+                    className="rounded-md border border-[#e7e4de] bg-white p-4"
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex items-start gap-3">
                         <span
-                          className={`mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${
+                          className={`mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-md ${
                             isCredit
-                              ? "bg-emerald-50 text-emerald-600"
-                              : "bg-slate-100 text-slate-600"
+                              ? "bg-[#0b1f33]/5 text-[#0b1f33]"
+                              : "bg-[#f6f4f0] text-[#5c6b7a]"
                           }`}
                         >
                           {isCredit ? (
@@ -318,10 +318,10 @@ export function DashboardKeysList({ embedded = false }: { embedded?: boolean }) 
                           )}
                         </span>
                         <div>
-                          <p className="text-sm font-medium text-slate-800">
+                          <p className="text-sm font-medium text-[#0b1f33]">
                             {transactionLabel(txn, t)}
                           </p>
-                          <p className="mt-1 text-xs text-slate-500">
+                          <p className="mt-1 text-xs text-[#5c6b7a]">
                             {t("credits.txnDate", { date: formatDate(txn.created_at) })}
                             {" · "}
                             {t("credits.txnBalanceAfter", {
@@ -331,8 +331,8 @@ export function DashboardKeysList({ embedded = false }: { embedded?: boolean }) 
                         </div>
                       </div>
                       <span
-                        className={`shrink-0 text-sm font-bold ${
-                          isCredit ? "text-emerald-700" : "text-slate-700"
+                        className={`shrink-0 text-sm font-semibold ${
+                          isCredit ? "text-[#0b1f33]" : "text-[#5c6b7a]"
                         }`}
                       >
                         {isCredit ? `+${txn.delta}` : txn.delta}
@@ -348,10 +348,10 @@ export function DashboardKeysList({ embedded = false }: { embedded?: boolean }) 
                 <button
                   type="button"
                   onClick={() => setVisibleCount((count) => count + PAGE_SIZE)}
-                  className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-[#ff6633]/30 hover:bg-orange-50/50 hover:text-[#ff6633]"
+                  className="inline-flex items-center justify-center rounded-md border border-[#e7e4de] bg-white px-5 py-2.5 text-sm font-medium text-[#0b1f33] transition hover:border-[#0b1f33]/30"
                 >
                   {t("credits.loadMore")}
-                  <span className="ml-2 text-xs font-normal text-slate-400">
+                  <span className="ml-2 text-xs font-normal text-[#8a8074]">
                     {remaining > 1
                       ? t("credits.remainingPlural", { count: remaining })
                       : t("credits.remaining", { count: remaining })}
@@ -371,11 +371,16 @@ export function DashboardKeysList({ embedded = false }: { embedded?: boolean }) 
 
   return (
     <div className="mx-auto w-full max-w-2xl">
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-slate-900 sm:text-3xl">
+      <div className="mb-8">
+        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#8a8074]">
+          {t("dashboard.label")}
+        </p>
+        <h1 className="mt-2 text-3xl font-semibold tracking-tight text-[#0b1f33] sm:text-4xl">
           {t("credits.listTitle")}
         </h1>
-        <p className="mt-1 text-sm text-slate-500">{t("credits.listSubtitle")}</p>
+        <p className="mt-3 text-base leading-relaxed text-[#5c6b7a]">
+          {t("credits.listSubtitle")}
+        </p>
       </div>
       {content}
     </div>

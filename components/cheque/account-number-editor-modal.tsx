@@ -223,11 +223,11 @@ export function AccountNumberEditorModal({
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+    <div className="marketing-shell fixed inset-0 z-[100] flex items-center justify-center p-4">
       <button
         type="button"
         aria-label={t("common.close")}
-        className="absolute inset-0 bg-slate-900/45 backdrop-blur-sm"
+        className="absolute inset-0 bg-[#0b1f33]/40 backdrop-blur-sm"
         onClick={onClose}
       />
 
@@ -235,36 +235,36 @@ export function AccountNumberEditorModal({
         role="dialog"
         aria-modal="true"
         aria-labelledby="account-micr-editor-title"
-        className="relative flex max-h-[min(92vh,52rem)] w-full max-w-3xl flex-col overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-2xl"
+        className="relative flex max-h-[min(92vh,52rem)] w-full max-w-3xl flex-col overflow-hidden rounded-lg border border-[#e7e4de] bg-white shadow-[0_24px_80px_rgba(11,31,51,0.18)]"
       >
         <ModalCloseButton onClick={onClose} />
 
         <div className="overflow-y-auto p-6 sm:p-8">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-50 text-[#ff6633]">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-md bg-[#0b1f33]/5 text-[#0b1f33]">
             <LayoutGrid className="h-6 w-6" aria-hidden />
           </div>
 
           <h2
             id="account-micr-editor-title"
-            className="mt-4 text-center text-xl font-bold text-slate-900"
+            className="mt-4 text-center text-xl font-semibold tracking-tight text-[#0b1f33]"
           >
             {t("editor.account.modalTitle")}
           </h2>
 
-          <p className="mt-2 text-center text-sm leading-relaxed text-slate-600">
+          <p className="mt-2 text-center text-sm leading-relaxed text-[#5c6b7a]">
             {isTouchMode
               ? t("editor.account.modalHintTouch")
               : t("editor.account.modalHint")}
           </p>
 
           <div className="mt-6">
-            <p className="mb-2 text-[10px] font-semibold uppercase tracking-wide text-slate-500">
+            <p className="mb-2 text-xs font-medium text-[#5c6b7a]">
               {t("editor.account.gridLabel")}
             </p>
 
             <div
               ref={gridScrollRef}
-              className="overflow-x-auto rounded-xl border border-slate-200 bg-slate-50/80 p-3 sm:p-4"
+              className="overflow-x-auto rounded-md border border-[#e7e4de] bg-[#f6f4f0]/60 p-3 sm:p-4"
             >
               <div className="flex min-w-max items-end justify-end gap-1 sm:justify-center sm:gap-1.5">
                 {MICR_ACCOUNT_DATA_SLOTS.map((slot) => {
@@ -288,15 +288,15 @@ export function AccountNumberEditorModal({
                         onDrop={(event) => handleSlotDrop(slot, event)}
                         className={`group relative flex h-11 w-9 items-center justify-center rounded-lg border-2 border-dashed sm:h-12 sm:w-10 ${
                           value
-                            ? "border-orange-200 bg-white"
-                            : "border-slate-300 bg-white/60"
+                            ? "border-[#0b1f33]/20 bg-white"
+                            : "border-[#cfc8be] bg-white/60"
                         } ${isDragging ? "opacity-40" : ""} ${
                           isPicked
-                            ? "border-[#ff6633] ring-2 ring-[#ff6633]/35"
+                            ? "border-[#0b1f33] ring-2 ring-[#0b1f33]/20"
                             : ""
                         } ${
                           isTapTarget && !value
-                            ? "border-[#ff6633]/50 bg-orange-50/40"
+                            ? "border-[#0b1f33]/40 bg-[#0b1f33]/[0.04]"
                             : ""
                         } ${isTouchMode ? "cursor-pointer" : ""}`}
                       >
@@ -354,7 +354,7 @@ export function AccountNumberEditorModal({
                           </span>
                         )}
                       </div>
-                      <span className="text-[9px] font-medium tabular-nums text-slate-400">
+                      <span className="text-[10px] font-medium tabular-nums text-[#8a8074]">
                         {slot}
                       </span>
                     </div>
@@ -363,27 +363,27 @@ export function AccountNumberEditorModal({
 
                 <div className="flex flex-col items-center gap-1">
                   <div
-                    className="account-micr-slot-drop flex h-11 w-9 items-center justify-center rounded-lg border-2 border-[#ff6633]/40 bg-orange-50 sm:h-12 sm:w-10"
+                    className="account-micr-slot-drop flex h-11 w-9 items-center justify-center rounded-lg border-2 border-[#0b1f33]/25 bg-[#0b1f33]/[0.04] sm:h-12 sm:w-10"
                     title={t("editor.account.closeSlotLabel")}
                   >
                     <span className="account-micr-glyph text-lg sm:text-xl">
                       {micrAccountCloseSymbol()}
                     </span>
                   </div>
-                  <span className="text-[9px] font-semibold tabular-nums text-[#ff6633]">
+                  <span className="text-[10px] font-semibold tabular-nums text-[#0b1f33]">
                     {MICR_ACCOUNT_CLOSE_SLOT}
                   </span>
                 </div>
               </div>
 
-              <p className="mt-3 text-center text-[10px] text-slate-500">
+              <p className="mt-3 text-center text-xs text-[#5c6b7a]">
                 {t("editor.account.readingHint")}
               </p>
             </div>
           </div>
 
           <div className="mt-5">
-            <p className="mb-2 text-[10px] font-semibold uppercase tracking-wide text-slate-500">
+            <p className="mb-2 text-xs font-medium text-[#5c6b7a]">
               {isTouchMode
                 ? t("editor.account.paletteLabelTouch")
                 : t("editor.account.paletteLabel")}
@@ -408,8 +408,8 @@ export function AccountNumberEditorModal({
                     }}
                     className={`account-micr-glyph flex h-10 w-9 items-center justify-center rounded-lg border bg-white text-lg shadow-sm transition sm:h-11 sm:w-10 ${
                       isSelected
-                        ? "border-[#ff6633] bg-orange-50 ring-2 ring-[#ff6633]/35"
-                        : "border-slate-200 hover:border-[#ff6633]/40 hover:bg-orange-50"
+                        ? "border-[#0b1f33] bg-[#0b1f33]/[0.04] ring-2 ring-[#0b1f33]/20"
+                        : "border-[#e7e4de] hover:border-[#0b1f33]/30 hover:bg-[#0b1f33]/[0.03]"
                     } ${
                       isTouchMode
                         ? "cursor-pointer"
@@ -424,7 +424,7 @@ export function AccountNumberEditorModal({
               })}
             </div>
             {isTouchMode && tapStatusMessage ? (
-              <p className="mt-3 text-center text-xs font-medium text-[#ff6633]">
+              <p className="mt-3 text-center text-xs font-medium text-[#0b1f33]">
                 {tapStatusMessage}
               </p>
             ) : null}
@@ -434,25 +434,25 @@ export function AccountNumberEditorModal({
             <button
               type="button"
               onClick={handleReset}
-              className="rounded-xl border border-slate-200 bg-white px-6 py-2.5 text-sm font-semibold text-slate-600 transition hover:border-slate-300 hover:bg-slate-50"
+              className="rounded-md border border-[#e7e4de] bg-white px-6 py-2.5 text-sm font-medium text-[#5c6b7a] transition hover:border-[#0b1f33]/30 hover:bg-[#0b1f33]/[0.03]"
             >
               {t("editor.account.reset")}
             </button>
           </div>
         </div>
 
-        <div className="flex shrink-0 gap-3 border-t border-slate-100 bg-slate-50/80 p-4 sm:px-8">
+        <div className="flex shrink-0 gap-3 border-t border-[#e7e4de] bg-[#f6f4f0]/70 p-4 sm:px-8">
           <button
             type="button"
             onClick={onClose}
-            className="flex-1 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+            className="flex-1 rounded-md border border-[#e7e4de] bg-white px-4 py-2.5 text-sm font-medium text-[#0b1f33] transition hover:bg-[#0b1f33]/[0.03]"
           >
             {t("editor.account.cancel")}
           </button>
           <button
             type="button"
             onClick={handleApply}
-            className="flex-1 rounded-xl bg-[#ff6633] px-4 py-2.5 text-sm font-bold text-white transition hover:bg-[#e05526]"
+            className="flex-1 rounded-md bg-[#0b1f33] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#16324c]"
           >
             {t("editor.account.apply")}
           </button>

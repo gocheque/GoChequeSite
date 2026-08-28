@@ -106,7 +106,9 @@ export function AppNavbar() {
     <header className="fixed inset-x-0 top-0 z-50 border-b border-[#e7e4de] bg-white/90 backdrop-blur-md">
       <nav
         aria-label={isDashboard ? t("dashboard.navLabel") : t("nav.main")}
-        className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4 sm:px-6 lg:px-8"
+        className={`mx-auto flex h-16 items-center justify-between gap-3 px-4 sm:px-6 lg:px-8 ${
+          isDashboard ? "max-w-[90rem] lg:px-10" : "max-w-6xl"
+        }`}
       >
         <Link href={path("/")} className="group flex shrink-0 items-center gap-2.5">
           <AppLogo

@@ -49,7 +49,7 @@ function sectionDescription(id: SectionId, t: (key: string) => string) {
 }
 
 function inputClassName() {
-  return "w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 transition focus:border-[#ff6633] focus:outline-none focus:ring-2 focus:ring-[#ff6633]/20";
+  return "w-full rounded-md border border-[#e7e4de] bg-white px-4 py-3 text-sm text-[#0b1f33] transition focus:border-[#0b1f33] focus:outline-none focus:ring-2 focus:ring-[#0b1f33]/10";
 }
 
 function Alert({
@@ -322,22 +322,22 @@ export function AccountSettingsForm() {
     if (id === "profile") {
       return (
         <form onSubmit={handleProfileSubmit} className="space-y-5">
-          <div className="flex items-center gap-4 rounded-xl border border-slate-100 bg-slate-50/70 p-4">
-            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#ff6633]/10 text-lg font-bold text-[#ff6633]">
+          <div className="flex items-center gap-4 rounded-md border border-[#e7e4de] bg-[#f6f4f0] p-4">
+            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#0b1f33]/10 text-lg font-semibold text-[#0b1f33]">
               {emailInitial}
             </span>
             <div className="min-w-0">
-              <p className="truncate text-sm font-semibold text-slate-900">
+              <p className="truncate text-sm font-semibold text-[#0b1f33]">
                 {displayName}
               </p>
-              <p className="truncate text-sm text-slate-500">{user?.email}</p>
+              <p className="truncate text-sm text-[#5c6b7a]">{user?.email}</p>
             </div>
           </div>
 
           <div>
             <label
               htmlFor="account-username"
-              className="mb-1.5 block text-sm font-medium text-slate-700"
+              className="mb-1.5 block text-sm font-medium text-[#0b1f33]"
             >
               {t("auth.pseudo")}
             </label>
@@ -357,7 +357,7 @@ export function AccountSettingsForm() {
           <div>
             <label
               htmlFor="account-email"
-              className="mb-1.5 block text-sm font-medium text-slate-700"
+              className="mb-1.5 block text-sm font-medium text-[#0b1f33]"
             >
               {t("auth.email")}
             </label>
@@ -376,7 +376,7 @@ export function AccountSettingsForm() {
           <button
             type="submit"
             disabled={!canSaveProfile || profileLoading}
-            className="inline-flex items-center justify-center rounded-xl bg-[#ff6633] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#e05526] disabled:cursor-not-allowed disabled:opacity-50"
+            className="inline-flex items-center justify-center rounded-md bg-[#0b1f33] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#16324c] disabled:cursor-not-allowed disabled:opacity-50"
           >
             {profileLoading ? (
               <Loader2 className="h-5 w-5 animate-spin" />
@@ -395,7 +395,7 @@ export function AccountSettingsForm() {
             <div className="sm:col-span-2">
               <label
                 htmlFor="current-password"
-                className="mb-1.5 block text-sm font-medium text-slate-700"
+                className="mb-1.5 block text-sm font-medium text-[#0b1f33]"
               >
                 {t("account.currentPassword")}
               </label>
@@ -412,7 +412,7 @@ export function AccountSettingsForm() {
             <div className="sm:col-span-2">
               <label
                 htmlFor="new-password"
-                className="mb-1.5 block text-sm font-medium text-slate-700"
+                className="mb-1.5 block text-sm font-medium text-[#0b1f33]"
               >
                 {t("account.newPassword")}
               </label>
@@ -434,7 +434,7 @@ export function AccountSettingsForm() {
             <div className="sm:col-span-2">
               <label
                 htmlFor="confirm-password"
-                className="mb-1.5 block text-sm font-medium text-slate-700"
+                className="mb-1.5 block text-sm font-medium text-[#0b1f33]"
               >
                 {t("account.confirmPassword")}
               </label>
@@ -460,7 +460,7 @@ export function AccountSettingsForm() {
           <button
             type="submit"
             disabled={!canSavePassword || passwordLoading}
-            className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
+            className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-[#0b1f33] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#16324c] disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
           >
             {passwordLoading ? (
               <Loader2 className="h-5 w-5 animate-spin" />
@@ -484,8 +484,8 @@ export function AccountSettingsForm() {
           </p>
         ) : mfaEnroll ? (
           <form onSubmit={verifyMfaEnroll} className="space-y-5">
-            <p className="text-sm text-slate-600">{t("account.mfaScanQr")}</p>
-            <div className="mx-auto w-fit rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+            <p className="text-sm text-[#5c6b7a]">{t("account.mfaScanQr")}</p>
+            <div className="mx-auto w-fit rounded-md border border-[#e7e4de] bg-white p-4">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={mfaEnroll.qrCode}
@@ -498,7 +498,7 @@ export function AccountSettingsForm() {
             <div>
               <label
                 htmlFor="mfa-code"
-                className="mb-1.5 block text-sm font-medium text-slate-700"
+                className="mb-1.5 block text-sm font-medium text-[#0b1f33]"
               >
                 {t("account.mfaEnterCode")}
               </label>
@@ -519,7 +519,7 @@ export function AccountSettingsForm() {
               <button
                 type="submit"
                 disabled={mfaBusy || mfaCode.length < 6}
-                className="inline-flex items-center justify-center rounded-xl bg-[#ff6633] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#e05526] disabled:cursor-not-allowed disabled:opacity-50"
+                className="inline-flex items-center justify-center rounded-md bg-[#0b1f33] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#16324c] disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {mfaBusy ? (
                   <Loader2 className="h-5 w-5 animate-spin" />
@@ -531,7 +531,7 @@ export function AccountSettingsForm() {
                 type="button"
                 onClick={cancelMfaEnroll}
                 disabled={mfaBusy}
-                className="rounded-xl border border-slate-200 px-5 py-3 text-sm font-medium text-slate-700 transition hover:bg-slate-50 disabled:opacity-50"
+                className="rounded-md border border-[#e7e4de] px-5 py-3 text-sm font-medium text-[#0b1f33] transition hover:bg-[#0b1f33]/[0.03] disabled:opacity-50"
               >
                 {t("account.mfaCancel")}
               </button>
@@ -539,14 +539,14 @@ export function AccountSettingsForm() {
           </form>
         ) : (
           <>
-            <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-100 bg-slate-50/70 px-4 py-3">
+            <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-[#e7e4de] bg-[#f6f4f0] px-4 py-3">
               <div className="flex items-center gap-3">
                 <span
                   className={`h-2.5 w-2.5 rounded-full ${
-                    mfaFactor ? "bg-emerald-500" : "bg-slate-300"
+                    mfaFactor ? "bg-emerald-500" : "bg-[#cfc8be]"
                   }`}
                 />
-                <span className="text-sm font-medium text-slate-800">
+                <span className="text-sm font-medium text-[#0b1f33]">
                   {mfaFactor
                     ? t("account.mfaStatusEnabled")
                     : t("account.mfaStatusDisabled")}
@@ -570,7 +570,7 @@ export function AccountSettingsForm() {
                   type="button"
                   onClick={() => void startMfaEnroll()}
                   disabled={mfaBusy}
-                  className="rounded-lg bg-[#ff6633] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#e05526] disabled:opacity-50"
+                  className="rounded-md bg-[#0b1f33] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#16324c] disabled:opacity-50"
                 >
                   {mfaBusy ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
@@ -591,18 +591,21 @@ export function AccountSettingsForm() {
 
   return (
     <div className="mx-auto w-full max-w-2xl">
-      <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
+      <div className="mb-8 flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 sm:text-3xl">
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#8a8074]">
+            {t("dashboard.label")}
+          </p>
+          <h1 className="mt-2 text-3xl font-semibold tracking-tight text-[#0b1f33] sm:text-4xl">
             {t("account.title")}
           </h1>
-          <p className="mt-1 text-sm text-slate-500">{t("account.subtitle")}</p>
+          <p className="mt-3 text-base leading-relaxed text-[#5c6b7a]">{t("account.subtitle")}</p>
         </div>
         {openSections.size > 0 && (
           <button
             type="button"
             onClick={collapseAll}
-            className="shrink-0 rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-600 transition hover:border-slate-300 hover:bg-slate-50"
+            className="shrink-0 rounded-md border border-[#e7e4de] px-3 py-2 text-sm font-medium text-[#5c6b7a] transition hover:border-[#0b1f33]/30 hover:text-[#0b1f33]"
           >
             {t("account.collapseAll")}
           </button>
@@ -616,10 +619,10 @@ export function AccountSettingsForm() {
           return (
             <section
               key={id}
-              className={`overflow-hidden rounded-2xl border bg-white shadow-sm transition ${
+              className={`overflow-hidden rounded-md border bg-white transition ${
                 isOpen
-                  ? "border-[#ff6633]/40 ring-2 ring-[#ff6633]/10"
-                  : "border-slate-200/80"
+                  ? "border-[#0b1f33]/30"
+                  : "border-[#e7e4de]"
               }`}
             >
               <button
@@ -627,21 +630,21 @@ export function AccountSettingsForm() {
                 onClick={() => toggleSection(id)}
                 aria-expanded={isOpen}
                 aria-controls={`account-panel-${id}`}
-                className="flex w-full items-center gap-4 px-5 py-4 text-left transition hover:bg-slate-50/80"
+                className="flex w-full items-center gap-4 px-5 py-4 text-left transition hover:bg-[#f6f4f0]/80"
               >
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#ff6633]/10 text-[#ff6633]">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-[#0b1f33]/5 text-[#0b1f33]">
                   <Icon className="h-5 w-5" />
                 </span>
                 <span className="min-w-0 flex-1">
-                  <span className="block text-sm font-semibold text-slate-900 sm:text-base">
+                  <span className="block text-sm font-semibold text-[#0b1f33] sm:text-base">
                     {sectionTitle(id, t)}
                   </span>
-                  <span className="mt-0.5 block text-xs text-slate-500 sm:text-sm">
+                  <span className="mt-0.5 block text-xs text-[#5c6b7a] sm:text-sm">
                     {sectionDescription(id, t)}
                   </span>
                 </span>
                 <ChevronDown
-                  className={`h-5 w-5 shrink-0 text-[#ff6633] transition-transform duration-200 ${
+                  className={`h-5 w-5 shrink-0 text-[#8a8074] transition-transform duration-200 ${
                     isOpen ? "rotate-180" : ""
                   }`}
                 />
@@ -650,7 +653,7 @@ export function AccountSettingsForm() {
               {isOpen && (
                 <div
                   id={`account-panel-${id}`}
-                  className="border-t border-slate-100 px-5 py-5 sm:px-6 sm:py-6"
+                  className="border-t border-[#e7e4de] px-5 py-5 sm:px-6 sm:py-6"
                 >
                   {renderSectionContent(id)}
                 </div>

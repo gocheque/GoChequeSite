@@ -10,18 +10,18 @@ export function ChequeActionBar() {
   const showBalance = (user || checkoutMode === "guest") && tokenBalance !== null;
 
   return (
-    <div className="flex w-full flex-col items-center gap-2">
+    <div className="flex w-full flex-col items-center gap-3">
       <button
         type="submit"
-        className="inline-flex w-full items-center justify-center rounded-lg bg-[#ff6633] px-4 py-2.5 text-sm font-bold tracking-wide text-white shadow-[0_0_16px_rgba(255,102,51,0.45)] transition-all duration-300 hover:bg-[#e05526] active:scale-[0.98]"
+        className="inline-flex w-full items-center justify-center rounded-md bg-[#0b1f33] px-4 py-3 text-sm font-semibold tracking-[0.08em] text-white transition hover:bg-[#16324c]"
       >
         {t("editor.process")}
       </button>
 
       {showBalance ? (
-        <div className="max-w-sm space-y-0.5 text-center text-xs leading-relaxed text-slate-500">
+        <div className="max-w-sm space-y-1 text-center text-xs leading-relaxed text-[#5c6b7a]">
           <p>{t("editor.processFootnoteCost")}</p>
-          <p className="font-medium text-slate-600">
+          <p className="font-medium text-[#0b1f33]">
             {tokenBalance! > 1
               ? t("editor.processFootnoteBalancePlural", {
                   count: tokenBalance!,

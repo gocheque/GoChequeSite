@@ -18,6 +18,14 @@ type ChequeEditorBarProps = {
   layout?: "default" | "split";
 };
 
+const inputClass =
+  "h-11 w-full rounded-md border border-[#e7e4de] bg-white px-3 text-sm text-[#0b1f33] placeholder:text-[#8a8074] focus:border-[#0b1f33] focus:outline-none focus:ring-2 focus:ring-[#0b1f33]/10";
+
+const textareaClass =
+  "min-h-[4.5rem] w-full resize-y rounded-md border border-[#e7e4de] bg-white px-3 py-2.5 text-sm leading-relaxed text-[#0b1f33] placeholder:text-[#8a8074] focus:border-[#0b1f33] focus:outline-none focus:ring-2 focus:ring-[#0b1f33]/10";
+
+const labelClass = "mb-1.5 block text-xs font-medium text-[#5c6b7a]";
+
 export function ChequeEditorBar({
   data,
   onChange,
@@ -28,25 +36,12 @@ export function ChequeEditorBar({
   const [accountEditorOpen, setAccountEditorOpen] = useState(false);
   const isSplit = layout === "split";
 
-  const inputClass = isSplit
-    ? "h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-800 placeholder:text-slate-400 focus:border-[#ff6633] focus:outline-none focus:ring-2 focus:ring-[#ff6633]/20"
-    : "h-8 w-full rounded-md border border-slate-200 bg-white px-2.5 text-xs text-slate-800 placeholder:text-slate-400 focus:border-[#ff6633] focus:outline-none focus:ring-1 focus:ring-[#ff6633]/30";
-
-  const textareaClass = isSplit
-    ? "min-h-[4.5rem] w-full resize-y rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm leading-relaxed text-slate-800 placeholder:text-slate-400 focus:border-[#ff6633] focus:outline-none focus:ring-2 focus:ring-[#ff6633]/20"
-    : "min-h-[2.75rem] w-full resize-none rounded-md border border-slate-200 bg-white px-2.5 py-1.5 text-xs leading-snug text-slate-800 placeholder:text-slate-400 focus:border-[#ff6633] focus:outline-none focus:ring-1 focus:ring-[#ff6633]/30";
-
-  const labelClass = isSplit
-    ? "mb-1 block text-[10px] font-semibold uppercase tracking-wide text-slate-500"
-    : "mb-0.5 block text-[9px] font-semibold uppercase tracking-wide text-slate-400";
-
   const gridClass = isSplit
-    ? "grid grid-cols-1 gap-3"
-    : "grid grid-cols-2 gap-2 sm:grid-cols-12";
+    ? "grid grid-cols-1 gap-4"
+    : "grid grid-cols-2 gap-3 sm:grid-cols-12 sm:gap-4";
 
-  const accountButtonClass = isSplit
-    ? "inline-flex w-full items-center justify-center gap-1.5 whitespace-nowrap rounded-lg border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-600 transition hover:border-[#ff6633]/40 hover:bg-orange-50 hover:text-[#ff6633]"
-    : "inline-flex w-full items-center justify-center gap-1 whitespace-nowrap rounded-md border border-slate-200 bg-white px-2.5 text-xs font-semibold text-slate-600 transition hover:border-[#ff6633]/40 hover:bg-orange-50 hover:text-[#ff6633]";
+  const accountButtonClass =
+    "inline-flex h-11 w-full items-center justify-center gap-2 whitespace-nowrap rounded-md border border-[#e7e4de] bg-white px-3 text-sm font-medium text-[#0b1f33] transition hover:border-[#0b1f33]/30 hover:bg-[#0b1f33]/[0.03]";
 
   function renderAccountField(buttonId: string) {
     return (
@@ -56,10 +51,10 @@ export function ChequeEditorBar({
           id={buttonId}
           type="button"
           onClick={() => setAccountEditorOpen(true)}
-          className={`${accountButtonClass} ${isSplit ? "h-10" : "h-8"}`}
+          className={accountButtonClass}
           aria-label={t("editor.account.editButton")}
         >
-          <LayoutGrid className={isSplit ? "h-3.5 w-3.5" : "h-3 w-3"} aria-hidden />
+          <LayoutGrid className="h-4 w-4" aria-hidden />
           {t("editor.account.editButton")}
         </button>
       </div>
@@ -67,21 +62,9 @@ export function ChequeEditorBar({
   }
 
   return (
-    <div
-      className={`w-full rounded-xl border border-slate-200 bg-white shadow-sm ${
-        isSplit ? "p-4 sm:p-5" : "p-3"
-      }`}
-    >
-      <div
-        className={`flex items-center justify-between gap-3 ${
-          isSplit ? "mb-4" : "mb-2"
-        }`}
-      >
-        <p
-          className={`font-semibold text-slate-500 ${
-            isSplit ? "text-sm" : "text-[11px]"
-          }`}
-        >
+    <div className="w-full rounded-md border border-[#e7e4de] bg-white p-5 sm:p-6">
+      <div className="mb-5 flex items-center justify-between gap-3">
+        <p className="text-sm font-semibold text-[#0b1f33]">
           {t("editor.formTitle")}
         </p>
         {onClear ? (
@@ -89,16 +72,9 @@ export function ChequeEditorBar({
             type="button"
             onClick={onClear}
             aria-label={t("editor.clearAriaLabel")}
-            className={`inline-flex shrink-0 items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 font-medium text-slate-600 transition hover:border-red-200 hover:bg-red-50 hover:text-red-600 ${
-              isSplit
-                ? "px-3 py-1.5 text-xs"
-                : "px-2.5 py-1 text-[10px]"
-            }`}
+            className="inline-flex shrink-0 items-center gap-1.5 rounded-md border border-[#e7e4de] bg-white px-3 py-1.5 text-xs font-medium text-[#5c6b7a] transition hover:border-red-200 hover:bg-red-50 hover:text-red-700"
           >
-            <Eraser
-              className={isSplit ? "h-3.5 w-3.5" : "h-3 w-3"}
-              aria-hidden
-            />
+            <Eraser className="h-3.5 w-3.5" aria-hidden />
             {t("editor.clear")}
           </button>
         ) : null}
@@ -171,7 +147,7 @@ export function ChequeEditorBar({
         )}
 
         {isSplit && (
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-4">
             <div>
               <label className={labelClass} htmlFor="cheque-chq-num">
                 {t("editor.fields.chqNum")}
@@ -251,7 +227,7 @@ export function ChequeEditorBar({
         </div>
 
         {isSplit ? (
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-4">
             <div>
               <label className={labelClass} htmlFor="cheque-amount">
                 {t("editor.fields.amount")}
@@ -352,7 +328,9 @@ export function ChequeEditorBar({
                 onChange={(e) => onChange("inst", e.target.value)}
               />
             </div>
-            <div className="sm:col-span-4">{renderAccountField("cheque-account-edit")}</div>
+            <div className="sm:col-span-4">
+              {renderAccountField("cheque-account-edit")}
+            </div>
           </>
         )}
 

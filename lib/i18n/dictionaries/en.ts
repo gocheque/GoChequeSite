@@ -99,6 +99,9 @@ export const dictionary = {
     processFootnoteCost: "1 credit will be debited to print this cheque.",
     processFootnoteBalance: "Current balance: {count} credit",
     processFootnoteBalancePlural: "Current balance: {count} credits",
+    color: {
+      label: "Cheque colour",
+    },
     fields: {
       emitter: "Drawer",
       chqNum: "Cheque #",
