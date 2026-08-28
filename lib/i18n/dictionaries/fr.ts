@@ -264,9 +264,9 @@ export const dictionary = {
     terms: "Conditions d'utilisation",
   },
   contact: {
-    metaTitle: "Contact",
+    metaTitle: "Nous joindre — GoCheque",
     metaDescription:
-      "Contactez GoCheque pour le soutien, la facturation et les demandes relatives à la vie privée.",
+      "Écrivez à info@gocheque.ca pour le soutien, la facturation, les crédits ou la vie privée. GoCheque exploite gocheque.ca et gocheque.com.",
     title: "Contact",
     eyebrow: "Nous sommes là pour vous aider",
     message: "Écrivez-nous à",
@@ -280,7 +280,7 @@ export const dictionary = {
   consent: {
     title: "Confidentialité et témoins",
     cookies:
-      "GoCheque utilise des témoins et technologies similaires strictement nécessaires pour la langue, la session et l’authentification (Supabase). Si vous achetez des crédits, Stripe peut déposer des témoins requis pour le paiement. Nous utilisons Vercel Analytics et Speed Insights pour mesurer le trafic et la performance. Nous n’utilisons pas de témoins publicitaires.",
+      "Témoins essentiels seulement (langue, session, connexion). Stripe si vous payez. Aucun témoin publicitaire.",
     terms: "En choisissant Accepter, vous prenez acte de nos",
     and: "et de notre",
     accept: "Accepter",

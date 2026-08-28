@@ -1,5 +1,6 @@
 import { HomeNavbar } from "@/components/home/home-navbar";
 import { HomeFooter } from "@/components/home/home-footer";
+import { SkipToContent } from "@/components/layout/skip-to-content";
 import type { Locale } from "@/lib/i18n/config";
 import type { Dictionary } from "@/lib/i18n/dictionary-type";
 
@@ -27,8 +28,12 @@ export function LegalDocumentPage({
 }: LegalDocumentPageProps) {
   return (
     <>
+      <SkipToContent label={dictionary.nav.skipToContent} />
       <HomeNavbar />
-      <main className="mx-auto max-w-2xl px-4 pb-20 pt-28 sm:px-6 sm:pt-32 lg:pb-24">
+      <main
+        id="contenu"
+        className="mx-auto max-w-2xl px-4 pb-20 pt-28 sm:px-6 sm:pt-32 lg:pb-24"
+      >
         <header className="border-b border-[#eeeae3] pb-10">
           <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#8a8073]">
             GoCheque

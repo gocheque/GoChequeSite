@@ -3,20 +3,20 @@ import type { LegalDocument } from "@/lib/legal/types";
 const CONTACT = "info@gocheque.ca";
 
 export const privacyEn: LegalDocument = {
-  metaTitle: "Privacy Policy",
+  metaTitle: "Privacy Policy — GoCheque",
   metaDescription:
     "GoCheque Privacy Policy — how we collect, use, and protect personal information in Canada, including PIPEDA and Quebec Law 25 rights.",
   title: "Privacy Policy",
   lastUpdated: "Last updated: August 28, 2026",
   intro:
-    "GoCheque (“we”, “us”) operates gocheque.ca and provides an online service to generate and print Canadian bank cheques for mobile deposit. This policy explains how we handle personal information.\n\nWe designed the product so cheque contents (account numbers, transit, payee, amounts, and similar fields) stay in your browser. Account, billing, and security data needed to run the service are stored with our processors.\n\nGoCheque does not currently publish a civic business address in this policy. For privacy requests, write to " +
+    "GoCheque (“we”, “us”) operates gocheque.ca and gocheque.com and provides an online service to generate and print Canadian bank cheques for mobile deposit. This policy explains how we handle personal information.\n\nWe designed the product so cheque contents (account numbers, transit, payee, amounts, and similar fields) stay in your browser. Account, billing, and security data needed to run the service are stored with our processors.\n\nGoCheque does not currently publish a civic business address in this policy. For privacy requests, write to " +
     CONTACT +
     ". We will identify the organization and, where required by law, the privacy officer responsible for your request.",
   sections: [
     {
       title: "1. Who we are and scope",
       body:
-        "This policy applies to personal information collected through gocheque.ca, the GoCheque application, related emails, and our support channel.\n\nGoCheque is a Canadian software service. We process personal information in accordance with the Personal Information Protection and Electronic Documents Act (PIPEDA) and, for residents of Quebec, Law 25 (an Act to modernize legislative provisions as regards the protection of personal information, including the Act respecting the protection of personal information in the private sector). Other provincial privacy laws may also apply depending on where you live.\n\nWe do not sell personal information.",
+        "This policy applies to personal information collected through gocheque.ca, gocheque.com, the GoCheque application, related emails, and our support channel.\n\nGoCheque is a Canadian software service. We process personal information in accordance with the Personal Information Protection and Electronic Documents Act (PIPEDA) and, for residents of Quebec, Law 25 (an Act to modernize legislative provisions as regards the protection of personal information, including the Act respecting the protection of personal information in the private sector). Other provincial privacy laws may also apply depending on where you live.\n\nWe do not sell personal information.",
     },
     {
       title: "2. Personal information we collect",
@@ -108,19 +108,19 @@ export const privacyEn: LegalDocument = {
       body:
         "Privacy requests, questions, and complaints: " +
         CONTACT +
-        ".\n\nPlease put “Privacy” in the subject line.\n\nGoCheque has not published a civic address or a named privacy officer in this policy. Until those details are published on gocheque.ca, write to the email above. We will route your request to the person responsible for the protection of personal information and will provide identification details required by law in our response.\n\nThis is not a substitute for obtaining independent legal advice.",
+        ".\n\nPlease put “Privacy” in the subject line.\n\nGoCheque has not published a civic address or a named privacy officer in this policy. Until those details are published on the site, write to the email above. We will route your request to the person responsible for the protection of personal information and will provide identification details required by law in our response.\n\nThis is not a substitute for obtaining independent legal advice.",
     },
   ],
 };
 
 export const termsEn: LegalDocument = {
-  metaTitle: "Terms of Use",
+  metaTitle: "Terms of Use — GoCheque",
   metaDescription:
     "GoCheque Terms of Use — Canadian cheque layout and printing for mobile deposit, accounts, credits, Stripe billing, and acceptable use.",
   title: "Terms of Use",
   lastUpdated: "Last updated: August 28, 2026",
   intro:
-    "These Terms of Use (the “Terms”) are a contract between you and GoCheque. They govern access to gocheque.ca and the GoCheque application (together, the “Services”).\n\nBy creating an account, buying credits, clicking Accept on our privacy banner, or using the Services, you agree to these Terms and to our Privacy Policy. If you do not agree, do not use the Services.\n\nGoCheque does not currently publish a civic business address in these Terms. Official notices and legal questions: " +
+    "These Terms of Use (the “Terms”) are a contract between you and GoCheque. They govern access to gocheque.ca, gocheque.com, and the GoCheque application (together, the “Services”).\n\nBy creating an account, buying credits, clicking Accept on our privacy banner, or using the Services, you agree to these Terms and to our Privacy Policy. If you do not agree, do not use the Services.\n\nGoCheque does not currently publish a civic business address in these Terms. Official notices and legal questions: " +
     CONTACT +
     ".",
   sections: [
@@ -213,7 +213,7 @@ export const termsEn: LegalDocument = {
       body:
         "Questions about these Terms: " +
         CONTACT +
-        ".\n\nUntil a civic address is published on gocheque.ca, use that email for notices you are legally required to send us.",
+        ".\n\nUntil a civic address is published on the site, use that email for notices you are legally required to send us.",
     },
   ],
 };

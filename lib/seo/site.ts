@@ -1,8 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import type { Locale } from "@/lib/i18n/config";
 import { htmlLang } from "@/lib/i18n/config";
-
-const DEFAULT_SITE_URL = "https://gocheque.ca";
+import { PRIMARY_SITE_URL, ALTERNATE_SITE_URL } from "@/lib/seo/hosts";
 
 const OG_IMAGE = {
   path: "/og.jpg",
@@ -47,11 +46,12 @@ export const siteConfig = {
       "mobile deposit cheque",
     ],
   },
-  url: (process.env.NEXT_PUBLIC_SITE_URL ?? DEFAULT_SITE_URL).replace(/\/$/, ""),
+  url: PRIMARY_SITE_URL,
+  alternateUrl: ALTERNATE_SITE_URL,
   ogImage: OG_IMAGE.path,
 } as const;
 
-export function getSiteUrl(path = "", baseUrl = siteConfig.url): string {
+export function getSiteUrl(path = "", baseUrl: string = siteConfig.url): string {
   const base = baseUrl.replace(/\/$/, "");
   if (!path) return base;
   return `${base}${path.startsWith("/") ? path : `/${path}`}`;
@@ -78,7 +78,7 @@ function buildOpenGraph(
   description: string,
   path: string,
   locale: Locale = "fr",
-  siteUrl = siteConfig.url,
+  siteUrl: string = siteConfig.url,
 ): NonNullable<Metadata["openGraph"]> {
   const tagline = siteConfig.tagline[locale];
 
@@ -104,7 +104,7 @@ function buildTwitter(
   title: string,
   description: string,
   locale: Locale = "fr",
-  siteUrl = siteConfig.url,
+  siteUrl: string = siteConfig.url,
 ): NonNullable<Metadata["twitter"]> {
   const tagline = siteConfig.tagline[locale];
 
@@ -129,7 +129,7 @@ function resolvePageTitle(title: string): string {
     : `${title} | ${siteConfig.name}`;
 }
 
-export function buildRootMetadata(siteUrl = siteConfig.url): Metadata {
+export function buildRootMetadata(siteUrl: string = siteConfig.url): Metadata {
   const locale: Locale = "fr";
   const title = `${siteConfig.name} — ${siteConfig.tagline[locale]}`;
   const description = siteConfig.description[locale];

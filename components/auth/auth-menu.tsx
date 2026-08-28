@@ -27,17 +27,17 @@ function SignOutConfirmModal({
 
   return createPortal(
     <div className="marketing-shell fixed inset-0 z-[200] flex items-center justify-center p-4">
-      <button
-        type="button"
-        aria-label={t("common.close")}
+      <div
         className="absolute inset-0 bg-[#0b1f33]/40 backdrop-blur-sm"
         onClick={() => !signingOut && onCancel()}
+        aria-hidden
       />
-      <div className="relative w-full max-w-sm rounded-lg border border-[#e7e4de] bg-white p-6 shadow-[0_24px_80px_rgba(11,31,51,0.18)]">
+      <div className="relative z-10 w-full max-w-sm rounded-lg border border-[#e7e4de] bg-white p-6 shadow-[0_24px_80px_rgba(11,31,51,0.18)]">
         <ModalCloseButton
           onClick={onCancel}
           disabled={signingOut}
-          className="absolute right-4 top-4"
+          label={t("common.close")}
+          className="absolute right-2 top-2 h-11 w-11"
         />
 
         <h2 className="pr-8 text-center text-xl font-semibold tracking-tight text-[#0b1f33]">

@@ -115,7 +115,7 @@ export function AppNavbar() {
             alt={t("nav.logoAlt")}
             className="h-7 w-auto max-w-[5.5rem] object-contain sm:h-8 sm:max-w-[6.5rem]"
           />
-          <AppBrandName className="text-[1.05rem] tracking-tight" />
+          <AppBrandName className="hidden text-[1.05rem] tracking-tight min-[400px]:inline" />
         </Link>
 
         <div className="hidden items-center gap-8 md:flex">
@@ -131,7 +131,7 @@ export function AppNavbar() {
           <AuthMenu />
           <button
             type="button"
-            className="inline-flex size-9 items-center justify-center rounded-md border border-[#e7e4de] text-[#0b1f33] md:hidden"
+            className="inline-flex size-11 items-center justify-center rounded-md border border-[#e7e4de] text-[#0b1f33] md:hidden"
             aria-expanded={menuOpen}
             aria-controls={menuId}
             aria-label={menuOpen ? t("nav.closeMenu") : t("nav.openMenu")}

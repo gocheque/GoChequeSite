@@ -41,7 +41,7 @@ export function HomePricingSection() {
   return (
     <section
       id={dictionary.anchors.pricing}
-      className="bg-white py-24 sm:py-28"
+      className="scroll-mt-20 bg-white py-24 sm:py-28"
     >
       <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-xl text-center">

@@ -264,8 +264,9 @@ export const dictionary = {
     terms: "Terms of Use",
   },
   contact: {
-    metaTitle: "Contact",
-    metaDescription: "Contact GoCheque for support, billing, and privacy requests.",
+    metaTitle: "Contact GoCheque",
+    metaDescription:
+      "Email info@gocheque.ca for support, billing, credits, or privacy requests. GoCheque operates gocheque.ca and gocheque.com.",
     title: "Contact",
     eyebrow: "We're here to help",
     message: "Write to us at",
@@ -279,7 +280,7 @@ export const dictionary = {
   consent: {
     title: "Privacy and cookies",
     cookies:
-      "GoCheque uses strictly necessary cookies and similar technologies for language, session, and authentication (Supabase). If you buy credits, Stripe may set cookies required to complete payment. We use Vercel Analytics and Speed Insights to measure traffic and performance. We do not use advertising cookies.",
+      "Essential cookies only (language, session, sign-in). Stripe if you pay. No advertising cookies.",
     terms: "By choosing Accept, you acknowledge our",
     and: "and our",
     accept: "Accept",

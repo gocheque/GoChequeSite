@@ -1,5 +1,6 @@
 import { HomeNavbar } from "@/components/home/home-navbar";
 import { HomeFooter } from "@/components/home/home-footer";
+import { SkipToContent } from "@/components/layout/skip-to-content";
 import { CONTACT_EMAIL } from "@/lib/site/contact";
 import type { Locale } from "@/lib/i18n/config";
 import type { Dictionary } from "@/lib/i18n/dictionary-type";
@@ -17,8 +18,12 @@ export function ContactPageContent({
 
   return (
     <div className="flex min-h-screen flex-col">
+      <SkipToContent label={dictionary.nav.skipToContent} />
       <HomeNavbar />
-      <main className="mx-auto w-full max-w-2xl flex-1 px-4 pb-20 pt-28 sm:px-6 sm:pt-32">
+      <main
+        id="contenu"
+        className="mx-auto w-full max-w-2xl flex-1 px-4 pb-20 pt-28 sm:px-6 sm:pt-32"
+      >
         <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#ff6633]">
           {contact.eyebrow}
         </p>

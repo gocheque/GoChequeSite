@@ -3,20 +3,20 @@ import type { LegalDocument } from "@/lib/legal/types";
 const CONTACT = "info@gocheque.ca";
 
 export const privacyFr: LegalDocument = {
-  metaTitle: "Politique de confidentialité",
+  metaTitle: "Politique de confidentialité — GoCheque",
   metaDescription:
     "Politique de confidentialité de GoCheque — collecte, utilisation et protection des renseignements personnels au Canada, y compris la LPRPDE et la Loi 25 du Québec.",
   title: "Politique de confidentialité",
   lastUpdated: "Dernière mise à jour : 28 août 2026",
   intro:
-    "GoCheque (« nous ») exploite gocheque.ca et offre un service en ligne pour générer et imprimer des chèques bancaires canadiens destinés au dépôt mobile. La présente politique explique comment nous traitons les renseignements personnels.\n\nLe produit est conçu pour que le contenu du chèque (numéros de compte, transit, bénéficiaire, montants et champs similaires) demeure dans votre navigateur. Les données de compte, de facturation et de sécurité nécessaires au service sont conservées chez nos fournisseurs de traitement.\n\nGoCheque ne publie pas actuellement d’adresse civique dans cette politique. Pour toute demande relative à la vie privée, écrivez à " +
+    "GoCheque (« nous ») exploite gocheque.ca et gocheque.com et offre un service en ligne pour générer et imprimer des chèques bancaires canadiens destinés au dépôt mobile. La présente politique explique comment nous traitons les renseignements personnels.\n\nLe produit est conçu pour que le contenu du chèque (numéros de compte, transit, bénéficiaire, montants et champs similaires) demeure dans votre navigateur. Les données de compte, de facturation et de sécurité nécessaires au service sont conservées chez nos fournisseurs de traitement.\n\nGoCheque ne publie pas actuellement d’adresse civique dans cette politique. Pour toute demande relative à la vie privée, écrivez à " +
     CONTACT +
     ". Nous identifierons l’organisation et, lorsque la loi l’exige, la personne responsable de la protection des renseignements personnels.",
   sections: [
     {
       title: "1. Qui nous sommes et champ d’application",
       body:
-        "Cette politique s’applique aux renseignements personnels collectés via gocheque.ca, l’application GoCheque, les courriels connexes et notre canal de soutien.\n\nGoCheque est un service logiciel canadien. Nous traitons les renseignements conformément à la Loi sur la protection des renseignements personnels et les documents électroniques (LPRPDE) et, pour les résidents du Québec, à la Loi 25 (Loi modernisant des dispositions législatives en matière de protection des renseignements personnels, dont la Loi sur la protection des renseignements personnels dans le secteur privé). D’autres lois provinciales peuvent aussi s’appliquer selon votre lieu de résidence.\n\nNous ne vendons pas les renseignements personnels.",
+        "Cette politique s’applique aux renseignements personnels collectés via gocheque.ca, gocheque.com, l’application GoCheque, les courriels connexes et notre canal de soutien.\n\nGoCheque est un service logiciel canadien. Nous traitons les renseignements conformément à la Loi sur la protection des renseignements personnels et les documents électroniques (LPRPDE) et, pour les résidents du Québec, à la Loi 25 (Loi modernisant des dispositions législatives en matière de protection des renseignements personnels, dont la Loi sur la protection des renseignements personnels dans le secteur privé). D’autres lois provinciales peuvent aussi s’appliquer selon votre lieu de résidence.\n\nNous ne vendons pas les renseignements personnels.",
     },
     {
       title: "2. Renseignements que nous collectons",
@@ -108,19 +108,19 @@ export const privacyFr: LegalDocument = {
       body:
         "Demandes, questions et plaintes relatives à la vie privée : " +
         CONTACT +
-        ".\n\nIndiquez « Confidentialité » dans l’objet.\n\nGoCheque n’a pas publié d’adresse civique ni le nom d’un responsable de la protection des renseignements personnels dans cette politique. Tant que ces précisions n’apparaissent pas sur gocheque.ca, utilisez le courriel ci-dessus. Nous acheminerons votre demande à la personne responsable et fournirons, dans notre réponse, les éléments d’identification exigés par la loi.\n\nLe présent texte ne remplace pas un avis juridique indépendant.",
+        ".\n\nIndiquez « Confidentialité » dans l’objet.\n\nGoCheque n’a pas publié d’adresse civique ni le nom d’un responsable de la protection des renseignements personnels dans cette politique. Tant que ces précisions n’apparaissent pas sur le site, utilisez le courriel ci-dessus. Nous acheminerons votre demande à la personne responsable et fournirons, dans notre réponse, les éléments d’identification exigés par la loi.\n\nLe présent texte ne remplace pas un avis juridique indépendant.",
     },
   ],
 };
 
 export const termsFr: LegalDocument = {
-  metaTitle: "Conditions d’utilisation",
+  metaTitle: "Conditions d’utilisation — GoCheque",
   metaDescription:
     "Conditions d’utilisation de GoCheque — mise en page et impression de chèques canadiens pour dépôt mobile, comptes, crédits, facturation Stripe et usage acceptable.",
   title: "Conditions d’utilisation",
   lastUpdated: "Dernière mise à jour : 28 août 2026",
   intro:
-    "Les présentes Conditions d’utilisation (les « Conditions ») forment un contrat entre vous et GoCheque. Elles régissent l’accès à gocheque.ca et à l’application GoCheque (ensemble, les « Services »).\n\nEn créant un compte, en achetant des crédits, en cliquant sur Accepter dans notre bannière de confidentialité ou en utilisant les Services, vous acceptez ces Conditions et notre Politique de confidentialité. Si vous n’acceptez pas, n’utilisez pas les Services.\n\nGoCheque ne publie pas actuellement d’adresse civique dans ces Conditions. Avis officiels et questions juridiques : " +
+    "Les présentes Conditions d’utilisation (les « Conditions ») forment un contrat entre vous et GoCheque. Elles régissent l’accès à gocheque.ca, gocheque.com et à l’application GoCheque (ensemble, les « Services »).\n\nEn créant un compte, en achetant des crédits, en cliquant sur Accepter dans notre bannière de confidentialité ou en utilisant les Services, vous acceptez ces Conditions et notre Politique de confidentialité. Si vous n’acceptez pas, n’utilisez pas les Services.\n\nGoCheque ne publie pas actuellement d’adresse civique dans ces Conditions. Avis officiels et questions juridiques : " +
     CONTACT +
     ".",
   sections: [
@@ -213,7 +213,7 @@ export const termsFr: LegalDocument = {
       body:
         "Questions sur les présentes Conditions : " +
         CONTACT +
-        ".\n\nTant qu’une adresse civique n’est pas publiée sur gocheque.ca, utilisez ce courriel pour les avis que vous êtes légalement tenu de nous transmettre.",
+        ".\n\nTant qu’une adresse civique n’est pas publiée sur le site, utilisez ce courriel pour les avis que vous êtes légalement tenu de nous transmettre.",
     },
   ],
 };

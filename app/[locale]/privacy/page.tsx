@@ -1,9 +1,14 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { LegalDocumentPage } from "@/components/legal/legal-document-page";
+import { JsonLd } from "@/components/seo/json-ld";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { isValidLocale, type Locale } from "@/lib/i18n/config";
 import { buildPageMetadata } from "@/lib/seo/metadata";
+import {
+  buildOrganizationJsonLd,
+  buildWebPageJsonLd,
+} from "@/lib/seo/json-ld";
 
 export async function generateMetadata({
   params,
@@ -37,13 +42,26 @@ export default async function PrivacyPage({
   const { privacy } = dict;
 
   return (
-    <LegalDocumentPage
-      locale={locale}
-      dictionary={dict}
-      title={privacy.title}
-      lastUpdated={privacy.lastUpdated}
-      intro={privacy.intro}
-      sections={privacy.sections}
-    />
+    <>
+      <JsonLd
+        data={[
+          buildOrganizationJsonLd(privacy.metaDescription),
+          buildWebPageJsonLd(
+            privacy.metaTitle,
+            privacy.metaDescription,
+            `/${locale}/privacy`,
+            locale,
+          ),
+        ]}
+      />
+      <LegalDocumentPage
+        locale={locale}
+        dictionary={dict}
+        title={privacy.title}
+        lastUpdated={privacy.lastUpdated}
+        intro={privacy.intro}
+        sections={privacy.sections}
+      />
+    </>
   );
 }

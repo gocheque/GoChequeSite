@@ -37,8 +37,8 @@ export function HomeHero() {
         <h1
           className={
             isFrench
-              ? "text-[2.15rem] font-semibold leading-[1.12] tracking-[-0.03em] text-[#0b1f33] min-[480px]:text-5xl sm:text-[3.35rem]"
-              : "text-[2.4rem] font-semibold leading-[1.12] tracking-[-0.03em] text-[#0b1f33] sm:text-[3.5rem]"
+              ? "break-words text-balance text-[clamp(1.7rem,1.05rem+2.6vw,2.85rem)] font-semibold leading-[1.18] tracking-[-0.03em] text-[#0b1f33]"
+              : "break-words text-balance text-[clamp(1.9rem,1.1rem+2.8vw,3.5rem)] font-semibold leading-[1.14] tracking-[-0.03em] text-[#0b1f33]"
           }
         >
           <span className="block">
