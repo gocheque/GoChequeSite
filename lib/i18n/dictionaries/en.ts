@@ -59,7 +59,6 @@ export const dictionary = {
   showcase: {
     sectionLabel: "GoCheque workflow",
     eyebrow: "Here are the steps to complete a cheque",
-    scrollHint: "Scroll to continue",
     steps: [
       {
         word: "Fill",

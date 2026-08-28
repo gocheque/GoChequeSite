@@ -58,7 +58,6 @@ export const dictionary = {
   showcase: {
     sectionLabel: "Parcours GoCheque",
     eyebrow: "Voici les étapes pour compléter un chèque",
-    scrollHint: "Faites défiler pour continuer",
     steps: [
       {
         word: "Remplir",
