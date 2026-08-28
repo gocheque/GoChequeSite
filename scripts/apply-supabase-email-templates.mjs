@@ -5,8 +5,11 @@
  * 1) Token d'accès : https://supabase.com/dashboard/account/tokens
  * 2) Dans .env : SUPABASE_ACCESS_TOKEN=...
  * 3) NEXT_PUBLIC_SUPABASE_URL déjà configuré
+ * 4) SMTP custom (Resend, etc.) — requis sur le plan gratuit pour les templates HTML
  *
  * Usage : npm run email:supabase
+ *
+ * Détail : supabase/EMAILS.md
  */
 import { readFileSync, existsSync } from "node:fs";
 import { resolve } from "node:path";
@@ -15,6 +18,13 @@ const root = process.cwd();
 const envPath = resolve(root, ".env");
 const templatesDir = resolve(root, "supabase/templates");
 const subjectsPath = resolve(root, "supabase/email-subjects.json");
+
+const PRODUCTION_ORIGINS = [
+  "https://gocheque.ca",
+  "https://www.gocheque.ca",
+  "https://gocheque.com",
+  "https://www.gocheque.com",
+];
 
 function loadEnv() {
   if (!existsSync(envPath)) return {};
@@ -56,25 +66,70 @@ function getProjectRef(supabaseUrl) {
   return match[1];
 }
 
-function buildRedirectAllowList(siteUrl) {
-  const base = siteUrl.replace(/\/$/, "");
-  const local = "http://localhost:3000";
-  const urls = new Set([
+function callbackPaths(origin) {
+  const base = origin.replace(/\/$/, "");
+  return [
     `${base}/auth/callback`,
     `${base}/fr/auth/callback`,
     `${base}/en/auth/callback`,
-    `${local}/auth/callback`,
-    `${local}/fr/auth/callback`,
-    `${local}/en/auth/callback`,
-  ]);
+  ];
+}
+
+function buildRedirectAllowList(siteUrl) {
+  const urls = new Set();
+  for (const origin of [siteUrl, "http://localhost:3000", ...PRODUCTION_ORIGINS]) {
+    for (const path of callbackPaths(origin)) {
+      urls.add(path);
+    }
+  }
   return Array.from(urls).join(",");
+}
+
+function printSmtpHelp() {
+  console.log("");
+  console.log("Supabase (plan gratuit + e-mail par défaut) n'autorise pas les modèles custom.");
+  console.log("");
+  console.log("Solution — configurer un SMTP (ex. Resend) :");
+  console.log("  1. https://resend.com → compte + clé API + domaine vérifié");
+  console.log("  2. Supabase Dashboard → Authentication → SMTP Settings");
+  console.log("     Host: smtp.resend.com  Port: 465  User: resend");
+  console.log("     Password: votre clé re_...");
+  console.log("     Sender: noreply@gocheque.ca (domaine vérifié)");
+  console.log("  3. Relancer : npm run email:supabase");
+  console.log("");
+  console.log("Alternative manuelle : Dashboard → Authentication → Email Templates");
+  console.log("  Coller le HTML de supabase/templates/*.html pour chaque type.");
+}
+
+async function patchAuthConfig(projectRef, accessToken, payload) {
+  const res = await fetch(
+    `https://api.supabase.com/v1/projects/${projectRef}/config/auth`,
+    {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    },
+  );
+
+  const body = await res.text();
+  return { ok: res.ok, status: res.status, body };
 }
 
 async function main() {
   const env = loadEnv();
-  const accessToken = env.SUPABASE_ACCESS_TOKEN?.trim();
-  const supabaseUrl = env.NEXT_PUBLIC_SUPABASE_URL?.trim();
-  const siteUrl = (env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000").trim();
+  const accessToken =
+    env.SUPABASE_ACCESS_TOKEN?.trim() || process.env.SUPABASE_ACCESS_TOKEN?.trim();
+  const supabaseUrl =
+    env.NEXT_PUBLIC_SUPABASE_URL?.trim() ||
+    process.env.NEXT_PUBLIC_SUPABASE_URL?.trim();
+  const siteUrl = (
+    env.NEXT_PUBLIC_SITE_URL ||
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    "https://gocheque.ca"
+  ).trim();
 
   if (!accessToken) {
     console.error("❌ SUPABASE_ACCESS_TOKEN manquant dans .env");
@@ -86,7 +141,7 @@ async function main() {
     console.log(
       "Alternative manuelle : Dashboard Supabase > Authentication > Email Templates",
     );
-    console.log("Copiez le contenu de supabase/templates/confirmation.html");
+    console.log("Copiez le HTML de supabase/templates/ (voir supabase/EMAILS.md)");
     process.exit(1);
   }
 
@@ -101,61 +156,58 @@ async function main() {
   const payload = {
     site_url: siteUrl.replace(/\/$/, ""),
     uri_allow_list: buildRedirectAllowList(siteUrl),
+    mailer_secure_email_change_enabled: true,
     mailer_subjects_confirmation: subjects.confirmation,
     mailer_templates_confirmation_content: readTemplate("confirmation"),
     mailer_subjects_recovery: subjects.recovery,
     mailer_templates_recovery_content: readTemplate("recovery"),
+    mailer_subjects_magic_link: subjects.magic_link,
+    mailer_templates_magic_link_content: readTemplate("magic_link"),
+    mailer_subjects_invite: subjects.invite,
+    mailer_templates_invite_content: readTemplate("invite"),
+    mailer_subjects_email_change: subjects.email_change,
+    mailer_templates_email_change_content: readTemplate("email_change"),
+    mailer_subjects_reauthentication: subjects.reauthentication,
+    mailer_templates_reauthentication_content: readTemplate("reauthentication"),
   };
 
   console.log(`→ Mise à jour des e-mails GoCheque sur le projet ${projectRef}...`);
+  console.log(`  Site URL : ${payload.site_url}`);
 
-  const res = await fetch(
-    `https://api.supabase.com/v1/projects/${projectRef}/config/auth`,
-    {
-      method: "PATCH",
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    },
-  );
+  const result = await patchAuthConfig(projectRef, accessToken, payload);
 
-  const body = await res.text();
-  if (!res.ok) {
-    console.error(`❌ Échec (${res.status})`);
-    console.error(body);
+  if (!result.ok) {
+    console.error(`❌ Échec (${result.status})`);
+    console.error(result.body);
 
-    if (body.includes("free tier") || body.includes("custom SMTP")) {
-      console.log("");
-      console.log("Supabase (plan gratuit + e-mail par défaut) n'autorise pas les modèles custom.");
-      console.log("");
-      console.log("Solution — configurer un SMTP (ex. Resend, gratuit pour démarrer) :");
-      console.log("  1. https://resend.com → créer un compte + clé API");
-      console.log("  2. Supabase Dashboard → Authentication → SMTP Settings");
-      console.log("     Host: smtp.resend.com  Port: 465  User: resend");
-      console.log("     Password: votre clé re_...");
-      console.log("     Sender: onboarding@resend.dev (test) ou noreply@votre-domaine.com");
-      console.log("  3. Relancer : npm run email:supabase");
-      console.log("");
-      console.log(
-        "Alternative : coller manuellement supabase/templates/confirmation.html",
-      );
-      console.log("  dans Authentication → Email Templates (après SMTP activé).");
+    if (result.body.includes("free tier") || result.body.includes("custom SMTP")) {
+      printSmtpHelp();
     }
 
     process.exit(1);
   }
 
-  console.log("✅ Modèles d'inscription et de réinitialisation appliqués.");
+  const notifyPayload = {
+    mailer_notifications_password_changed_enabled: true,
+  };
+  const notify = await patchAuthConfig(projectRef, accessToken, notifyPayload);
+  if (notify.ok) {
+    console.log("✅ Notification « mot de passe modifié » activée côté Supabase Auth.");
+  } else {
+    console.log(
+      "ℹ️  Notification mot de passe (API Auth) indisponible — GoCheque envoie déjà ce courriel via Resend après un changement réussi.",
+    );
+  }
+
+  console.log("✅ Modèles Auth appliqués : confirmation, recovery, magic_link, invite, email_change, reauthentication.");
   console.log("");
-  console.log("Vérifiez aussi dans Supabase Dashboard > Authentication > URL Configuration :");
+  console.log("Vérifiez dans Supabase Dashboard > Authentication > URL Configuration :");
   console.log(`  Site URL : ${payload.site_url}`);
-  console.log("  Redirect URLs : inclure /auth/callback");
+  console.log("  Redirect URLs : /auth/callback (et /fr /en), plus localhost en dev");
   console.log("");
-  console.log(
-    "Optionnel — expéditeur personnalisé : Authentication > SMTP Settings (ex. Resend)",
-  );
+  console.log("E-mails applicatifs (reçu, bienvenue, échec de paiement, mot de passe modifié) :");
+  console.log("  RESEND_API_KEY=re_...   EMAIL_FROM=\"GoCheque <noreply@gocheque.ca>\"");
+  console.log("  Voir supabase/EMAILS.md");
 }
 
 main().catch((error) => {

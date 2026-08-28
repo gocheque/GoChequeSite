@@ -58,6 +58,23 @@ export const dictionary = {
   showcase: {
     sectionLabel: "Parcours GoCheque",
     eyebrow: "Voici les étapes pour compléter un chèque",
+    progressLabel: "Progression du parcours",
+    stepComplete: "Terminé",
+    stepCurrent: "Étape en cours",
+    mock: {
+      payTo: "Payez à",
+      amount: "Montant",
+      date: "Date",
+      signature: "Signature",
+      memo: "Mémo",
+      drawer: "Les Ateliers Boréal",
+      payee: "Rénovations St-Laurent inc.",
+      dollars: "1 432,89 $",
+      dateValue: "28 août 2026",
+      memoValue: "Services — mars",
+      printCaption: "Impression sur papier ordinaire",
+      sendCaption: "Photo dans l’app de votre banque",
+    },
     steps: [
       {
         word: "Remplir",
@@ -307,6 +324,21 @@ export const dictionary = {
     createAccount: "Créer un compte",
     signInLink: "Se connecter",
     confirmEmail: "Confirmez votre courriel avant de vous connecter",
+    forgotPassword: "Mot de passe oublié ?",
+    forgotTitle: "Réinitialiser le mot de passe",
+    forgotSubtitle:
+      "Entrez votre courriel. Nous vous enverrons un lien pour choisir un nouveau mot de passe.",
+    forgotSubmit: "Envoyer le lien",
+    forgotSuccess:
+      "Si un compte existe pour ce courriel, un lien de réinitialisation vient d’être envoyé.",
+    forgotBack: "Retour à la connexion",
+    resetTitle: "Nouveau mot de passe",
+    resetSubtitle: "Choisissez un mot de passe solide pour votre compte GoCheque.",
+    resetSubmit: "Enregistrer le mot de passe",
+    resetSuccess: "Mot de passe mis à jour. Vous pouvez continuer.",
+    resetExpired:
+      "Ce lien a expiré ou a déjà été utilisé. Demandez-en un nouveau.",
+    resetRequestNew: "Demander un nouveau lien",
     invalidCredentials: "Courriel ou mot de passe incorrect",
     loginFailed: "Connexion impossible. Réessayez.",
     signupSuccess:
@@ -461,6 +493,14 @@ export const dictionary = {
     passwordUpdateFailed: "Impossible de mettre à jour le mot de passe.",
     profileUpdated: "Profil mis à jour avec succès.",
     profileUpdateFailed: "Impossible de mettre à jour le profil.",
+    emailReadOnlyHint: "L’adresse actuelle de votre compte.",
+    newEmail: "Nouvelle adresse courriel",
+    saveEmail: "Changer le courriel",
+    emailChangeSent:
+      "Un courriel de confirmation a été envoyé. Cliquez le lien pour terminer le changement.",
+    emailChangeFailed: "Impossible de changer l’adresse courriel.",
+    emailUnchanged: "Entrez une adresse différente de l’adresse actuelle.",
+    emailPending: "Changement en attente pour {email}. Confirmez via votre boîte de réception.",
     securityTitle: "Authentification à deux facteurs",
     securityDescription:
       "Protégez votre compte avec une application d'authentification (Google Authenticator, Authy, etc.).",
