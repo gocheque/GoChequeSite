@@ -375,15 +375,15 @@ export function AuthModal() {
           : t("auth.signupTitle");
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+    <div className="marketing-shell fixed inset-0 z-[100] flex items-center justify-center p-4">
       <button
         type="button"
         aria-label={t("common.close")}
-        className="absolute inset-0 bg-slate-900/45 backdrop-blur-sm"
+        className="absolute inset-0 bg-[#0b1f33]/40 backdrop-blur-sm"
         onClick={closeModal}
       />
 
-      <div className="relative max-h-[90vh] w-full max-w-md overflow-y-auto rounded-2xl border border-slate-200/80 bg-white shadow-2xl">
+      <div className="relative max-h-[90vh] w-full max-w-md overflow-y-auto rounded-lg border border-[#e7e4de] bg-white shadow-[0_24px_80px_rgba(11,31,51,0.18)]">
         <div className="border-b border-slate-100 px-6 pb-5 pt-6">
           {(pendingUserCheckout || traiterFlowActive) && (
             <button
@@ -397,7 +397,7 @@ export function AuthModal() {
 
           <ModalCloseButton onClick={closeModal} className="absolute right-4 top-4" />
 
-          <h2 className="text-center text-2xl font-bold text-slate-900">{title}</h2>
+          <h2 className="text-center text-2xl font-semibold tracking-tight text-[#0b1f33]">{title}</h2>
           <p className="mt-2 text-center text-sm text-slate-500">{subtitle}</p>
 
           {authStep === "form" && (

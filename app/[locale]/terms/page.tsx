@@ -33,10 +33,13 @@ export default async function TermsPage({
   if (!isValidLocale(localeParam)) notFound();
 
   const locale = localeParam as Locale;
-  const { terms } = getDictionary(locale);
+  const dict = getDictionary(locale);
+  const { terms } = dict;
 
   return (
     <LegalDocumentPage
+      locale={locale}
+      dictionary={dict}
       title={terms.title}
       lastUpdated={terms.lastUpdated}
       intro={terms.intro}

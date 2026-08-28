@@ -36,14 +36,14 @@ export function PricingCards({ user, loadingId, onPurchase }: PricingCardsProps)
         return (
           <div
             key={pkg.id}
-            className={`relative flex flex-col rounded-2xl border bg-white p-5 shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-xl sm:p-6 ${
+            className={`relative flex flex-col rounded-lg border bg-white p-6 sm:p-7 ${
               isPopular
-                ? "border-[#ff6633]/40 shadow-md shadow-orange-100/50 lg:scale-[1.02] lg:hover:scale-105"
-                : "border-slate-200 hover:scale-[1.02]"
+                ? "border-[#0b1f33]"
+                : "border-[#e7e4de]"
             }`}
           >
             {isPopular && (
-              <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-[#ff6633] px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-white">
+              <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-sm bg-[#0b1f33] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-white">
                 {t("pricing.popular")}
               </span>
             )}
@@ -97,10 +97,10 @@ export function PricingCards({ user, loadingId, onPurchase }: PricingCardsProps)
               type="button"
               disabled={loadingId !== null}
               onClick={() => onPurchase(pkg.id)}
-              className={`mt-6 w-full rounded-xl py-3 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-50 ${
+              className={`mt-6 w-full rounded-md py-3 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-50 ${
                 isPopular
-                  ? "bg-[#ff6633] text-white hover:bg-[#e05526]"
-                  : "border border-slate-200 bg-white text-slate-800 hover:border-[#ff6633]/40 hover:bg-orange-50/50"
+                  ? "bg-[#0b1f33] text-white hover:bg-[#16324c]"
+                  : "border border-[#e7e4de] bg-white text-[#0b1f33] hover:border-[#0b1f33]/35"
               }`}
             >
               {isLoading ? (

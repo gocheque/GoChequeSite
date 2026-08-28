@@ -1,7 +1,7 @@
 import { safeJsonParse } from "@/lib/safe-json";
 
 export const LEGAL_CONSENT_STORAGE_KEY = "gocheque_legal_consent";
-export const LEGAL_CONSENT_VERSION = "2026-07-06-privacy";
+export const LEGAL_CONSENT_VERSION = "2026-08-28";
 
 type LegalConsentRecord = {
   version: string;

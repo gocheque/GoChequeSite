@@ -5,7 +5,7 @@ import { htmlLang } from "@/lib/i18n/config";
 const DEFAULT_SITE_URL = "https://gocheque.ca";
 
 const OG_IMAGE = {
-  path: "/og.png",
+  path: "/og.jpg",
   width: 1424,
   height: 752,
 } as const;

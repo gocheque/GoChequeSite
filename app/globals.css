@@ -12,6 +12,13 @@
   --font-mono: var(--font-comfortaa);
 }
 
+.marketing-shell {
+  font-family: var(--font-marketing), ui-sans-serif, system-ui, sans-serif;
+  color: #0b1f33;
+  background-color: #ffffff;
+  letter-spacing: -0.011em;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);

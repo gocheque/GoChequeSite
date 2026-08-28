@@ -1,3 +1,5 @@
+import { privacyFr, termsFr } from "@/lib/legal/copy-fr";
+
 export const dictionary = {
   meta: {
     homeTitle: "GoCheque — Chèques bancaires canadiens, prêts à imprimer",
@@ -21,6 +23,8 @@ export const dictionary = {
     accountSection: "Compte",
     accountMenu: "Menu compte",
     main: "Navigation principale",
+    openMenu: "Ouvrir le menu",
+    closeMenu: "Fermer le menu",
     skipToContent: "Aller au contenu",
     logoAlt: "GoCheque — Chèques bancaires canadiens, prêts à imprimer",
   },
@@ -258,205 +262,29 @@ export const dictionary = {
   },
   contact: {
     metaTitle: "Contact",
-    metaDescription: "Contactez l'équipe GoCheque par courriel.",
+    metaDescription:
+      "Contactez GoCheque pour le soutien, la facturation et les demandes relatives à la vie privée.",
     title: "Contact",
-    message: "Pour nous joindre, envoyez un courriel à",
+    eyebrow: "Nous sommes là pour vous aider",
+    message: "Écrivez-nous à",
+    privacyTitle: "Vie privée et demandes d’accès",
+    privacyBody:
+      "Pour consulter, corriger ou supprimer des renseignements personnels, ou pour poser une question sur nos pratiques, écrivez-nous en indiquant « Confidentialité » dans l’objet. Nous répondons dans le délai prévu par le droit canadien.",
+    billingTitle: "Facturation et crédits",
+    billingBody:
+      "Pour un double débit, des crédits manquants ou une demande de remboursement, indiquez le courriel du compte et la date approximative d’achat. Les paiements sont traités par Stripe.",
   },
   consent: {
-    title: "Cookies et confidentialité",
+    title: "Confidentialité et témoins",
     cookies:
-      "Nous utilisons des cookies essentiels pour la langue, la session et l'authentification.",
-    terms: "En cliquant sur Accepter, vous acceptez nos",
-    and: "et notre",
+      "GoCheque utilise des témoins et technologies similaires strictement nécessaires pour la langue, la session et l’authentification (Supabase). Si vous achetez des crédits, Stripe peut déposer des témoins requis pour le paiement. Nous utilisons Vercel Analytics et Speed Insights pour mesurer le trafic et la performance. Nous n’utilisons pas de témoins publicitaires.",
+    terms: "En choisissant Accepter, vous prenez acte de nos",
+    and: "et de notre",
     accept: "Accepter",
   },
-  privacy: {
-    metaTitle: "Politique de confidentialité",
-    metaDescription:
-      "Politique de confidentialité de GoCheque — comment nous traitons vos renseignements personnels au Canada.",
-    title: "Politique de confidentialité",
-    lastUpdated: "Dernière mise à jour : 6 juillet 2026",
-    intro:
-      "GoCheque s'engage à protéger votre vie privée. Cette politique explique quels renseignements nous collectons, comment nous les utilisons et quels sont vos droits lorsque vous utilisez notre service de génération et d'impression de chèques pour dépôt mobile.",
-    sections: [
-      {
-        title: "1. Responsable du traitement",
-        body:
-          "GoCheque exploite le site gocheque.ca et est responsable des renseignements personnels collectés via les Services, sous réserve des lois applicables au Canada.",
-      },
-      {
-        title: "2. Renseignements que nous collectons",
-        body:
-          "Compte utilisateur : courriel, identifiant de compte, pseudo (le cas échéant), informations d'authentification et préférences de sécurité (ex. authentification à deux facteurs).\n\nTransactions : solde de crédits, historique d'achats et de consommation de crédits, identifiants de transaction Stripe.\n\nDonnées techniques : adresse IP, type de navigateur, journaux de connexion et cookies essentiels (langue, session).\n\nCommunications : messages que vous nous envoyez pour obtenir de l'aide.",
-      },
-      {
-        title: "3. Renseignements que nous ne stockons pas",
-        body:
-          "Les données saisies dans l'éditeur de chèque — numéros de compte, transit, institution, bénéficiaire, montants, signatures, etc. — sont traitées localement dans votre navigateur et ne sont pas conservées sur nos serveurs à des fins de conservation de chèques.\n\nVotre navigateur peut toutefois enregistrer ces champs localement (stockage local) ou vous proposer de les mémoriser, indépendamment de GoCheque.",
-      },
-      {
-        title: "4. Comment nous utilisons vos renseignements",
-        body:
-          "Nous utilisons vos renseignements pour :\n\n• créer et gérer votre compte ;\n• traiter les achats de crédits et fournir le service ;\n• sécuriser l'accès et prévenir la fraude ;\n• répondre à vos demandes ;\n• respecter nos obligations légales ;\n• améliorer la fiabilité et la sécurité du service.\n\nNous ne vendons pas vos renseignements personnels.",
-      },
-      {
-        title: "5. Fondements du traitement",
-        body:
-          "Nous traitons vos renseignements sur la base de l'exécution du contrat (fourniture du service), de votre consentement (lorsque requis), de nos intérêts légitimes (sécurité, amélioration du service) et du respect d'obligations légales, conformément aux lois applicables au Canada.",
-      },
-      {
-        title: "6. Cookies et stockage local",
-        body:
-          "Cookies essentiels : préférence de langue, session d'authentification Supabase et cookies nécessaires au paiement via Stripe lors d'un achat.\n\nStockage local : brouillon de chèque et identifiants techniques locaux peuvent être enregistrés dans votre navigateur pour le fonctionnement de l'éditeur.\n\nMesure d'audience : nous utilisons Vercel Web Analytics et Speed Insights (hébergeur du Site) pour des statistiques de fréquentation et de performance. Ces outils sont conçus pour limiter le suivi individuel et ne servent pas à de la publicité ciblée.\n\nNous n'utilisons pas de cookies publicitaires.",
-      },
-      {
-        title: "7. Services tiers",
-        body:
-          "Nous faisons appel à des prestataires pour exploiter le service :\n\n• Supabase — authentification et base de données de compte ;\n• Stripe — traitement des paiements ;\n• Google — connexion OAuth, si vous choisissez cette option.\n\nCes prestataires traitent des renseignements conformément à leurs propres politiques de confidentialité. Nous ne contrôlons pas leurs pratiques.",
-      },
-      {
-        title: "8. Conservation des données",
-        body:
-          "Nous conservons vos renseignements de compte et d'achat aussi longtemps que nécessaire pour fournir le service, respecter nos obligations légales, résoudre des litiges et faire respecter nos accords. Vous pouvez demander la suppression de votre compte, sous réserve des obligations légales de conservation.",
-      },
-      {
-        title: "9. Sécurité",
-        body:
-          "Nous appliquons des mesures techniques et organisationnelles raisonnables pour protéger vos renseignements. Aucune méthode de transmission ou de stockage n'est toutefois totalement sécurisée. Vous êtes responsable de la protection de votre appareil, de votre session et des données saisies dans l'éditeur.",
-      },
-      {
-        title: "10. Vos droits",
-        body:
-          "Selon les lois applicables au Canada, vous pouvez avoir le droit d'accéder à vos renseignements, de les faire corriger, de retirer votre consentement (lorsque le traitement est fondé sur le consentement) ou de demander leur suppression, dans les limites prévues par la loi.\n\nPour exercer ces droits, écrivez à info@gocheque.ca. Nous répondrons dans les délais prévus par la loi applicable.",
-      },
-      {
-        title: "11. Enfants",
-        body:
-          "GoCheque n'est pas destiné aux personnes de moins de dix-huit (18) ans. Nous ne collectons pas sciemment de renseignements personnels auprès de mineurs.",
-      },
-      {
-        title: "12. Transferts et hébergement",
-        body:
-          "Vos renseignements peuvent être traités ou hébergés à l'extérieur de votre province ou du Canada par nos prestataires (par exemple, aux États-Unis). Dans ce cas, vos renseignements peuvent être assujettis aux lois locales de ces juridictions.",
-      },
-      {
-        title: "13. Modifications",
-        body:
-          "Nous pouvons mettre à jour cette politique de temps à autre. La date de dernière mise à jour sera indiquée en haut de la page. L'utilisation continue du service après publication des modifications vaut prise de connaissance de la politique révisée.",
-      },
-      {
-        title: "14. Contact",
-        body:
-          "Pour toute question relative à cette politique ou à vos renseignements personnels, écrivez à info@gocheque.ca.",
-      },
-    ],
-  },
-  terms: {
-    metaTitle: "Conditions d'utilisation",
-    metaDescription:
-      "Conditions d'utilisation du service GoCheque — génération et impression de chèques pour dépôt mobile au Canada.",
-    title: "Conditions d'utilisation",
-    lastUpdated: "Dernière mise à jour : 6 juillet 2026",
-    intro:
-      "Contrat contraignant. Veuillez lire attentivement ces conditions avant d'utiliser GoCheque.\n\nEn créant un compte, en achetant des crédits ou en utilisant le service, vous acceptez d'être lié par les présentes conditions d'utilisation ainsi que par toute politique incorporée par référence. Si vous n'acceptez pas ces conditions dans leur intégralité, vous ne devez pas utiliser le service.",
-    sections: [
-      {
-        title: "1. Le service",
-        body:
-          "GoCheque (« nous », « notre ») exploite le site gocheque.ca et fournit une application en ligne (le « Site » et l'« Application ») permettant de générer et d'imprimer des chèques bancaires canadiens au format CPA 006 (les « Services »). Les Services sont destinés au dépôt mobile via l'application de votre institution financière — non au dépôt en succursale ou au guichet automatique.\n\nGoCheque est un service d'impression et de mise en page de chèques, et non un service de paiement de factures, de virement bancaire ou de traitement de paiements. Nous ne vérifions pas vos numéros de transit ou de compte, vos bénéficiaires, leurs adresses ni l'autorisation d'utiliser un compte bancaire donné.",
-      },
-      {
-        title: "2. Acceptation et modifications",
-        body:
-          "Ces conditions prennent effet lorsque vous utilisez les Services ou créez un compte (la « Date d'entrée en vigueur »). Nous pouvons modifier ces conditions à tout moment. Les changements importants seront publiés sur cette page avec une date de mise à jour. Votre utilisation continue des Services après publication constitue votre acceptation des conditions révisées. Si vous n'acceptez pas les conditions modifiées, vous devez cesser d'utiliser les Services et pouvez fermer votre compte.",
-      },
-      {
-        title: "3. Éligibilité",
-        body:
-          "Les Services ne sont pas destinés aux enfants. Vous devez avoir au moins dix-huit (18) ans pour utiliser GoCheque. Si nous déterminons qu'un utilisateur est mineur, nous pouvons résilier son accès. Les Services sont pour votre usage personnel ou professionnel propre ; vous ne pouvez pas les revendre, les louer ni les fournir à des tiers, sauf autorisation expresse.",
-      },
-      {
-        title: "4. Confidentialité",
-        body:
-          "L'utilisation des Services est également régie par notre politique de confidentialité publiée sur le Site. En utilisant GoCheque, vous consentez à la collecte et à l'utilisation de vos renseignements personnels conformément à cette politique et aux lois applicables au Canada.",
-      },
-      {
-        title: "5. Compte, inscription et sécurité",
-        body:
-          "Pour acheter des crédits et imprimer des chèques, vous devez créer un compte et fournir des renseignements exacts, complets et à jour. Vous devez maintenir ces renseignements à jour.\n\nVous êtes responsable de la confidentialité de vos identifiants de connexion et de toute activité sur votre compte. Avisez-nous immédiatement de toute utilisation non autorisée ou suspectée. Vous êtes responsable de tous les frais et de toutes les actions effectuées via votre compte.\n\nVous devez mettre en place des mesures de sécurité adéquates pour protéger vos renseignements bancaires et éviter l'émission de chèques non autorisés.",
-      },
-      {
-        title: "6. Utilisation acceptable",
-        body:
-          "En utilisant les Services, vous acceptez de ne pas :\n\n• compromettre la sécurité ou l'intégrité des systèmes de GoCheque ou de ses hébergeurs ;\n• utiliser les Services d'une manière qui nuit à leur fonctionnement ou à celui d'autres utilisateurs ;\n• tenter d'accéder sans autorisation à des données ou systèmes ;\n• transmettre du contenu illégal, offensant, nuisible ou portant atteinte aux droits de tiers ;\n• copier, décompiler, désassembler ou tenter d'extraire le code source de l'Application, sauf dans la mesure strictement permise par la loi ;\n• utiliser des robots, scrapers ou outils similaires sur le Site sans autorisation écrite.\n\nNous pouvons suspendre ou résilier votre compte en cas de violation.",
-      },
-      {
-        title: "7. Services d'impression de chèques et vos responsabilités",
-        body:
-          "Les chèques sont créés à partir des informations que vous saisissez dans votre compte GoCheque. Vous êtes seul responsable de l'exactitude des renseignements, de l'autorisation d'émettre chaque chèque et de la conformité de son utilisation avec les règles de votre institution financière.\n\nGoCheque ne suit pas vos chèques, vos paiements ni vos comptes bancaires au-delà de ce qui est nécessaire pour fournir le service (compte utilisateur, crédits, historique de transactions). Nous ne sommes pas responsables de l'émission, de l'impression ou de l'utilisation d'un chèque non autorisé, ni de tout rejet de dépôt, pénalité bancaire ou perte financière en découlant.\n\nVous reconnaissez que l'impression à domicile sur papier ordinaire ne produit pas d'encre magnétique MICR et que la mise en page CPA 006 fournie est adaptée au dépôt mobile, non au dépôt en succursale. GoCheque ne garantit pas que votre banque acceptera un chèque imprimé via le service.",
-      },
-      {
-        title: "8. Avertissement — fraude et chèques contrefaits",
-        body:
-          "Il est strictement interdit d'utiliser GoCheque pour créer de faux chèques, des chèques contrefaits, trompeurs ou frauduleux. La fraude par chèque est un délit grave au Canada et peut entraîner des poursuites civiles et criminelles.\n\nNous prenons la fraude au sérieux et pouvons surveiller l'activité des comptes par des moyens manuels ou automatisés. Si une activité frauduleuse est détectée, nous pouvons suspendre ou résilier immédiatement et définitivement votre accès, sans remboursement, et coopérer avec les autorités compétentes. Cette décision est finale.",
-      },
-      {
-        title: "9. Crédits, frais, taxes et remboursements",
-        body:
-          "L'impression d'un chèque consomme un crédit. Les tarifs sont affichés sur le Site et peuvent être modifiés. En cas de changement de prix, nous nous efforcerons de vous en aviser au moins trente (30) jours à l'avance lorsque la loi l'exige ; votre utilisation continue après l'entrée en vigueur du nouveau tarif constitue votre acceptation.\n\nLes crédits sont achetés via Stripe, notre processeur de paiement tiers. Les prix sont indiqués en dollars canadiens (CAD), sauf indication contraire. Les taxes applicables (TPS/TVQ, TVH, etc.) peuvent s'ajouter selon votre juridiction.\n\nPolitique de remboursement :\n• Les crédits sont des biens numériques ajoutés à votre compte immédiatement après l'achat.\n• Les crédits achetés sont non transférables et, en règle générale, non remboursables une fois livrés sur votre compte.\n• Aucun remboursement n'est accordé pour les crédits non utilisés ou pour une impression déjà consommée.\n• Nous pouvons accorder un remboursement ou un crédit compensatoire en cas d'erreur de facturation avérée, de double paiement ou de problème technique imputable à GoCheque, à notre discrétion et conformément à la loi applicable.\n• Pour toute demande de remboursement, contactez info@gocheque.ca dans les trente (30) jours suivant l'achat en indiquant votre courriel de compte et la date de transaction.\n\nMalgré le soin apporté à la description des Services, des erreurs typographiques ou de prix peuvent survenir ; nous nous réservons le droit de les corriger.",
-      },
-      {
-        title: "10. Propriété intellectuelle",
-        body:
-          "Le Site, la marque GoCheque, l'Application, les interfaces, le code et tout contenu fourni par GoCheque (le « Contenu ») sont protégés par les lois sur la propriété intellectuelle. Sauf licence expresse ci-dessous, aucun droit ne vous est accordé sur ce Contenu.\n\nLes informations de chèque que vous saisissez demeurent sous votre responsabilité. GoCheque ne revendique aucun droit de propriété sur le contenu de vos chèques saisi dans l'éditeur, qui est traité localement dans votre navigateur.",
-      },
-      {
-        title: "11. Licence limitée",
-        body:
-          "GoCheque vous accorde une licence limitée, révocable, non exclusive et non transférable pour accéder aux Services et les utiliser conformément aux présentes conditions, uniquement pour votre usage personnel ou professionnel interne. Vous ne pouvez pas modifier, reproduire, distribuer ou exploiter commercialement le Contenu sans autorisation écrite préalable. Toute utilisation non autorisée peut entraîner la résiliation de votre compte.",
-      },
-      {
-        title: "12. Disponibilité et sécurité du service",
-        body:
-          "Nous déployons des efforts raisonnables pour maintenir un service fiable et sécurisé. Toutefois, aucun système n'est parfaitement sécurisé ou disponible en permanence. Internet comporte des risques inhérents et nous ne pouvons garantir une disponibilité ininterrompue ni une sécurité absolue des données.\n\nEn utilisant GoCheque, vous acceptez ces risques. Vous reconnaissez que les renseignements bancaires saisis dans l'éditeur sont sous votre contrôle dans votre navigateur et que vous êtes responsable de la protection de votre appareil et de votre session.",
-      },
-      {
-        title: "13. Services tiers",
-        body:
-          "Les Services peuvent intégrer ou renvoyer vers des services tiers, notamment Stripe pour les paiements et Supabase pour l'authentification. Votre utilisation de ces services est régie par leurs propres conditions et politiques. GoCheque n'est pas responsable des services tiers ni de leurs pratiques en matière de données.",
-      },
-      {
-        title: "14. Exclusion de garanties",
-        body:
-          "DANS LA MESURE PERMISE PAR LA LOI, LES SERVICES ET LE CONTENU SONT FOURNIS « TELS QUELS » ET « SELON DISPONIBILITÉ », SANS GARANTIE D'AUCUNE SORTE, EXPRESSE OU IMPLICITE, NOTAMMENT QUANT À LA QUALITÉ MARCHANDE, L'ADÉQUATION À UN USAGE PARTICULIER, L'ABSENCE D'ERREUR, LA SÉCURITÉ, L'ACCEPTATION DES CHÈQUES PAR UNE BANQUE OU LA CONFORMITÉ À TOUTE OBLIGATION LÉGALE DE VOTRE PART.\n\nCertaines juridictions n'autorisent pas l'exclusion de garanties implicites ; dans ce cas, certaines exclusions peuvent ne pas s'appliquer à vous.",
-      },
-      {
-        title: "15. Limitation de responsabilité et indemnisation",
-        body:
-          "DANS LA MESURE PERMISE PAR LA LOI, GOCHÈQUE ET SES EXPLOITANTS NE SERONT PAS RESPONSABLES DES DOMMAGES INDIRECTS, SPÉCIAUX, ACCESSOIRES, PUNITIFS OU CONSÉCUTIFS, NI DES PERTES DE PROFITS, DE DONNÉES, DE REVENUS OU DE CLIENTÈLE, DÉCOULANT DE L'UTILISATION OU DE L'IMPOSSIBILITÉ D'UTILISER LES SERVICES.\n\nNotre responsabilité totale cumulative pour toute réclamation liée aux Services est limitée au montant que vous avez payé à GoCheque au cours des douze (12) mois précédant l'événement à l'origine de la réclamation.\n\nVous acceptez de défendre, d'indemniser et de dégager de toute responsabilité GoCheque contre toute réclamation, perte ou frais (y compris les honoraires raisonnables d'avocat) découlant de votre utilisation des Services, de vos chèques, de vos données ou de toute violation des présentes conditions.",
-      },
-      {
-        title: "16. Résiliation",
-        body:
-          "Vous pouvez cesser d'utiliser les Services à tout moment. Nous pouvons suspendre ou résilier votre accès, avec ou sans préavis, si vous violez ces conditions, en cas de fraude suspectée ou pour toute autre raison légitime. En cas de résiliation, les dispositions qui, par leur nature, doivent survivre (responsabilité, propriété intellectuelle, droit applicable) demeureront en vigueur.",
-      },
-      {
-        title: "17. Droit applicable",
-        body:
-          "Les présentes conditions sont régies par les lois du Canada et les lois applicables dans votre province ou territoire de résidence, sous réserve des dispositions impératives de protection des consommateurs qui pourraient s'appliquer à vous.",
-      },
-      {
-        title: "18. Dispositions générales",
-        body:
-          "Si une disposition des présentes conditions est jugée invalide ou inapplicable, les autres dispositions demeurent en vigueur. Ces conditions constituent l'intégralité de l'accord entre vous et GoCheque concernant les Services et remplacent tout accord antérieur sur le même objet. GoCheque peut céder ses droits en vertu des présentes ; vous ne pouvez pas céder vos droits sans notre consentement écrit préalable.",
-      },
-      {
-        title: "19. Contact",
-        body:
-          "Pour toute question concernant ces conditions, écrivez à info@gocheque.ca.",
-      },
-    ],
-  },
+  privacy: privacyFr,
+  terms: termsFr,
+
   auth: {
     signOutConfirm: "Êtes-vous certain de vouloir vous déconnecter ?",
     cancel: "Annuler",

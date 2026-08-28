@@ -33,9 +33,7 @@ export default async function ContactPage({
   if (!isValidLocale(localeParam)) notFound();
 
   const locale = localeParam as Locale;
-  const { contact } = getDictionary(locale);
+  const dict = getDictionary(locale);
 
-  return (
-    <ContactPageContent title={contact.title} message={contact.message} />
-  );
+  return <ContactPageContent locale={locale} dictionary={dict} />;
 }

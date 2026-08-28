@@ -2,10 +2,13 @@
 
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
-import { useLocale } from "@/components/providers/locale-provider";
+import type { Dictionary } from "@/lib/i18n/dictionary-type";
 
-export function HomeFaqSection() {
-  const { t, dictionary } = useLocale();
+type HomeFaqSectionProps = {
+  dictionary: Dictionary;
+};
+
+export function HomeFaqSection({ dictionary }: HomeFaqSectionProps) {
   const [openId, setOpenId] = useState<string | null>(null);
 
   function toggle(id: string) {
@@ -13,19 +16,19 @@ export function HomeFaqSection() {
   }
 
   return (
-    <section id={dictionary.anchors.faq} className="bg-transparent py-20">
-      <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+    <section id={dictionary.anchors.faq} className="border-t border-[#eeeae3] bg-[#fbfaf7] py-24 sm:py-28">
+      <div className="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8">
         <div className="text-center">
-          <p className="text-sm font-semibold uppercase tracking-wide text-[#ff6633]">
-            {t("faq.label")}
+          <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#ff6633]">
+            {dictionary.faq.label}
           </p>
-          <h2 className="mt-2 text-3xl font-bold text-slate-900 sm:text-4xl">
-            {t("faq.title")}
+          <h2 className="mt-3 text-3xl font-semibold tracking-tight text-[#0b1f33] sm:text-4xl">
+            {dictionary.faq.title}
           </h2>
-          <p className="mt-3 text-base text-slate-500">{t("faq.subtitle")}</p>
+          <p className="mt-4 text-base leading-relaxed text-[#5b6b7c]">{dictionary.faq.subtitle}</p>
         </div>
 
-        <ul className="mt-10 space-y-3">
+        <ul className="mt-14 divide-y divide-[#e7e4de] border-y border-[#e7e4de]">
           {dictionary.faq.items.map((item) => {
             const isOpen = openId === item.id;
 
@@ -37,17 +40,13 @@ export function HomeFaqSection() {
                   onClick={() => toggle(item.id)}
                   aria-expanded={isOpen}
                   aria-controls={`faq-answer-${item.id}`}
-                  className={`flex w-full items-center justify-between gap-4 rounded-2xl border bg-white px-5 py-4 text-left shadow-sm transition hover:border-[#ff6633]/25 hover:shadow-md ${
-                    isOpen
-                      ? "border-[#ff6633]/40 ring-2 ring-[#ff6633]/10"
-                      : "border-slate-200/80"
-                  }`}
+                  className="flex w-full items-center justify-between gap-4 py-5 text-left"
                 >
-                  <span className="text-sm font-semibold text-slate-900 sm:text-base">
+                  <span className="text-sm font-medium text-[#0b1f33] sm:text-base">
                     {item.question}
                   </span>
                   <ChevronDown
-                    className={`h-5 w-5 shrink-0 text-[#ff6633] transition-transform duration-200 ${
+                    className={`h-4 w-4 shrink-0 text-[#8a8073] transition-transform duration-200 ${
                       isOpen ? "rotate-180" : ""
                     }`}
                     aria-hidden
@@ -63,7 +62,7 @@ export function HomeFaqSection() {
                   }`}
                 >
                   <div className="overflow-hidden">
-                    <p className="px-5 pb-4 pt-1 text-sm leading-relaxed text-slate-600">
+                    <p className="pb-5 pr-8 text-sm leading-relaxed text-[#5b6b7c]">
                       {item.answer}
                     </p>
                   </div>

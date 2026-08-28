@@ -33,10 +33,13 @@ export default async function PrivacyPage({
   if (!isValidLocale(localeParam)) notFound();
 
   const locale = localeParam as Locale;
-  const { privacy } = getDictionary(locale);
+  const dict = getDictionary(locale);
+  const { privacy } = dict;
 
   return (
     <LegalDocumentPage
+      locale={locale}
+      dictionary={dict}
       title={privacy.title}
       lastUpdated={privacy.lastUpdated}
       intro={privacy.intro}

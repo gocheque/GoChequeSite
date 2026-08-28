@@ -7,6 +7,8 @@ import { getAuthUser } from "@/lib/auth/get-user";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { isValidLocale, localizedPath, type Locale } from "@/lib/i18n/config";
 
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata({
   params,
 }: {
@@ -49,7 +51,7 @@ export default async function DashboardLayout({
       <AuthSessionSync />
       <StripeCheckoutReturnBoundary />
       <AppNavbar />
-      <main className="w-full px-4 pb-10 pt-28 sm:px-6 lg:px-8">{children}</main>
+      <main className="w-full px-4 pb-10 pt-24 sm:px-6 lg:px-8">{children}</main>
     </div>
   );
 }

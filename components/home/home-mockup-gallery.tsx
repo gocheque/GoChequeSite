@@ -4,32 +4,20 @@ import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { useLocale } from "@/components/providers/locale-provider";
 
-const ALL_GALLERY_IMAGES = [
-  { src: "/GoCheque.png", altKey: "gallery.items.editor" as const },
-  { src: "/GoCheque2.png", altKey: "gallery.items.preview" as const },
-  { src: "/GoCheque3.png", altKey: "gallery.items.print" as const },
-  { src: "/GoCheque4.png", altKey: "gallery.items.dashboard" as const },
+const GALLERY_IMAGES = [
+  { src: "/gallery/gocheque-1.webp", altKey: "gallery.items.editor" as const },
+  { src: "/gallery/gocheque-2.webp", altKey: "gallery.items.preview" as const },
+  { src: "/gallery/gocheque-3.webp", altKey: "gallery.items.print" as const },
+  { src: "/gallery/gocheque-4.webp", altKey: "gallery.items.dashboard" as const },
 ] as const;
-
-type GalleryImage = (typeof ALL_GALLERY_IMAGES)[number];
 
 const SLIDE_INTERVAL_MS = 7000;
 const TRANSITION_MS = 1300;
-const GALLERY_IMAGE_WIDTH = 1600;
-const GALLERY_IMAGE_HEIGHT = 900;
-
-function probeImage(item: GalleryImage): Promise<GalleryImage | null> {
-  return new Promise((resolve) => {
-    const img = new window.Image();
-    img.onload = () => resolve(item);
-    img.onerror = () => resolve(null);
-    img.src = item.src;
-  });
-}
+const GALLERY_IMAGE_WIDTH = 1920;
+const GALLERY_IMAGE_HEIGHT = 980;
 
 export function HomeMockupGallery() {
   const { t, dictionary } = useLocale();
-  const [slides, setSlides] = useState<GalleryImage[]>([ALL_GALLERY_IMAGES[0]]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [reducedMotion, setReducedMotion] = useState(false);
 
@@ -42,40 +30,23 @@ export function HomeMockupGallery() {
   }, []);
 
   useEffect(() => {
-    let cancelled = false;
-
-    void Promise.all(ALL_GALLERY_IMAGES.map(probeImage)).then((results) => {
-      if (cancelled) return;
-
-      const available = results.filter(
-        (item): item is GalleryImage => item !== null,
-      );
-
-      setSlides(available.length > 0 ? available : [ALL_GALLERY_IMAGES[0]]);
-      setActiveIndex(0);
-    });
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  useEffect(() => {
-    if (slides.length <= 1) return;
+    if (GALLERY_IMAGES.length <= 1) return;
 
     const timer = window.setInterval(() => {
-      setActiveIndex((current) => (current + 1) % slides.length);
+      setActiveIndex((current) => (current + 1) % GALLERY_IMAGES.length);
     }, SLIDE_INTERVAL_MS);
 
     return () => window.clearInterval(timer);
-  }, [slides.length]);
+  }, []);
 
-  const safeIndex = useMemo(
-    () => (activeIndex < slides.length ? activeIndex : 0),
-    [activeIndex, slides.length],
+  const safeIndex = activeIndex % GALLERY_IMAGES.length;
+  const previousIndex =
+    (safeIndex - 1 + GALLERY_IMAGES.length) % GALLERY_IMAGES.length;
+  const mountedIndexes = useMemo(
+    () => new Set<number>([safeIndex, previousIndex]),
+    [previousIndex, safeIndex],
   );
-
-  const activeSlide = slides[safeIndex] ?? slides[0];
+  const activeSlide = GALLERY_IMAGES[safeIndex] ?? GALLERY_IMAGES[0];
   const transitionMs = reducedMotion ? 200 : TRANSITION_MS;
 
   return (
@@ -87,8 +58,8 @@ export function HomeMockupGallery() {
       <h2 id="gallery-heading" className="sr-only">
         {t("gallery.sectionLabel")}
       </h2>
-      <div className="relative mx-auto w-[min(100%,96rem)] px-3 sm:px-5 lg:px-8">
-        <div className="relative w-full overflow-hidden">
+      <div className="relative mx-auto w-[min(100%,72rem)] px-4 sm:px-6 lg:px-8">
+        <div className="relative w-full overflow-hidden rounded-sm border border-[#eeeae3] bg-white">
           <div className="pointer-events-none w-full" aria-hidden>
             <Image
               src={activeSlide.src}
@@ -96,12 +67,14 @@ export function HomeMockupGallery() {
               width={GALLERY_IMAGE_WIDTH}
               height={GALLERY_IMAGE_HEIGHT}
               className="invisible block h-auto w-full select-none"
-              sizes="(max-width: 96rem) 100vw, 96rem"
+              sizes="(max-width: 72rem) 100vw, 72rem"
               draggable={false}
             />
           </div>
 
-          {slides.map((item, index) => {
+          {GALLERY_IMAGES.map((item, index) => {
+            if (!mountedIndexes.has(index)) return null;
+
             const isActive = index === safeIndex;
 
             return (
@@ -129,8 +102,9 @@ export function HomeMockupGallery() {
                   width={GALLERY_IMAGE_WIDTH}
                   height={GALLERY_IMAGE_HEIGHT}
                   className="block h-auto w-full select-none"
-                  sizes="(max-width: 96rem) 100vw, 96rem"
+                  sizes="(max-width: 72rem) 100vw, 72rem"
                   priority={index === 0}
+                  fetchPriority={index === 0 ? "high" : "low"}
                   loading={index === 0 ? undefined : "lazy"}
                   draggable={false}
                 />
@@ -139,24 +113,22 @@ export function HomeMockupGallery() {
           })}
         </div>
 
-        {slides.length > 1 && (
-          <div className="mt-7 flex justify-center gap-2.5">
-            {slides.map((item, index) => (
-              <button
-                key={item.src}
-                type="button"
-                aria-label={t(item.altKey)}
-                aria-current={index === safeIndex ? "true" : undefined}
-                onClick={() => setActiveIndex(index)}
-                className={`h-1.5 rounded-full transition-all duration-300 ${
-                  index === safeIndex
-                    ? "w-6 bg-slate-800"
-                    : "w-1.5 bg-slate-300 hover:bg-slate-400"
-                }`}
-              />
-            ))}
-          </div>
-        )}
+        <div className="mt-7 flex justify-center gap-2.5">
+          {GALLERY_IMAGES.map((item, index) => (
+            <button
+              key={item.src}
+              type="button"
+              aria-label={t(item.altKey)}
+              aria-current={index === safeIndex ? "true" : undefined}
+              onClick={() => setActiveIndex(index)}
+              className={`h-1.5 rounded-full transition-all duration-300 ${
+                index === safeIndex
+                  ? "w-6 bg-slate-800"
+                  : "w-1.5 bg-slate-300 hover:bg-slate-400"
+              }`}
+            />
+          ))}
+        </div>
       </div>
     </section>
   );
