@@ -375,29 +375,42 @@ export function AuthModal() {
           : t("auth.signupTitle");
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-      <button
-        type="button"
-        aria-label={t("common.close")}
-        className="absolute inset-0 bg-slate-900/45 backdrop-blur-sm"
+    <div className="marketing-shell fixed inset-0 z-[100] flex items-center justify-center p-4">
+      <div
+        className="absolute inset-0 bg-[#0b1f33]/40 backdrop-blur-sm"
         onClick={closeModal}
+        aria-hidden
       />
 
-      <div className="relative max-h-[90vh] w-full max-w-md overflow-y-auto rounded-2xl border border-slate-200/80 bg-white shadow-2xl">
-        <div className="border-b border-slate-100 px-6 pb-5 pt-6">
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="auth-modal-title"
+        className="relative z-10 max-h-[90vh] w-full max-w-md overflow-y-auto rounded-lg border border-[#e7e4de] bg-white shadow-[0_24px_80px_rgba(11,31,51,0.18)]"
+      >
+        <div className="relative border-b border-slate-100 px-6 pb-5 pt-6">
           {(pendingUserCheckout || traiterFlowActive) && (
             <button
               type="button"
               onClick={closeModal}
-              className="absolute left-5 top-5 text-sm font-semibold text-slate-500 transition hover:text-[#ff6633]"
+              className="absolute left-4 top-3 z-20 min-h-11 text-sm font-medium text-[#5c6b7a] transition hover:text-[#0b1f33]"
             >
               {t("auth.back")}
             </button>
           )}
 
-          <ModalCloseButton onClick={closeModal} className="absolute right-4 top-4" />
+          <ModalCloseButton
+            onClick={closeModal}
+            label={t("common.close")}
+            className="absolute right-2 top-2 h-11 w-11"
+          />
 
-          <h2 className="text-center text-2xl font-bold text-slate-900">{title}</h2>
+          <h2
+            id="auth-modal-title"
+            className="text-center text-2xl font-semibold tracking-tight text-[#0b1f33]"
+          >
+            {title}
+          </h2>
           <p className="mt-2 text-center text-sm text-slate-500">{subtitle}</p>
 
           {authStep === "form" && (

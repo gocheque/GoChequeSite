@@ -117,21 +117,21 @@ export function ProcessModeModal() {
   }
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+    <div className="marketing-shell fixed inset-0 z-[100] flex items-center justify-center p-4">
       <button
         type="button"
         aria-label={t("common.close")}
-        className="absolute inset-0 bg-slate-900/45 backdrop-blur-sm"
+        className="absolute inset-0 bg-[#0b1f33]/40 backdrop-blur-sm"
         onClick={closeModal}
       />
 
-      <div className="relative w-full max-w-md overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-2xl">
-        <div className="border-b border-slate-100 px-8 pb-6 pt-7 text-center">
+      <div className="relative w-full max-w-md overflow-hidden rounded-lg border border-[#e7e4de] bg-white shadow-[0_24px_80px_rgba(11,31,51,0.18)]">
+        <div className="border-b border-[#e7e4de] px-8 pb-6 pt-7 text-center">
           <ModalCloseButton onClick={closeModal} className="absolute right-5 top-5" />
-          <h2 className="text-2xl font-bold text-slate-900">
+          <h2 className="text-2xl font-semibold tracking-tight text-[#0b1f33]">
             {t("process.titleCheque")}
           </h2>
-          <p className="mx-auto mt-2 max-w-sm text-base leading-relaxed text-slate-500">
+          <p className="mx-auto mt-2 max-w-sm text-base leading-relaxed text-[#5c6b7a]">
             {isResolvingBalance
               ? t("credits.loading")
               : hasCredits
@@ -144,26 +144,26 @@ export function ProcessModeModal() {
 
         <div className="space-y-6 px-8 py-8">
           {isResolvingBalance ? (
-            <div className="flex flex-col items-center justify-center gap-3 py-8 text-slate-500">
-              <Loader2 className="h-8 w-8 animate-spin text-[#ff6633]" />
+            <div className="flex flex-col items-center justify-center gap-3 py-8 text-[#5c6b7a]">
+              <Loader2 className="h-8 w-8 animate-spin text-[#0b1f33]" />
             </div>
           ) : hasCredits ? (
             <>
-              <div className="rounded-xl border border-orange-100 bg-orange-50/50 px-4 py-4 text-center">
-                <p className="text-sm text-slate-600">{t("process.currentBalance")}</p>
-                <p className="mt-1 text-2xl font-bold text-[#ff6633]">
+              <div className="rounded-md border border-[#e7e4de] bg-[#f6f4f0] px-4 py-4 text-center">
+                <p className="text-sm text-[#5c6b7a]">{t("process.currentBalance")}</p>
+                <p className="mt-1 text-2xl font-semibold text-[#0b1f33]">
                   {displayBalance! > 1
                     ? t("credits.balancePlural", { count: displayBalance! })
                     : t("credits.balance", { count: displayBalance! })}
                 </p>
-                <p className="mt-2 text-xs text-slate-500">{t("process.oneCreditOnePrint")}</p>
+                <p className="mt-2 text-xs text-[#8a8074]">{t("process.oneCreditOnePrint")}</p>
               </div>
 
               <button
                 type="button"
                 disabled={consumeLoading}
                 onClick={() => void handlePrint()}
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#ff6633] py-3.5 text-base font-semibold text-white transition hover:bg-[#e05526] disabled:cursor-not-allowed disabled:opacity-50"
+                className="flex w-full items-center justify-center gap-2 rounded-md bg-[#0b1f33] py-3.5 text-base font-semibold text-white transition hover:bg-[#16324c] disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {consumeLoading ? (
                   <Loader2 className="h-5 w-5 animate-spin" />
@@ -182,20 +182,20 @@ export function ProcessModeModal() {
               </button>
 
               {consumeError && (
-                <p className="rounded-lg bg-red-50 px-3 py-2 text-center text-sm text-red-600">
+                <p className="rounded-md bg-red-50 px-3 py-2 text-center text-sm text-red-700">
                   {consumeError}
                 </p>
               )}
             </>
           ) : (
             <>
-              <p className="rounded-xl border border-dashed border-slate-200 bg-slate-50/50 px-4 py-3 text-center text-sm text-slate-500">
+              <p className="rounded-md border border-dashed border-[#e7e4de] bg-[#f6f4f0] px-4 py-3 text-center text-sm text-[#5c6b7a]">
                 {t("process.noCredits")}
               </p>
               <button
                 type="button"
                 onClick={continueToPurchase}
-                className="w-full rounded-xl border border-[#ff6633]/30 bg-orange-50/60 px-6 py-4 text-base font-semibold text-[#ff6633] transition hover:border-[#ff6633]/50 hover:bg-orange-50"
+                className="w-full rounded-md border border-[#e7e4de] bg-white px-6 py-4 text-base font-semibold text-[#0b1f33] transition hover:border-[#0b1f33]/35"
               >
                 {t("process.buyCredits")}
               </button>

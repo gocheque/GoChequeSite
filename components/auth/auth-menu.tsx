@@ -26,21 +26,21 @@ function SignOutConfirmModal({
   if (!open || typeof document === "undefined") return null;
 
   return createPortal(
-    <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
-      <button
-        type="button"
-        aria-label={t("common.close")}
-        className="absolute inset-0 bg-slate-900/45 backdrop-blur-sm"
+    <div className="marketing-shell fixed inset-0 z-[200] flex items-center justify-center p-4">
+      <div
+        className="absolute inset-0 bg-[#0b1f33]/40 backdrop-blur-sm"
         onClick={() => !signingOut && onCancel()}
+        aria-hidden
       />
-      <div className="relative w-full max-w-sm rounded-2xl border border-slate-200/80 bg-white p-6 shadow-2xl">
+      <div className="relative z-10 w-full max-w-sm rounded-lg border border-[#e7e4de] bg-white p-6 shadow-[0_24px_80px_rgba(11,31,51,0.18)]">
         <ModalCloseButton
           onClick={onCancel}
           disabled={signingOut}
-          className="absolute right-4 top-4"
+          label={t("common.close")}
+          className="absolute right-2 top-2 h-11 w-11"
         />
 
-        <h2 className="pr-8 text-center text-xl text-slate-900">
+        <h2 className="pr-8 text-center text-xl font-semibold tracking-tight text-[#0b1f33]">
           {t("auth.signOutConfirm")}
         </h2>
 
@@ -49,7 +49,7 @@ function SignOutConfirmModal({
             type="button"
             disabled={signingOut}
             onClick={onCancel}
-            className="w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-slate-50 disabled:opacity-50"
+            className="w-full rounded-md border border-[#e7e4de] px-4 py-2.5 text-sm font-medium text-[#0b1f33] transition hover:bg-[#0b1f33]/[0.03] disabled:opacity-50"
           >
             {t("auth.cancel")}
           </button>
@@ -57,7 +57,7 @@ function SignOutConfirmModal({
             type="button"
             disabled={signingOut}
             onClick={onConfirm}
-            className="w-full rounded-lg bg-[#ff6633] px-4 py-2.5 text-sm font-medium text-white transition hover:bg-[#e05526] disabled:opacity-50"
+            className="w-full rounded-md bg-[#0b1f33] px-4 py-2.5 text-sm font-medium text-white transition hover:bg-[#16324c] disabled:opacity-50"
           >
             {signingOut ? t("auth.signingOut") : t("auth.signOutAction")}
           </button>
@@ -69,16 +69,16 @@ function SignOutConfirmModal({
 }
 
 function menuLinkClass(isActive: boolean) {
-  return `block rounded-lg px-3 py-2.5 text-sm transition ${
+  return `block rounded-md px-3 py-2.5 text-sm transition ${
     isActive
-      ? "bg-orange-50 font-medium text-[#ff6633]"
-      : "text-slate-700 hover:bg-slate-50"
+      ? "bg-[#0b1f33]/5 font-medium text-[#0b1f33]"
+      : "text-[#3d4f63] hover:bg-[#0b1f33]/[0.04] hover:text-[#0b1f33]"
   }`;
 }
 
-/** Même footprint que le sélecteur FR/EN (h-8 / rounded-lg). */
+/** Même footprint que le sélecteur FR/EN (h-8 / rounded-md). */
 const headerIconBtnClass =
-  "flex size-8 shrink-0 items-center justify-center rounded-lg border border-slate-200 bg-white p-0 leading-none transition hover:border-slate-300 hover:bg-slate-50";
+  "flex size-8 shrink-0 items-center justify-center rounded-md border border-[#e7e4de] bg-white p-0 leading-none transition hover:border-[#0b1f33]/30 hover:bg-[#0b1f33]/[0.03]";
 
 export function AuthMenu() {
   const router = useRouter();
@@ -151,12 +151,12 @@ export function AuthMenu() {
       >
         <summary
           aria-label={t("nav.accountMenu")}
-          className={`${headerIconBtnClass} cursor-pointer list-none text-xs font-bold text-[#ff6633] hover:border-[#ff6633]/40`}
+          className={`${headerIconBtnClass} cursor-pointer list-none text-xs font-bold text-[#0b1f33]`}
         >
           {initial}
         </summary>
-        <div className="absolute right-0 z-50 mt-2 w-56 overflow-hidden rounded-xl border border-slate-100 bg-white shadow-xl">
-          <p className="border-b border-slate-100 px-4 py-3 text-xs text-slate-500">
+        <div className="absolute right-0 z-50 mt-2 w-56 overflow-hidden rounded-md border border-[#e7e4de] bg-white shadow-[0_16px_48px_rgba(11,31,51,0.12)]">
+          <p className="border-b border-[#e7e4de] px-4 py-3 text-xs text-[#5c6b7a]">
             {user.email}
           </p>
           <nav className="p-2">
@@ -170,7 +170,7 @@ export function AuthMenu() {
               </Link>
             ) : null}
 
-            <p className="px-3 pb-1 pt-2 text-[10px] font-semibold uppercase tracking-wide text-slate-400">
+            <p className="px-3 pb-1 pt-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#8a8074]">
               {t("nav.accountSection")}
             </p>
             <Link
@@ -188,12 +188,12 @@ export function AuthMenu() {
               {t("nav.myCredits")}
             </Link>
 
-            <div className="my-2 border-t border-slate-100" />
+            <div className="my-2 border-t border-[#e7e4de]" />
 
             <button
               type="button"
               onClick={openSignOutModal}
-              className="w-full rounded-lg px-3 py-2.5 text-left text-sm text-slate-700 transition hover:bg-slate-50"
+              className="w-full rounded-md px-3 py-2.5 text-left text-sm text-[#3d4f63] transition hover:bg-[#0b1f33]/[0.04] hover:text-[#0b1f33]"
             >
               {t("nav.signOut")}
             </button>

@@ -1,8 +1,13 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ContactPageContent } from "@/components/legal/contact-page-content";
+import { JsonLd } from "@/components/seo/json-ld";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { isValidLocale, type Locale } from "@/lib/i18n/config";
+import {
+  buildOrganizationJsonLd,
+  buildWebPageJsonLd,
+} from "@/lib/seo/json-ld";
 import { buildPageMetadata } from "@/lib/seo/metadata";
 
 export async function generateMetadata({
@@ -33,9 +38,22 @@ export default async function ContactPage({
   if (!isValidLocale(localeParam)) notFound();
 
   const locale = localeParam as Locale;
-  const { contact } = getDictionary(locale);
+  const dict = getDictionary(locale);
 
   return (
-    <ContactPageContent title={contact.title} message={contact.message} />
+    <>
+      <JsonLd
+        data={[
+          buildOrganizationJsonLd(dict.contact.metaDescription),
+          buildWebPageJsonLd(
+            dict.contact.metaTitle,
+            dict.contact.metaDescription,
+            `/${locale}/contact`,
+            locale,
+          ),
+        ]}
+      />
+      <ContactPageContent locale={locale} dictionary={dict} />
+    </>
   );
 }

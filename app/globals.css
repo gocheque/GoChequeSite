@@ -12,6 +12,20 @@
   --font-mono: var(--font-comfortaa);
 }
 
+.marketing-shell {
+  font-family: var(--font-marketing), ui-sans-serif, system-ui, sans-serif;
+  color: #0b1f33;
+  background-color: #ffffff;
+  letter-spacing: -0.011em;
+}
+
+/* Isolate Comfortaa on the cheque canvas so dashboard Source Sans never restyles the face. */
+.cheque-face-host {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  letter-spacing: normal;
+  color: #000;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);

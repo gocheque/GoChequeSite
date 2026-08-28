@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { getSiteUrl, siteConfig } from "@/lib/seo/site";
+import { getSiteUrl } from "@/lib/seo/site";
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -16,6 +16,6 @@ export default function robots(): MetadataRoute.Robots {
       },
     ],
     sitemap: getSiteUrl("/sitemap.xml"),
-    host: siteConfig.url,
+    host: "gocheque.ca",
   };
 }

@@ -1,7 +1,8 @@
-"use client";
-
 import { HomeNavbar } from "@/components/home/home-navbar";
 import { HomeFooter } from "@/components/home/home-footer";
+import { SkipToContent } from "@/components/layout/skip-to-content";
+import type { Locale } from "@/lib/i18n/config";
+import type { Dictionary } from "@/lib/i18n/dictionary-type";
 
 export type LegalSection = {
   title: string;
@@ -9,6 +10,8 @@ export type LegalSection = {
 };
 
 type LegalDocumentPageProps = {
+  locale: Locale;
+  dictionary: Dictionary;
   title: string;
   lastUpdated: string;
   intro?: string;
@@ -16,6 +19,8 @@ type LegalDocumentPageProps = {
 };
 
 export function LegalDocumentPage({
+  locale,
+  dictionary,
   title,
   lastUpdated,
   intro,
@@ -23,34 +28,41 @@ export function LegalDocumentPage({
 }: LegalDocumentPageProps) {
   return (
     <>
+      <SkipToContent label={dictionary.nav.skipToContent} />
       <HomeNavbar />
-      <main className="mx-auto max-w-3xl px-4 pb-12 pt-28 sm:px-6 sm:pt-32 lg:pb-16 lg:pt-36">
-        <header className="border-b border-slate-100 pb-8">
-          <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+      <main
+        id="contenu"
+        className="mx-auto max-w-2xl px-4 pb-20 pt-28 sm:px-6 sm:pt-32 lg:pb-24"
+      >
+        <header className="border-b border-[#eeeae3] pb-10">
+          <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#8a8073]">
+            GoCheque
+          </p>
+          <h1 className="mt-3 text-3xl font-semibold tracking-tight text-[#0b1f33] sm:text-4xl">
             {title}
           </h1>
-          <p className="mt-3 text-sm text-slate-500">{lastUpdated}</p>
+          <p className="mt-4 text-sm text-[#8a8073]">{lastUpdated}</p>
           {intro ? (
-            <p className="mt-4 whitespace-pre-line text-base leading-relaxed text-slate-600">
+            <p className="mt-6 whitespace-pre-line text-base leading-[1.7] text-[#3d4f63]">
               {intro}
             </p>
           ) : null}
         </header>
 
-        <div className="divide-y divide-slate-100">
+        <div className="divide-y divide-[#eeeae3]">
           {sections.map((section) => (
-            <section key={section.title} className="py-8 first:pt-8">
-              <h2 className="text-lg font-semibold text-slate-900">
+            <section key={section.title} className="py-10 first:pt-10">
+              <h2 className="text-lg font-semibold tracking-tight text-[#0b1f33]">
                 {section.title}
               </h2>
-              <p className="mt-3 whitespace-pre-line text-sm leading-relaxed text-slate-600 sm:text-base">
+              <p className="mt-4 whitespace-pre-line text-[0.95rem] leading-[1.75] text-[#3d4f63]">
                 {section.body}
               </p>
             </section>
           ))}
         </div>
       </main>
-      <HomeFooter />
+      <HomeFooter locale={locale} dictionary={dictionary} />
     </>
   );
 }

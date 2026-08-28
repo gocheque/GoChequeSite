@@ -10,6 +10,7 @@ import {
   getSiteAccessPassword,
   isSiteAccessLocked,
 } from "@/lib/site/access-lock";
+import { isPreviewOrLocalHost, isProductionPublicHost } from "@/lib/seo/hosts";
 import { updateSession } from "@/lib/supabase/middleware";
 
 function withLocaleCookie(response: NextResponse, locale: Locale): NextResponse {
@@ -18,6 +19,21 @@ function withLocaleCookie(response: NextResponse, locale: Locale): NextResponse 
     maxAge: 60 * 60 * 24 * 365,
     sameSite: "lax",
   });
+  return response;
+}
+
+function requestHost(request: NextRequest): string {
+  return (
+    request.headers.get("x-forwarded-host")?.split(",")[0]?.trim() ||
+    request.headers.get("host")?.trim() ||
+    ""
+  );
+}
+
+function withPreviewRobots(response: NextResponse, host: string): NextResponse {
+  if (isPreviewOrLocalHost(host) && host.includes("vercel.app")) {
+    response.headers.set("X-Robots-Tag", "noindex, nofollow");
+  }
   return response;
 }
 
@@ -75,24 +91,25 @@ function isAuthBypassPath(pathname: string): boolean {
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  const host = requestHost(request);
   const bypassAuth = isAuthBypassPath(pathname);
+  const onProduction = isProductionPublicHost(host);
 
-  if (isSiteAccessLocked() && !bypassAuth) {
+  if (isSiteAccessLocked() && !bypassAuth && !onProduction) {
     const password = getSiteAccessPassword()!;
     if (!isAuthorizedPreview(request, password)) {
       return unauthorizedPreview();
     }
   }
 
-  // /fr/manifest.webmanifest → servir le fichier racine (évite 401 + 404)
   if (isRootPublicFile(pathname)) {
     const bare = stripLocalePrefix(pathname);
     if (bare !== pathname) {
       const url = request.nextUrl.clone();
       url.pathname = bare;
-      return NextResponse.rewrite(url);
+      return withPreviewRobots(NextResponse.rewrite(url), host);
     }
-    return NextResponse.next();
+    return withPreviewRobots(NextResponse.next(), host);
   }
 
   if (
@@ -100,7 +117,7 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith("/auth") ||
     pathname.startsWith("/_next")
   ) {
-    return updateSession(request);
+    return withPreviewRobots(await updateSession(request), host);
   }
 
   const pathLocale = getLocaleFromPathname(pathname);
@@ -108,7 +125,7 @@ export async function middleware(request: NextRequest) {
   if (pathLocale) {
     const response = await updateSession(request);
     response.headers.set("x-locale", pathLocale);
-    return withLocaleCookie(response, pathLocale);
+    return withPreviewRobots(withLocaleCookie(response, pathLocale), host);
   }
 
   const preferredLocale = getPreferredLocale(
@@ -121,11 +138,11 @@ export async function middleware(request: NextRequest) {
   url.pathname = localizedPath(preferredLocale, suffix);
 
   const response = NextResponse.redirect(url);
-  return withLocaleCookie(response, preferredLocale);
+  return withPreviewRobots(withLocaleCookie(response, preferredLocale), host);
 }
 
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ttf)$).*)",
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|avif|ico|ttf)$).*)",
   ],
 };

@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowRight } from "lucide-react";
 import { AppLogo } from "@/components/brand/app-logo";
 import { HeroMicrMarquee } from "@/components/home/hero-micr-marquee";
 import { useAuth } from "@/components/providers/auth-provider";
@@ -25,59 +24,54 @@ export function HomeHero() {
   }
 
   return (
-    <section className="relative px-4 pb-6 pt-28 sm:px-6 sm:pb-8 sm:pt-32 lg:px-8 lg:pt-36">
-      <div className="mx-auto max-w-5xl text-center">
-        <div className="mb-8 flex justify-center">
+    <section className="relative px-4 pb-10 pt-28 sm:px-6 sm:pb-14 sm:pt-32 lg:px-8 lg:pt-36">
+      <div className="mx-auto max-w-3xl text-center">
+        <div className="mb-10 flex justify-center">
           <AppLogo
             alt={t("hero.logoAlt")}
             priority
-            className="h-16 w-auto max-w-[min(100%,20rem)] object-contain sm:h-20 sm:max-w-[24rem] lg:h-24 lg:max-w-[28rem]"
+            className="h-14 w-auto max-w-[min(100%,16rem)] object-contain sm:h-16 sm:max-w-[18rem]"
           />
         </div>
 
         <h1
           className={
             isFrench
-              ? "mx-auto max-w-5xl text-[2.35rem] font-bold leading-[1.08] tracking-tight text-slate-900 min-[480px]:text-5xl sm:text-6xl lg:text-[4.5rem]"
-              : "text-5xl font-bold leading-[1.08] tracking-tight text-slate-900 sm:text-6xl lg:text-[4.5rem]"
+              ? "break-words text-balance text-[clamp(1.7rem,1.05rem+2.6vw,2.85rem)] font-semibold leading-[1.18] tracking-[-0.03em] text-[#0b1f33]"
+              : "break-words text-balance text-[clamp(1.9rem,1.1rem+2.8vw,3.5rem)] font-semibold leading-[1.14] tracking-[-0.03em] text-[#0b1f33]"
           }
         >
-          <span
-            className={
-              isFrench
-                ? "block min-[480px]:whitespace-nowrap"
-                : "block sm:whitespace-nowrap"
-            }
-          >
+          <span className="block">
             {t("hero.titleBefore")}{" "}
             <span className="text-[#ff6633]">{t("hero.titleHighlight")}</span>
           </span>
-          <span className="mt-1 block sm:mt-2">{t("hero.titleAfter")}</span>
+          <span className="mt-2 block font-medium text-[#0b1f33]">
+            {t("hero.titleAfter")}
+          </span>
         </h1>
 
-        <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-slate-500 sm:text-lg">
+        <p className="mx-auto mt-6 max-w-md text-[1.05rem] leading-relaxed text-[#5b6b7c]">
           {t("hero.subtitle")}
         </p>
 
-        <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
+        <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
           <button
             type="button"
             onClick={handleTryNow}
             disabled={isLoading}
-            className="inline-flex w-full items-center justify-center rounded-full bg-slate-900 px-7 py-3.5 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:cursor-wait disabled:opacity-70 sm:w-auto"
+            className="inline-flex w-full items-center justify-center rounded-md bg-[#0b1f33] px-8 py-3.5 text-sm font-semibold text-white transition hover:bg-[#16324c] disabled:cursor-wait disabled:opacity-70 sm:w-auto"
           >
             {t("hero.ctaTry")}
           </button>
           <Link
             href={path(`/#${pricingAnchor}`)}
-            className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-7 py-3.5 text-sm font-semibold text-slate-900 transition hover:border-slate-300 hover:bg-slate-50 sm:w-auto"
+            className="inline-flex w-full items-center justify-center rounded-md border border-[#d9d4cc] bg-white px-8 py-3.5 text-sm font-semibold text-[#0b1f33] transition hover:border-[#0b1f33]/30 sm:w-auto"
           >
             {t("hero.ctaPricing")}
-            <ArrowRight className="h-4 w-4" aria-hidden />
           </Link>
         </div>
 
-        <div className="mt-14 sm:mt-16">
+        <div className="mt-16 opacity-40 sm:mt-20">
           <HeroMicrMarquee />
         </div>
       </div>

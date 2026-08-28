@@ -29,11 +29,11 @@ export function ChequeSaveModal({
   }
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+    <div className="marketing-shell fixed inset-0 z-[100] flex items-center justify-center p-4">
       <button
         type="button"
         aria-label={t("common.close")}
-        className="absolute inset-0 bg-slate-900/45 backdrop-blur-sm"
+        className="absolute inset-0 bg-[#0b1f33]/40 backdrop-blur-sm"
         onClick={onClose}
       />
 
@@ -41,35 +41,35 @@ export function ChequeSaveModal({
         role="dialog"
         aria-modal="true"
         aria-labelledby="cheque-save-modal-title"
-        className="relative w-full max-w-md rounded-2xl border border-slate-200/80 bg-white p-6 shadow-2xl sm:p-8"
+        className="relative w-full max-w-md rounded-lg border border-[#e7e4de] bg-white p-6 shadow-[0_24px_80px_rgba(11,31,51,0.18)] sm:p-8"
       >
         <ModalCloseButton onClick={onClose} />
 
-        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-50 text-[#ff6633]">
+        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-md bg-[#0b1f33]/5 text-[#0b1f33]">
           <FloppyDiskIcon className="h-6 w-6" />
         </div>
 
         <h2
           id="cheque-save-modal-title"
-          className="mt-4 text-center text-xl font-bold text-slate-900"
+          className="mt-4 text-center text-xl font-semibold tracking-tight text-[#0b1f33]"
         >
           {saveFailed ? t("editor.save.failedTitle") : t("editor.save.savedTitle")}
         </h2>
 
         {saveFailed ? (
-          <p className="mt-3 text-center text-sm leading-relaxed text-slate-600">
+          <p className="mt-3 text-center text-sm leading-relaxed text-[#5c6b7a]">
             {t("editor.save.failedBody")}
           </p>
         ) : (
           <>
-            <p className="mt-3 text-center text-sm leading-relaxed text-slate-600">
+            <p className="mt-3 text-center text-sm leading-relaxed text-[#5c6b7a]">
               {t("editor.save.body1")}
             </p>
-            <p className="mt-3 text-center text-sm leading-relaxed text-slate-600">
+            <p className="mt-3 text-center text-sm leading-relaxed text-[#5c6b7a]">
               {t("editor.save.body2")}
             </p>
             {savedAt && (
-              <p className="mt-4 text-center text-xs text-slate-400">
+              <p className="mt-4 text-center text-xs text-[#8a8074]">
                 {t("editor.save.lastSaved", {
                   date: formatSavedAt(savedAt),
                 })}
@@ -81,7 +81,7 @@ export function ChequeSaveModal({
         <button
           type="button"
           onClick={onClose}
-          className="mt-6 w-full rounded-xl bg-[#ff6633] px-4 py-2.5 text-sm font-bold text-white transition hover:bg-[#e05526]"
+          className="mt-6 w-full rounded-md bg-[#0b1f33] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#16324c]"
         >
           {t("editor.save.confirm")}
         </button>
