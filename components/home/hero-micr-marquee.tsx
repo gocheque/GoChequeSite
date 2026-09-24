@@ -111,13 +111,12 @@ export function HeroMicrMarquee() {
   }, []);
 
   return (
-    <div
-      className="hero-micr-marquee mx-auto w-full max-w-4xl"
-      aria-hidden
-    >
-      {rows.map((row) => (
-        <MicrScrollRow key={row.id} row={row} animate={animate} />
-      ))}
+    <div className="mx-auto w-full max-w-3xl px-4" aria-hidden>
+      <div className="relative overflow-hidden rounded-full border border-slate-200/80 bg-white/80 py-2 shadow-xs backdrop-blur-xs">
+        <div className="hero-micr-marquee w-full">
+          <MicrScrollRow row={rows[0]} animate={animate} />
+        </div>
+      </div>
     </div>
   );
 }

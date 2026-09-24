@@ -1,4 +1,4 @@
-import { Comfortaa } from "next/font/google";
+import { Comfortaa, Inter } from "next/font/google";
 import { headers } from "next/headers";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -8,10 +8,17 @@ import { siteViewport } from "@/lib/seo/site";
 import { readSupabasePublicConfigFromEnv } from "@/lib/supabase/env";
 import "./globals.css";
 
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+  display: "swap",
+});
+
 const comfortaa = Comfortaa({
   variable: "--font-comfortaa",
   subsets: ["latin"],
   weight: ["400", "600", "700"],
+  display: "swap",
 });
 
 export const generateMetadata = buildRootMetadata;
@@ -36,7 +43,7 @@ export default async function RootLayout({
   return (
     <html lang={lang} suppressHydrationWarning>
       <body
-        className={`${comfortaa.variable} min-h-screen bg-white font-sans text-slate-900 antialiased`}
+        className={`${inter.variable} ${comfortaa.variable} min-h-screen bg-white font-sans text-slate-900 antialiased`}
       >
         {supabasePublic ? (
           <script

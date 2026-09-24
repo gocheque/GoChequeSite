@@ -68,7 +68,7 @@ export function ProcessModeModal() {
     return () => {
       cancelled = true;
     };
-  }, [processModeModalOpen, refreshBalance]);
+  }, [processModeModalOpen, refreshBalance, tokenBalance]);
 
   if (!processModeModalOpen) return null;
 

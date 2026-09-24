@@ -11,7 +11,6 @@ export type SupabasePublicConfig = {
 };
 
 declare global {
-  // eslint-disable-next-line no-var
   var __GOCHEQUE_SB__: SupabasePublicConfig | undefined;
 }
 

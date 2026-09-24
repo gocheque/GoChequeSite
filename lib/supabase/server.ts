@@ -22,5 +22,23 @@ export async function createClient() {
         }
       },
     },
+    global: {
+      fetch: async (input, init) => {
+        try {
+          return await fetch(input, init);
+        } catch {
+          return new Response(
+            JSON.stringify({
+              error: "supabase_unreachable",
+              message: "Serveur Supabase inaccessible",
+            }),
+            {
+              status: 503,
+              headers: { "Content-Type": "application/json" },
+            },
+          );
+        }
+      },
+    },
   });
 }

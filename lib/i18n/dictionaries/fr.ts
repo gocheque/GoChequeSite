@@ -31,19 +31,35 @@ export const dictionary = {
   },
   hero: {
     logoAlt: "GoCheque — Chèques bancaires canadiens, prêts à imprimer",
+    badge: "Standard officiel CPA 006 · Dépôt mobile bancaire",
     titleBefore: "Chèques bancaires",
     titleHighlight: "canadiens",
     titleAfter: "Prêts à imprimer",
     subtitle:
-      "Aucun papier spécial, aucune encre particulière, aucun logiciel compliqué.",
+      "Aucun papier spécial, aucune encre magnétique, aucun logiciel compliqué.",
     depositNoticeLead: "Dépôt mobile uniquement.",
     depositNoticeRest: "Non destiné au dépôt en succursale.",
-    ctaTry: "Essayez maintenant",
+    ctaTry: "Créer un chèque",
     ctaPricing: "Voir les tarifs",
+    trustPoints: {
+      noCard: "Sans carte de crédit requise",
+      private: "100 % confidentiel (zéro stockage serveur)",
+      banks: "Accepté par toutes les banques canadiennes",
+    },
   },
   gallery: {
     sectionLabel: "Aperçu du produit",
     label: "Découvrez l'éditeur GoCheque",
+    tabs: {
+      editor: "Éditeur intelligent",
+      editorDesc: "Saisie assistée & mise en page",
+      preview: "Aperçu CPA 006",
+      previewDesc: "Format bancaire certifié",
+      print: "Prêt à imprimer",
+      printDesc: "PDF haute résolution",
+      dashboard: "Tableau de bord",
+      dashboardDesc: "Gestion de vos crédits",
+    },
     items: {
       editor: "Éditeur de chèque",
       preview: "Aperçu en temps réel",
@@ -53,24 +69,31 @@ export const dictionary = {
   },
   showcase: {
     sectionLabel: "Parcours GoCheque",
+    badge: "Simple, rapide & conforme",
+    title: "Comment ça fonctionne ?",
     eyebrow: "Voici les étapes pour compléter un chèque",
+    subtitle: "Quatre étapes élémentaires pour générer un chèque prêt pour le dépôt mobile.",
     scrollHint: "Faites défiler pour continuer",
     steps: [
       {
+        number: "01",
         word: "Remplir",
-        description: "Remplir vos infos bancaires",
+        description: "Renseignez le montant, le bénéficiaire et vos coordonnées bancaires en toute simplicité.",
       },
       {
+        number: "02",
         word: "Imprimer",
-        description: "Imprimer sur papier ordinaire",
+        description: "Générez le chèque et imprimez-le sur n'importe quel papier lettre ordinaire.",
       },
       {
+        number: "03",
         word: "Signer",
-        description: "Signer votre chèque",
+        description: "Signez manuellement votre chèque imprimé sur la ligne d'autorisation réservée.",
       },
       {
-        word: "Envoyer",
-        description: "Envoyer via dépôt mobile",
+        number: "04",
+        word: "Déposer",
+        description: "Prenez le chèque en photo avec l'application mobile de votre banque pour un encaissement direct.",
       },
     ],
   },
@@ -146,6 +169,8 @@ export const dictionary = {
     },
   },
   features: {
+    banksTitle: "Compatible avec toutes les banques canadiennes",
+    banksSubtitle: "Dépôt mobile accepté sur les applications Desjardins, RBC, TD, BMO, Scotia, CIBC, Banque Nationale, Tangerine et plus.",
     items: [
       {
         title: "Dépôt mobile",
@@ -179,6 +204,12 @@ export const dictionary = {
     featureCpa: "Conforme CPA 006",
     choosePlan: "Choisir ce forfait",
     signInToBuy: "Se connecter pour acheter",
+    guarantees: {
+      stripe: "Paiement sécurisé par carte ou Apple Pay via Stripe",
+      noExpiry: "Vos crédits n'expirent jamais dans le temps",
+      noSubscription: "Zéro abonnement récurrent ni frais cachés",
+      cpa: "Gabarits calibrés selon la norme CPA 006",
+    },
     packages: {
       pack_starter: "Démarrage",
       pack_pro: "Pro",
@@ -198,6 +229,8 @@ export const dictionary = {
     label: "FAQ",
     title: "Questions fréquentes",
     subtitle: "Tout ce qu'il faut savoir avant de traiter votre premier chèque.",
+    needHelp: "Vous avez une autre question ou un besoin spécifique ?",
+    contactSupport: "Contacter l'équipe d'assistance",
     items: [
       {
         id: "credits",
@@ -250,11 +283,23 @@ export const dictionary = {
       },
     ],
   },
+  ctaBanner: {
+    badge: "Prêt à imprimer ?",
+    title: "Créez votre premier chèque conforme en 2 minutes",
+    subtitle:
+      "Aucun papier spécial requis. Imprimez sur votre imprimante standard et déposez via l'application mobile de votre banque.",
+    cta: "Commencer maintenant",
+    secondaryCta: "Voir les tarifs",
+    guarantee: "100 % confidentiel · Aucun compte bancaire connecté · Conforme CPA 006",
+  },
   footer: {
-    copyright: "© {year} GoCheque",
+    tagline: "Génération et impression de chèques bancaires canadiens conformes pour le dépôt mobile.",
+    copyright: "© {year} GoCheque. Tous droits réservés.",
     contact: "Contact",
     privacy: "Politique de confidentialité",
     terms: "Conditions d'utilisation",
+    disclaimer:
+      "GoCheque est un outil indépendant de mise en page conforme visuellement à la norme CPA 006 pour le dépôt mobile par capture photo. Non destiné au dépôt physique au comptoir d'une succursale.",
   },
   contact: {
     metaTitle: "Contact",

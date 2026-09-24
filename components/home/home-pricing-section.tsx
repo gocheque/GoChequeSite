@@ -41,17 +41,17 @@ export function HomePricingSection() {
   return (
     <section
       id={dictionary.anchors.pricing}
-      className="bg-transparent py-20"
+      className="relative border-t border-slate-100/80 bg-slate-50/40 py-20 sm:py-28"
     >
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <p className="text-sm font-semibold uppercase tracking-wide text-[#ff6633]">
+          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-orange-200/80 bg-orange-50/70 px-3.5 py-1 text-xs font-semibold text-[#ff6633]">
             {t("pricing.label")}
-          </p>
-          <h2 className="mt-2 text-3xl font-bold text-slate-900 sm:text-4xl">
+          </div>
+          <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
             {t("pricing.title")}
           </h2>
-          <p className="mt-3 text-base text-slate-500">{t("pricing.subtitle")}</p>
+          <p className="mt-3 text-base text-slate-600 sm:text-lg">{t("pricing.subtitle")}</p>
         </div>
 
         {error && (

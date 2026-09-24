@@ -7,6 +7,7 @@ import { HomeScrollShowcase } from "@/components/home/home-scroll-showcase";
 import { HomeFeaturesSection } from "@/components/home/home-features-section";
 import { HomePricingSection } from "@/components/home/home-pricing-section";
 import { HomeFaqSection } from "@/components/home/home-faq-section";
+import { HomeCtaBanner } from "@/components/home/home-cta-banner";
 import { HomeFooter } from "@/components/home/home-footer";
 import { useLocale } from "@/components/providers/locale-provider";
 
@@ -30,6 +31,7 @@ export function HomePageClient() {
         <HomeFeaturesSection />
         <HomePricingSection />
         <HomeFaqSection />
+        <HomeCtaBanner />
       </main>
 
       <HomeFooter />

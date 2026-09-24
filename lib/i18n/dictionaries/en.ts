@@ -33,19 +33,35 @@ export const dictionary = {
   },
   hero: {
     logoAlt: "GoCheque — Canadian bank cheques, ready to print",
+    badge: "Official CPA 006 standard · Mobile deposit ready",
     titleBefore: "Canadian bank",
     titleHighlight: "cheques",
     titleAfter: "Ready to print",
     subtitle:
-      "No special paper, no special ink, no complicated software.",
+      "No special paper, no magnetic ink, no complicated software.",
     depositNoticeLead: "Mobile deposit only.",
     depositNoticeRest: "Not intended for in-branch deposit.",
-    ctaTry: "Try now",
-    ctaPricing: "See pricing",
+    ctaTry: "Create a cheque",
+    ctaPricing: "View pricing",
+    trustPoints: {
+      noCard: "No credit card required",
+      private: "100% private (zero server storage)",
+      banks: "Accepted by all Canadian banking apps",
+    },
   },
   gallery: {
     sectionLabel: "Product preview",
     label: "Discover the GoCheque editor",
+    tabs: {
+      editor: "Smart editor",
+      editorDesc: "Assisted entry & formatting",
+      preview: "CPA 006 preview",
+      previewDesc: "Certified banking layout",
+      print: "Ready to print",
+      printDesc: "High-resolution PDF",
+      dashboard: "Dashboard",
+      dashboardDesc: "Manage your credits",
+    },
     items: {
       editor: "Cheque editor",
       preview: "Live preview",
@@ -55,24 +71,31 @@ export const dictionary = {
   },
   showcase: {
     sectionLabel: "GoCheque workflow",
+    badge: "Simple, fast & compliant",
+    title: "How does it work?",
     eyebrow: "Here are the steps to complete a cheque",
+    subtitle: "Four straightforward steps to generate a cheque ready for mobile deposit.",
     scrollHint: "Scroll to continue",
     steps: [
       {
+        number: "01",
         word: "Fill",
-        description: "Fill your banking details",
+        description: "Enter the amount, payee, and your banking numbers quickly and easily.",
       },
       {
+        number: "02",
         word: "Print",
-        description: "Print on standard paper",
+        description: "Generate your cheque and print directly on any standard letter paper.",
       },
       {
+        number: "03",
         word: "Sign",
-        description: "Sign your cheque",
+        description: "Manually sign your printed cheque on the designated authorized line.",
       },
       {
-        word: "Send",
-        description: "Send it via mobile deposit",
+        number: "04",
+        word: "Deposit",
+        description: "Snap a photo using your bank's mobile app for instant account deposit.",
       },
     ],
   },
@@ -148,6 +171,8 @@ export const dictionary = {
     },
   },
   features: {
+    banksTitle: "Compatible with all Canadian banks",
+    banksSubtitle: "Mobile deposit accepted across apps from Desjardins, RBC, TD, BMO, Scotiabank, CIBC, National Bank, Tangerine and more.",
     items: [
       {
         title: "Mobile deposit",
@@ -181,6 +206,12 @@ export const dictionary = {
     featureCpa: "CPA 006 compliant",
     choosePlan: "Choose this plan",
     signInToBuy: "Sign in to purchase",
+    guarantees: {
+      stripe: "Encrypted payment with Card or Apple Pay via Stripe",
+      noExpiry: "Your credits never expire over time",
+      noSubscription: "Zero subscriptions or hidden recurring fees",
+      cpa: "Layouts calibrated to the CPA 006 standard",
+    },
     packages: {
       pack_starter: "Starter",
       pack_pro: "Pro",
@@ -200,6 +231,8 @@ export const dictionary = {
     label: "FAQ",
     title: "Frequently asked questions",
     subtitle: "Everything you need to know before processing your first cheque.",
+    needHelp: "Have a specific question or custom requirement?",
+    contactSupport: "Contact our support team",
     items: [
       {
         id: "credits",
@@ -251,11 +284,23 @@ export const dictionary = {
       },
     ],
   },
+  ctaBanner: {
+    badge: "Ready to print?",
+    title: "Create your first compliant cheque in 2 minutes",
+    subtitle:
+      "No special paper required. Print with your standard printer and deposit via your bank's mobile application.",
+    cta: "Get started now",
+    secondaryCta: "View pricing",
+    guarantee: "100% private · No bank account connected · CPA 006 compliant",
+  },
   footer: {
-    copyright: "© {year} GoCheque",
+    tagline: "Generation and printing of compliant Canadian bank cheques for mobile deposit.",
+    copyright: "© {year} GoCheque. All rights reserved.",
     contact: "Contact",
     privacy: "Privacy Policy",
     terms: "Terms of Service",
+    disclaimer:
+      "GoCheque is an independent layout tool visually compliant with the CPA 006 standard for mobile photo capture deposit. Not intended for physical in-branch counter deposit.",
   },
   contact: {
     metaTitle: "Contact",

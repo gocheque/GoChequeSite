@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown } from "lucide-react";
+import Link from "next/link";
+import { ChevronDown, Mail } from "lucide-react";
 import { useLocale } from "@/components/providers/locale-provider";
 
 export function HomeFaqSection() {
-  const { t, dictionary } = useLocale();
+  const { t, dictionary, path } = useLocale();
   const [openId, setOpenId] = useState<string | null>(null);
 
   function toggle(id: string) {
@@ -13,19 +14,19 @@ export function HomeFaqSection() {
   }
 
   return (
-    <section id={dictionary.anchors.faq} className="bg-transparent py-20">
+    <section id={dictionary.anchors.faq} className="bg-white py-20 sm:py-28">
       <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
         <div className="text-center">
-          <p className="text-sm font-semibold uppercase tracking-wide text-[#ff6633]">
+          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-orange-200/80 bg-orange-50/70 px-3.5 py-1 text-xs font-semibold text-[#ff6633]">
             {t("faq.label")}
-          </p>
-          <h2 className="mt-2 text-3xl font-bold text-slate-900 sm:text-4xl">
+          </div>
+          <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
             {t("faq.title")}
           </h2>
-          <p className="mt-3 text-base text-slate-500">{t("faq.subtitle")}</p>
+          <p className="mt-3 text-base text-slate-600 sm:text-lg">{t("faq.subtitle")}</p>
         </div>
 
-        <ul className="mt-10 space-y-3">
+        <ul className="mt-12 space-y-3">
           {dictionary.faq.items.map((item) => {
             const isOpen = openId === item.id;
 
@@ -37,13 +38,13 @@ export function HomeFaqSection() {
                   onClick={() => toggle(item.id)}
                   aria-expanded={isOpen}
                   aria-controls={`faq-answer-${item.id}`}
-                  className={`flex w-full items-center justify-between gap-4 rounded-2xl border bg-white px-5 py-4 text-left shadow-sm transition hover:border-[#ff6633]/25 hover:shadow-md ${
+                  className={`flex w-full items-center justify-between gap-4 rounded-2xl border bg-white px-6 py-4 text-left shadow-2xs transition-all ${
                     isOpen
-                      ? "border-[#ff6633]/40 ring-2 ring-[#ff6633]/10"
-                      : "border-slate-200/80"
+                      ? "border-[#ff6633]/50 ring-2 ring-[#ff6633]/10"
+                      : "border-slate-200/80 hover:border-slate-300"
                   }`}
                 >
-                  <span className="text-sm font-semibold text-slate-900 sm:text-base">
+                  <span className="text-sm font-bold text-slate-900 sm:text-base">
                     {item.question}
                   </span>
                   <ChevronDown
@@ -63,7 +64,7 @@ export function HomeFaqSection() {
                   }`}
                 >
                   <div className="overflow-hidden">
-                    <p className="px-5 pb-4 pt-1 text-sm leading-relaxed text-slate-600">
+                    <p className="px-6 pb-5 pt-2 text-sm leading-relaxed text-slate-600 sm:text-[15px]">
                       {item.answer}
                     </p>
                   </div>
@@ -72,6 +73,22 @@ export function HomeFaqSection() {
             );
           })}
         </ul>
+
+        {/* Support Callout */}
+        <div className="mt-12 rounded-2xl border border-slate-200/80 bg-slate-50/70 p-6 text-center sm:p-8">
+          <h3 className="text-base font-bold text-slate-900 sm:text-lg">
+            {dictionary.faq.needHelp}
+          </h3>
+          <div className="mt-4">
+            <Link
+              href={path("/contact")}
+              className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-2.5 text-xs font-semibold text-slate-800 shadow-2xs transition hover:border-[#ff6633]/40 hover:text-[#ff6633] sm:text-sm"
+            >
+              <Mail className="h-4 w-4 text-[#ff6633]" />
+              <span>{dictionary.faq.contactSupport}</span>
+            </Link>
+          </div>
+        </div>
       </div>
     </section>
   );

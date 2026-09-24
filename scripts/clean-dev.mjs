@@ -36,8 +36,7 @@ try {
   rmSync(nextDir, { recursive: true, force: true });
   console.log("Cache .next supprime.");
 } catch (error) {
-  console.warn("Impossible de supprimer .next:", error);
-  process.exit(1);
+  console.warn("Note .next:", error?.message || error);
 }
 
-console.log("Pret. Lancez: npm run dev");
+console.log("Pret. Demarrage du serveur...");

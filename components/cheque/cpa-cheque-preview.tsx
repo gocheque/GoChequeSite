@@ -276,6 +276,7 @@ export function CpaChequePreview({
               height: CPA_LAYOUT.bankBlockHeightPx,
             }}
           >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/banque.png"
               alt=""

@@ -10,7 +10,7 @@ export function AppBrandName({ className = "" }: AppBrandNameProps) {
   const rest = name.slice(2);
 
   return (
-    <span className={`font-black tracking-tight ${className}`}>
+    <span className={`font-[family-name:var(--font-comfortaa)] font-black tracking-tight ${className}`}>
       <span className="text-[#ff6633]">{accent}</span>
       <span className="text-slate-900">{rest}</span>
     </span>
