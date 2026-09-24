@@ -3,7 +3,16 @@ import { notFound } from "next/navigation";
 import { buildHomeJsonLd } from "@/lib/seo/json-ld";
 import { buildPageMetadata } from "@/lib/seo/metadata";
 import { JsonLd } from "@/components/seo/json-ld";
-import { HomePageClient } from "@/components/home/home-page-client";
+import { HomeNavbar } from "@/components/home/home-navbar";
+import { HomeHero } from "@/components/home/home-hero";
+import { HomeMockupGallery } from "@/components/home/home-mockup-gallery";
+import { HomeScrollShowcase } from "@/components/home/home-scroll-showcase";
+import { HomeFeaturesSection } from "@/components/home/home-features-section";
+import { HomePricingSection } from "@/components/home/home-pricing-section";
+import { HomeFaqSection } from "@/components/home/home-faq-section";
+import { HomeCtaBanner } from "@/components/home/home-cta-banner";
+import { HomeFooter } from "@/components/home/home-footer";
+import { SkipToContent } from "@/components/layout/skip-to-content";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { isValidLocale, type Locale } from "@/lib/i18n/config";
 
@@ -40,7 +49,20 @@ export default async function HomePage({
   return (
     <>
       <JsonLd data={buildHomeJsonLd(dict, locale)} />
-      <HomePageClient />
+      <SkipToContent label={dict.nav.skipToContent} />
+      <HomeNavbar />
+
+      <main id="contenu">
+        <HomeHero />
+        <HomeMockupGallery />
+        <HomeScrollShowcase />
+        <HomeFeaturesSection dictionary={dict} />
+        <HomePricingSection />
+        <HomeFaqSection dictionary={dict} />
+        <HomeCtaBanner />
+      </main>
+
+      <HomeFooter locale={locale} dictionary={dict} />
     </>
   );
 }

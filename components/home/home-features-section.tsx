@@ -2,6 +2,7 @@
 
 import { Building2, Lock, ShieldCheck, Smartphone, Zap } from "lucide-react";
 import { useLocale } from "@/components/providers/locale-provider";
+import type { Dictionary } from "@/lib/i18n/dictionary-type";
 import { getMaxPackageSavingsPercent } from "@/lib/tokens/packages";
 
 const FEATURE_ICONS = [Smartphone, ShieldCheck, Lock, Zap];
@@ -17,8 +18,13 @@ const CANADIAN_BANKS = [
   "Tangerine",
 ];
 
-export function HomeFeaturesSection() {
-  const { dictionary, t } = useLocale();
+type HomeFeaturesSectionProps = {
+  dictionary?: Dictionary;
+};
+
+export function HomeFeaturesSection({ dictionary: dictProp }: HomeFeaturesSectionProps = {}) {
+  const { dictionary: dictCtx, t } = useLocale();
+  const dictionary = dictProp ?? dictCtx;
   const maxSavings = getMaxPackageSavingsPercent();
 
   return (

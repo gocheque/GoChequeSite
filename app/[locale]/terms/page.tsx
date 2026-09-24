@@ -1,9 +1,14 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { LegalDocumentPage } from "@/components/legal/legal-document-page";
+import { JsonLd } from "@/components/seo/json-ld";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { isValidLocale, type Locale } from "@/lib/i18n/config";
 import { buildPageMetadata } from "@/lib/seo/metadata";
+import {
+  buildOrganizationJsonLd,
+  buildWebPageJsonLd,
+} from "@/lib/seo/json-ld";
 
 export async function generateMetadata({
   params,
@@ -33,14 +38,30 @@ export default async function TermsPage({
   if (!isValidLocale(localeParam)) notFound();
 
   const locale = localeParam as Locale;
-  const { terms } = getDictionary(locale);
+  const dict = getDictionary(locale);
+  const { terms } = dict;
 
   return (
-    <LegalDocumentPage
-      title={terms.title}
-      lastUpdated={terms.lastUpdated}
-      intro={terms.intro}
-      sections={terms.sections}
-    />
+    <>
+      <JsonLd
+        data={[
+          buildOrganizationJsonLd(terms.metaDescription),
+          buildWebPageJsonLd(
+            terms.metaTitle,
+            terms.metaDescription,
+            `/${locale}/terms`,
+            locale,
+          ),
+        ]}
+      />
+      <LegalDocumentPage
+        locale={locale}
+        dictionary={dict}
+        title={terms.title}
+        lastUpdated={terms.lastUpdated}
+        intro={terms.intro}
+        sections={terms.sections}
+      />
+    </>
   );
 }

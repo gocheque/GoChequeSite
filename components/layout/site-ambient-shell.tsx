@@ -1,7 +1,6 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { SiteAmbientBackground } from "@/components/layout/ambient-cheque-background";
 
 export function SiteAmbientShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -11,12 +10,5 @@ export function SiteAmbientShell({ children }: { children: React.ReactNode }) {
     return <>{children}</>;
   }
 
-  return (
-    <div className="relative isolate min-h-screen">
-      <div className="pointer-events-none absolute inset-0 z-0 min-h-full overflow-hidden">
-        <SiteAmbientBackground />
-      </div>
-      <div className="relative z-10">{children}</div>
-    </div>
-  );
+  return <div className="marketing-shell relative isolate min-h-screen">{children}</div>;
 }

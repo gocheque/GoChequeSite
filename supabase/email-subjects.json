@@ -1,7 +1,8 @@
 {
-  "confirmation": "Confirmez votre compte GoCheque",
-  "recovery": "Réinitialisez votre mot de passe GoCheque",
-  "magic_link": "Votre lien de connexion GoCheque",
-  "email_change": "Confirmez votre changement d'adresse GoCheque",
-  "invite": "Invitation GoCheque"
+  "confirmation": "GoCheque — Confirmez votre compte / Confirm your account",
+  "recovery": "GoCheque — Réinitialisez votre mot de passe / Reset your password",
+  "magic_link": "GoCheque — Votre lien de connexion / Your sign-in link",
+  "email_change": "GoCheque — Confirmez votre nouvelle adresse / Confirm your new email",
+  "invite": "GoCheque — Invitation / You’re invited",
+  "reauthentication": "GoCheque — Code de confirmation / Confirmation code"
 }

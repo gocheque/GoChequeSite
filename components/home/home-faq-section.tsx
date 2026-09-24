@@ -4,9 +4,15 @@ import { useState } from "react";
 import Link from "next/link";
 import { ChevronDown, Mail } from "lucide-react";
 import { useLocale } from "@/components/providers/locale-provider";
+import type { Dictionary } from "@/lib/i18n/dictionary-type";
 
-export function HomeFaqSection() {
-  const { t, dictionary, path } = useLocale();
+type HomeFaqSectionProps = {
+  dictionary?: Dictionary;
+};
+
+export function HomeFaqSection({ dictionary: propDict }: HomeFaqSectionProps = {}) {
+  const { t, dictionary: ctxDict, path } = useLocale();
+  const dictionary = propDict ?? ctxDict;
   const [openId, setOpenId] = useState<string | null>(null);
 
   function toggle(id: string) {
@@ -48,7 +54,7 @@ export function HomeFaqSection() {
                     {item.question}
                   </span>
                   <ChevronDown
-                    className={`h-5 w-5 shrink-0 text-[#ff6633] transition-transform duration-200 ${
+                    className={`h-4 w-4 shrink-0 text-[#8a8073] transition-transform duration-200 ${
                       isOpen ? "rotate-180" : ""
                     }`}
                     aria-hidden

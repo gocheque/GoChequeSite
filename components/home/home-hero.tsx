@@ -50,7 +50,7 @@ export function HomeHero() {
           {t("hero.subtitle")}
         </p>
 
-        <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
+        <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
           <button
             type="button"
             onClick={handleTryNow}
@@ -91,3 +91,4 @@ export function HomeHero() {
     </section>
   );
 }
+

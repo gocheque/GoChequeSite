@@ -1,12 +1,18 @@
-"use client";
-
 import Link from "next/link";
 import { AppBrandName } from "@/components/brand/app-brand-name";
 import { AppLogo } from "@/components/brand/app-logo";
-import { useLocale } from "@/components/providers/locale-provider";
+import { localizedPath, type Locale } from "@/lib/i18n/config";
+import type { Dictionary } from "@/lib/i18n/dictionary-type";
 
-export function HomeFooter() {
-  const { t, path, dictionary } = useLocale();
+type HomeFooterProps = {
+  locale: Locale;
+  dictionary: Dictionary;
+};
+
+export function HomeFooter({ locale, dictionary }: HomeFooterProps) {
+  const path = (href: string) => localizedPath(locale, href);
+  const year = new Date().getFullYear();
+  const copyright = dictionary.footer.copyright.replace("{year}", String(year));
   const anchors = dictionary.anchors;
 
   return (
@@ -17,38 +23,38 @@ export function HomeFooter() {
           <div className="max-w-sm text-center md:text-left">
             <Link href={path("/")} className="group inline-flex items-center gap-2.5">
               <AppLogo
-                alt={t("nav.logoAlt")}
+                alt={dictionary.nav.logoAlt}
                 className="h-8 w-auto max-w-[7.5rem] object-contain transition group-hover:scale-[1.02]"
               />
               <AppBrandName className="text-xl" />
             </Link>
             <p className="mt-3 text-xs leading-relaxed text-slate-500">
-              {t("footer.tagline")}
+              {dictionary.footer.tagline}
             </p>
           </div>
 
           {/* Quick Nav & Legal Links */}
           <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-semibold text-slate-600 md:justify-end">
             <Link href={path(`/#${anchors.gallery}`)} className="transition hover:text-[#ff6633]">
-              {t("nav.preview")}
+              {dictionary.nav.preview}
             </Link>
             <Link href={path(`/#${anchors.features}`)} className="transition hover:text-[#ff6633]">
-              {t("nav.features")}
+              {dictionary.nav.features}
             </Link>
             <Link href={path(`/#${anchors.pricing}`)} className="transition hover:text-[#ff6633]">
-              {t("nav.pricing")}
+              {dictionary.nav.pricing}
             </Link>
             <Link href={path(`/#${anchors.faq}`)} className="transition hover:text-[#ff6633]">
-              {t("nav.faq")}
+              {dictionary.nav.faq}
             </Link>
             <Link href={path("/contact")} className="transition hover:text-[#ff6633]">
-              {t("footer.contact")}
+              {dictionary.footer.contact}
             </Link>
             <Link href={path("/privacy")} className="transition hover:text-[#ff6633]">
-              {t("footer.privacy")}
+              {dictionary.footer.privacy}
             </Link>
             <Link href={path("/terms")} className="transition hover:text-[#ff6633]">
-              {t("footer.terms")}
+              {dictionary.footer.terms}
             </Link>
           </div>
         </div>
@@ -56,13 +62,14 @@ export function HomeFooter() {
         {/* Legal Disclaimer & Copyright */}
         <div className="mt-10 border-t border-slate-200/60 pt-8 text-center md:flex md:items-center md:justify-between md:text-left">
           <p className="max-w-2xl text-[11px] leading-relaxed text-slate-400">
-            {t("footer.disclaimer")}
+            {dictionary.footer.disclaimer}
           </p>
           <p className="mt-4 text-[11px] font-medium text-slate-500 md:mt-0 md:shrink-0">
-            {t("footer.copyright", { year: new Date().getFullYear() })}
+            {copyright}
           </p>
         </div>
       </div>
     </footer>
   );
 }
+

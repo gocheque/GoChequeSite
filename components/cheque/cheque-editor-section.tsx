@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import type { ChequeData } from "@/lib/cheque/cpa-format";
 import {
   DEFAULT_CHEQUE_COLOR,
-  getChequeColorTheme,
   type ChequeColorId,
 } from "@/lib/cheque/cheque-colors";
 import { CHEQUE_EDITOR_FORM_ID } from "@/lib/cheque/cheque-form-autofill";
@@ -50,7 +49,6 @@ export function ChequeEditorSection({
   const [lastSavedAt, setLastSavedAt] = useState<Date | null>(null);
   const [saveFailed, setSaveFailed] = useState(false);
   const draftLoadedRef = useRef(false);
-  const theme = getChequeColorTheme(chequeColor);
 
   useEffect(() => {
     if (draftLoadedRef.current) return;
@@ -97,35 +95,43 @@ export function ChequeEditorSection({
     }
   }
 
+  const chromeButtonClass =
+    "inline-flex h-10 items-center justify-center gap-2 rounded-md border border-[#e7e4de] bg-white px-3 text-sm font-medium text-[#0b1f33] transition hover:border-[#0b1f33]/30 hover:bg-[#0b1f33]/[0.03]";
+
   const previewPanel = (
-    <div
-      className={`relative w-full rounded-xl border bg-gradient-to-br p-1.5 shadow-inner sm:p-2 ${theme.frameBorder} ${theme.frameBg}`}
-    >
-      <button
-        type="button"
-        onClick={handleSaveDraft}
-        aria-label={t("editor.save.ariaLabel")}
-        title={t("editor.save.title")}
-        className="absolute right-2 top-2 z-10 flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200/80 bg-white/90 text-slate-600 shadow-sm backdrop-blur-sm transition hover:border-[#ff6633]/40 hover:bg-white hover:text-[#ff6633] sm:right-3 sm:top-3 sm:h-10 sm:w-10"
-      >
-        <FloppyDiskIcon className="h-5 w-5" />
-      </button>
-      <button
-        type="button"
-        onClick={() => setPreviewZoomOpen(true)}
-        className="group flex w-full flex-col gap-2 rounded-lg text-left xl:pointer-events-none"
-        aria-label={t("editor.previewZoom.open")}
-      >
-        <div className="w-full overflow-hidden rounded-md">
+    <div className="flex min-w-0 flex-col gap-4">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#8a8074]">
+          {t("editor.previewZoom.title")}
+        </p>
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            onClick={handleSaveDraft}
+            aria-label={t("editor.save.ariaLabel")}
+            title={t("editor.save.title")}
+            className={chromeButtonClass}
+          >
+            <FloppyDiskIcon className="h-4 w-4" />
+            {t("editor.save.title")}
+          </button>
+          <button
+            type="button"
+            onClick={() => setPreviewZoomOpen(true)}
+            aria-label={t("editor.previewZoom.open")}
+            className={`${chromeButtonClass} xl:hidden`}
+          >
+            <ZoomIn className="h-4 w-4" aria-hidden />
+            {t("editor.previewZoom.hint")}
+          </button>
+        </div>
+      </div>
+      {/* Quiet frame only — do not overlay the cheque canvas. */}
+      <div className="rounded-md border border-[#e7e4de] bg-white p-4 sm:p-6 lg:p-8">
+        <div className="cheque-face-host w-full">
           <ScaledChequePreview data={cheque} color={chequeColor} />
         </div>
-        <span className="flex justify-center xl:hidden">
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200/90 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 shadow-sm transition group-active:scale-[0.98]">
-            <ZoomIn className="h-3.5 w-3.5 text-[#ff6633]" aria-hidden />
-            {t("editor.previewZoom.hint")}
-          </span>
-        </span>
-      </button>
+      </div>
     </div>
   );
 
@@ -136,7 +142,7 @@ export function ChequeEditorSection({
       action="about:blank"
       autoComplete="on"
       onSubmit={handleEditorSubmit}
-      className="flex flex-col gap-3"
+      className="flex flex-col gap-5"
     >
       <ChequeEditorBar
         data={cheque}
@@ -145,7 +151,7 @@ export function ChequeEditorSection({
       />
       <ChequeColorPicker value={chequeColor} onChange={setChequeColor} />
       <ChequeActionBar />
-      <p className="text-center text-[10px] leading-snug text-slate-400">
+      <p className="text-center text-xs leading-relaxed text-[#8a8074]">
         {t("editor.autofillNote")}
       </p>
     </form>
@@ -162,8 +168,8 @@ export function ChequeEditorSection({
           onSubmit={handleEditorSubmit}
           className="w-full"
         >
-          <div className="grid w-full grid-cols-1 gap-6 xl:grid-cols-[3fr_2fr] xl:items-start xl:gap-8 2xl:gap-10">
-            <div className="flex min-w-0 flex-col gap-4">
+          <div className="grid w-full grid-cols-1 gap-8 xl:grid-cols-[minmax(0,1fr)_22.5rem] xl:items-start xl:gap-10 2xl:grid-cols-[minmax(0,1fr)_24rem] 2xl:gap-12">
+            <div className="flex min-w-0 flex-col gap-5">
               {previewPanel}
               <ChequeColorPicker
                 value={chequeColor}
@@ -172,7 +178,7 @@ export function ChequeEditorSection({
               <ChequeActionBar />
             </div>
 
-            <aside className="min-w-0 xl:sticky xl:top-28 xl:max-h-[calc(100vh-7rem)] xl:overflow-y-auto xl:pr-1">
+            <aside className="min-w-0 xl:sticky xl:top-24 xl:max-h-[calc(100vh-6.5rem)] xl:overflow-y-auto xl:pr-1">
               <div className="flex flex-col gap-4">
                 <ChequeEditorBar
                   data={cheque}
@@ -180,7 +186,7 @@ export function ChequeEditorSection({
                   onClear={handleClear}
                   layout="split"
                 />
-                <p className="text-center text-[10px] leading-snug text-slate-400">
+                <p className="text-center text-xs leading-relaxed text-[#8a8074] xl:text-left">
                   {t("editor.autofillNote")}
                 </p>
               </div>
@@ -205,7 +211,7 @@ export function ChequeEditorSection({
   }
 
   return (
-    <div className="flex w-full flex-col items-stretch gap-3">
+    <div className="flex w-full flex-col items-stretch gap-5">
       {previewPanel}
       {optionsPanel}
       <ChequeSaveModal

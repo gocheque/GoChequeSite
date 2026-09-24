@@ -1,4 +1,9 @@
 import { NextResponse } from "next/server";
+import {
+  emailFromStripeSession,
+  sendPaymentFailedEmail,
+} from "@/lib/email/lifecycle";
+import { localeFromUnknown } from "@/lib/email/locale";
 import { getStripeWebhookSecret, isStripeConfigured } from "@/lib/stripe/env";
 import { fulfillStripeCheckoutSession } from "@/lib/stripe/fulfill-checkout";
 import { getStripe } from "@/lib/stripe/server";
@@ -28,6 +33,17 @@ export async function POST(request: Request) {
     if (event.type === "checkout.session.completed") {
       const session = event.data.object;
       await fulfillStripeCheckoutSession(session);
+    }
+
+    if (event.type === "checkout.session.async_payment_failed") {
+      const session = event.data.object;
+      const email = emailFromStripeSession(session);
+      if (email) {
+        await sendPaymentFailedEmail({
+          to: email,
+          locale: localeFromUnknown(session.metadata?.locale),
+        });
+      }
     }
 
     return NextResponse.json({ received: true });

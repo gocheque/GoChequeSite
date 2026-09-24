@@ -2,6 +2,7 @@ import type { Dictionary } from "@/lib/i18n/dictionary-type";
 import type { Locale } from "@/lib/i18n/config";
 import { htmlLang } from "@/lib/i18n/config";
 import { getSiteUrl, siteConfig } from "@/lib/seo/site";
+import { PRIMARY_SITE_URL, ALTERNATE_SITE_URL } from "@/lib/seo/hosts";
 import { CONTACT_EMAIL } from "@/lib/site/contact";
 import { TOKEN_PACKAGES } from "@/lib/tokens/packages";
 
@@ -30,7 +31,8 @@ export function buildOrganizationJsonLd(
     "@type": "Organization",
     name: siteConfig.name,
     legalName: siteConfig.legalName,
-    url: siteConfig.url,
+    url: PRIMARY_SITE_URL,
+    sameAs: [PRIMARY_SITE_URL, ALTERNATE_SITE_URL],
     logo: getSiteUrl("/logo.png"),
     description,
     email: CONTACT_EMAIL,
@@ -55,13 +57,13 @@ export function buildWebSiteJsonLd(
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: siteConfig.name,
-    url: siteConfig.url,
+    url: PRIMARY_SITE_URL,
     description,
     inLanguage: htmlLang(locale),
     publisher: {
       "@type": "Organization",
       name: siteConfig.name,
-      url: siteConfig.url,
+      url: PRIMARY_SITE_URL,
     },
   };
 }
@@ -80,7 +82,7 @@ export function buildSoftwareApplicationJsonLd(
     name: siteConfig.name,
     applicationCategory: "BusinessApplication",
     operatingSystem: "Web",
-    url: siteConfig.url,
+    url: PRIMARY_SITE_URL,
     description,
     inLanguage: htmlLang(locale),
     offers: {
@@ -95,7 +97,7 @@ export function buildSoftwareApplicationJsonLd(
         price: (pkg.priceCents / 100).toFixed(2),
         priceCurrency: "CAD",
         availability: "https://schema.org/InStock",
-        url: siteConfig.url,
+        url: PRIMARY_SITE_URL,
       })),
     },
     featureList: SOFTWARE_FEATURES[locale],
@@ -114,6 +116,27 @@ export function buildFaqPageJsonLd(dictionary: Dictionary): JsonLdObject {
         text: item.answer,
       },
     })),
+  };
+}
+
+export function buildWebPageJsonLd(
+  name: string,
+  description: string,
+  path: string,
+  locale: Locale,
+): JsonLdObject {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name,
+    description,
+    url: getSiteUrl(path),
+    inLanguage: htmlLang(locale),
+    isPartOf: {
+      "@type": "WebSite",
+      name: siteConfig.name,
+      url: PRIMARY_SITE_URL,
+    },
   };
 }
 

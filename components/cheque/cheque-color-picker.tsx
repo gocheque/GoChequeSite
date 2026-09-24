@@ -4,6 +4,7 @@ import {
   CHEQUE_COLORS,
   type ChequeColorId,
 } from "@/lib/cheque/cheque-colors";
+import { useLocale } from "@/components/providers/locale-provider";
 
 type ChequeColorPickerProps = {
   value: ChequeColorId;
@@ -11,12 +12,14 @@ type ChequeColorPickerProps = {
 };
 
 export function ChequeColorPicker({ value, onChange }: ChequeColorPickerProps) {
+  const { t } = useLocale();
+
   return (
-    <div className="flex flex-wrap items-center justify-center gap-2 rounded-lg border border-slate-100 bg-slate-50/80 px-3 py-2">
-      <span className="text-[10px] font-medium uppercase tracking-wide text-slate-500">
-        Couleur
+    <div className="flex flex-wrap items-center justify-center gap-3 rounded-md border border-[#e7e4de] bg-white px-4 py-3 sm:justify-start">
+      <span className="text-xs font-medium text-[#5c6b7a]">
+        {t("editor.color.label")}
       </span>
-      <div className="flex flex-wrap items-center justify-center gap-2">
+      <div className="flex flex-wrap items-center justify-center gap-2.5">
         {CHEQUE_COLORS.map((color) => {
           const isSelected = value === color.id;
 
@@ -27,10 +30,10 @@ export function ChequeColorPicker({ value, onChange }: ChequeColorPickerProps) {
               aria-label={color.label}
               aria-pressed={isSelected}
               onClick={() => onChange(color.id)}
-              className={`h-7 w-7 rounded-full transition-all duration-200 hover:scale-110 ${
+              className={`h-8 w-8 rounded-full transition ${
                 isSelected
-                  ? "scale-110 ring-2 ring-slate-400 ring-offset-1"
-                  : "ring-1 ring-black/10"
+                  ? "ring-2 ring-[#0b1f33] ring-offset-2"
+                  : "ring-1 ring-[#0b1f33]/15 hover:ring-[#0b1f33]/40"
               }`}
               style={{ backgroundColor: color.swatch }}
             />

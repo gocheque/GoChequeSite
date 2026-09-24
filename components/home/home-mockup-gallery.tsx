@@ -7,25 +7,25 @@ import { useLocale } from "@/components/providers/locale-provider";
 
 const GALLERY_ITEMS = [
   {
-    src: "/GoCheque.png",
+    src: "/gallery/gocheque-1.webp",
     tabKey: "editor" as const,
     altKey: "gallery.items.editor" as const,
     Icon: FileEdit,
   },
   {
-    src: "/GoCheque2.png",
+    src: "/gallery/gocheque-2.webp",
     tabKey: "preview" as const,
     altKey: "gallery.items.preview" as const,
     Icon: Eye,
   },
   {
-    src: "/GoCheque3.png",
+    src: "/gallery/gocheque-3.webp",
     tabKey: "print" as const,
     altKey: "gallery.items.print" as const,
     Icon: Printer,
   },
   {
-    src: "/GoCheque4.png",
+    src: "/gallery/gocheque-4.webp",
     tabKey: "dashboard" as const,
     altKey: "gallery.items.dashboard" as const,
     Icon: LayoutDashboard,
@@ -33,8 +33,8 @@ const GALLERY_ITEMS = [
 ] as const;
 
 const SLIDE_INTERVAL_MS = 6000;
-const GALLERY_IMAGE_WIDTH = 3147;
-const GALLERY_IMAGE_HEIGHT = 1606;
+const GALLERY_IMAGE_WIDTH = 1920;
+const GALLERY_IMAGE_HEIGHT = 980;
 
 export function HomeMockupGallery() {
   const { t, dictionary } = useLocale();
@@ -117,8 +117,8 @@ export function HomeMockupGallery() {
             aria-hidden
           />
 
-          {/* Native Image Container (3147 / 1606) */}
-          <div className="relative w-full aspect-[3147/1606] overflow-hidden drop-shadow-[0_20px_45px_rgba(15,23,42,0.12)] sm:drop-shadow-[0_25px_60px_rgba(15,23,42,0.14)]">
+          {/* Native Image Container (1920 / 980) */}
+          <div className="relative w-full aspect-[1920/980] overflow-hidden drop-shadow-[0_20px_45px_rgba(15,23,42,0.12)] sm:drop-shadow-[0_25px_60px_rgba(15,23,42,0.14)]">
             {GALLERY_ITEMS.map((item, index) => {
               const isActive = index === activeIndex;
 
@@ -171,3 +171,4 @@ export function HomeMockupGallery() {
     </section>
   );
 }
+

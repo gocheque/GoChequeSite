@@ -1,4 +1,4 @@
-import { Comfortaa, Inter } from "next/font/google";
+import { Comfortaa, Inter, Source_Sans_3 } from "next/font/google";
 import { headers } from "next/headers";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -19,6 +19,12 @@ const comfortaa = Comfortaa({
   subsets: ["latin"],
   weight: ["400", "600", "700"],
   display: "swap",
+});
+
+const sourceSans = Source_Sans_3({
+  variable: "--font-marketing",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const generateMetadata = buildRootMetadata;
@@ -43,7 +49,7 @@ export default async function RootLayout({
   return (
     <html lang={lang} suppressHydrationWarning>
       <body
-        className={`${inter.variable} ${comfortaa.variable} min-h-screen bg-white font-sans text-slate-900 antialiased`}
+        className={`${inter.variable} ${comfortaa.variable} ${sourceSans.variable} min-h-screen bg-white font-sans text-slate-900 antialiased`}
       >
         {supabasePublic ? (
           <script

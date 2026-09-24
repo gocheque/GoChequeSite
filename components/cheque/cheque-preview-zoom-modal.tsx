@@ -81,11 +81,11 @@ export function ChequePreviewZoomModal({
   const scaledHeight = CPA_CHEQUE.heightPx * scale;
 
   return (
-    <div className="fixed inset-0 z-[100] flex flex-col xl:hidden">
+    <div className="marketing-shell fixed inset-0 z-[100] flex flex-col xl:hidden">
       <button
         type="button"
         aria-label={t("common.close")}
-        className="absolute inset-0 bg-slate-900/70 backdrop-blur-sm"
+        className="absolute inset-0 bg-[#0b1f33]/80 backdrop-blur-sm"
         onClick={onClose}
       />
 
@@ -95,11 +95,11 @@ export function ChequePreviewZoomModal({
         aria-labelledby="cheque-preview-zoom-title"
         className="relative z-10 flex min-h-0 flex-1 flex-col"
       >
-        <div className="flex items-center justify-between gap-3 px-4 pb-2 pt-4">
+        <div className="flex items-center justify-between gap-3 px-4 pb-3 pt-4">
           <div className="min-w-0">
             <h2
               id="cheque-preview-zoom-title"
-              className="text-base font-semibold text-white"
+              className="text-base font-semibold tracking-tight text-white"
             >
               {t("editor.previewZoom.title")}
             </h2>
@@ -118,7 +118,7 @@ export function ChequePreviewZoomModal({
           className="min-h-0 flex-1 overflow-auto overscroll-contain"
         >
           <div className="mx-auto flex min-h-full w-max items-center justify-center p-5">
-            <div className="shrink-0 rounded-lg bg-white p-2 shadow-2xl">
+            <div className="cheque-face-host shrink-0 rounded-md bg-white p-3 shadow-[0_24px_80px_rgba(11,31,51,0.28)]">
               <div style={{ width: scaledWidth, height: scaledHeight }}>
                 <div
                   style={{
